@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by yanan on 16/6/27.
  */
-public class StopWatchHandlerInceptor extends HandlerInterceptorAdapter {
+public class StopWatchHandlerInterceptor extends HandlerInterceptorAdapter {
     private NamedThreadLocal<Long> startTimeThreadLocal = new NamedThreadLocal<>("StopWatch-startTime");
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
