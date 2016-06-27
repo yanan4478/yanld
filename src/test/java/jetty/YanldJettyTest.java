@@ -10,7 +10,7 @@ public class YanldJettyTest {
 
     public static void doStart() {
         WebAppContext webAppContext = new WebAppContext();
-        webAppContext.setContextPath("");
+        webAppContext.setContextPath("/");
         webAppContext.setDescriptor("./webapp/WEB-INF/web.xml");
         webAppContext.setResourceBase("./webapp");
         webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());

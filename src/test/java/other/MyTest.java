@@ -2,6 +2,8 @@ package other;
 
 import org.junit.Test;
 
+import java.util.Date;
+
 /**
  * Created by yanan on 16/6/15.
  */
