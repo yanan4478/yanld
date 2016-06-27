@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>正在加载...</title>
+    <script type='text/javascript'>window.BWEUM||(BWEUM={});BWEUM.info = {"stand":true,"agentType":"browser","agent":"bi-collector.oneapm.com/static/js/bw-send-411.4.5.js","beaconUrl":"bi-collector.oneapm.com/beacon","licenseKey":"uq7bU~6vieMrvauE","applicationID":2274425};</script><script type="text/javascript" src="//bi-collector.oneapm.com/static/js/bw-loader-411.4.5.js"></script>
+
+    <!-- <script type="application/javascript" src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.2/??flexible_css.js,flexible.js"></script>-->
+    <!-- <link rel="stylesheet" type="text/css" href="http://localhost:3000/main.css" />-->
+
+    <!-- <script type="text/javascript" src="http://localhost:3000/common.js"></script>-->
+
+    <script type="application/javascript">
+
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+                    isIOS = navigator.userAgent.match(/iphone|ipod|ipad/gi),
+                    dpr = isIOS? Math.min(win.devicePixelRatio, 3) : 1,
+                    dpr = window.top === window.self? dpr : 1, //被iframe引用时，禁止缩放
+                    dpr = 1, // 首页引用IFRAME，强制为1
+                    scale = 1 / dpr,
+                    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+            //console.log("isIOS:" + win.devicePixelRatio);
+            //console.log("dpr:" + dpr);
+            docEl.dataset.dpr = win.devicePixelRatio;
+            if(navigator.userAgent.match(/iphone/gi) && screen.width == 375 && win.devicePixelRatio == 2){
+                docEl.classList.add('iphone6')
+            }
+            if(navigator.userAgent.match(/iphone/gi) && screen.width == 414 && win.devicePixelRatio == 3){
+                docEl.classList.add('iphone6p')
+            }
+            var metaEl = doc.createElement('meta');
+            metaEl.name = 'viewport';
+            metaEl.content = 'initial-scale=' + scale + ',maximum-scale=' + scale + ', minimum-scale=' + scale;
+            docEl.firstElementChild.appendChild(metaEl);
+            var recalc = function () {
+                var width = docEl.clientWidth;
+                if (width / dpr > 640) {
+                    width = 640 * dpr;
+                }
+                docEl.style.fontSize = 100 * (width / 640) + 'px';
+            };
+            recalc()
+            if (!doc.addEventListener) return;
+            // win.addEventListener(resizeEvt, recalc, false);
+        })(document, window);
+
+    </script>
+    <style>
+        #img1 {
+            width: 100%;
+            height: 100%;
+            position:absolute; top:0px; left:0px;
+            z-index:1;
+        }
+        #img2 {
+            width: 50%;
+            height: 30%;
+            position:absolute; top:28%; left:26%;
+            z-index:11;
+        }
+    </style>
+
+</head>
+
+<body>
+<div id='root'>
+        <img id="img1" src= "../../agent/bg.jpg">
+        <img id="img2" src= "../../agent/{{agentid}}.jpg">
+    </div>
+
+</div>
+<script type="application/javascript">
+
+</script>
+</body>
+
+</html>
