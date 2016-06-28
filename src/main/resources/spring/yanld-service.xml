@@ -5,7 +5,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
        <context:annotation-config/>
-       <context:component-scan base-package="com.yanld.module.service.impl"/>
 
        <bean id="yanldUserService" class="com.yanld.module.service.impl.YanldUserServiceImpl"/>
 </beans>
