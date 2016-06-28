@@ -1,0 +1,11 @@
+[
+  {"id":4,"category":"旅游","url":"res/img/album/categoryicon/8.png","show":1},
+  {"id":5,"category":"儿童","url":"res/img/album/categoryicon/1.png","show":1},
+  {"id":6,"category":"风光","url":"res/img/album/categoryicon/2.png","show":1},
+  {"id":7,"category":"情侣","url":"res/img/album/categoryicon/3.png","show":1},
+  {"id":8,"category":"美食","url":"res/img/album/categoryicon/4.png","show":1},
+  {"id":9,"category":"聚会","url":"res/img/album/categoryicon/5.png","show":1},
+  {"id":10,"category":"自拍","url":"res/img/album/categoryicon/7.png","show":1},
+  {"id":-1,"category":"其他","url":"res/img/album/categoryicon/6.png","show":1},
+  {"id":-1,"category":"看心情","url":"res/img/album/categoryicon/9.png","show":0}
+]
