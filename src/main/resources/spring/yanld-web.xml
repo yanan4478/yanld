@@ -6,7 +6,7 @@
 
     <bean id="handlerInterceptor1" class="com.yanld.module.interceptor.HandlerInterceptor1"/>
     <bean id="handlerInterceptor2" class="com.yanld.module.interceptor.HandlerInterceptor2"/>
-    <bean id="stopWatchHandlerInceptor" class="com.yanld.module.interceptor.StopWatchHandlerInceptor"/>
+    <bean id="stopWatchHandlerInceptor" class="com.yanld.module.interceptor.StopWatchHandlerInterceptor"/>
     <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
         <property name="interceptors">
             <list>
