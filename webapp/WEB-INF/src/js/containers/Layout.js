@@ -8,9 +8,9 @@ import 'antd/dist/antd.less';
 
 import { DatePicker, message,Menu, Breadcrumb, Icon,Col,Row } from 'antd';
 
-require("style/layout.less")
+require("style/layout.less");
 
-const SubMenu = Menu.SubMenu
+const SubMenu = Menu.SubMenu;
 
 class Layout extends Component {
 
@@ -23,11 +23,11 @@ class Layout extends Component {
     state = {
         date: '',
         collapse:false,
-    }
+    };
 
     static propTypes = {
         title: React.PropTypes.string,
-    }
+    };
 
     componentWillMount() {
 
@@ -49,10 +49,10 @@ class Layout extends Component {
         console.log(key,item)
 
         switch (item.key){
-            case "content":
+            case; "content":
                 this.props.pushState(null,"/client/page/content")
                 break;
-            case "topic":
+            case; "topic":
                 this.props.pushState(null,"/client/page/topic")
                 break;
              }
@@ -62,20 +62,85 @@ class Layout extends Component {
         return (
             <div>
             {/*left size*/}
-                <Row style={{overflow:"hidden"}}>
-                    <Col xs={{span:2}} style={{position:"fixed"}} >
+            < Row;
+    style = {
+    {
+        "hidden"
+    }
+    ;
+}
+;
+>
+<
+Col;
+xs = {
+{
+    2
+}
+;
+}
+style = {
+{
+    "fixed"
+}
+;
+} >
 
-                                <Menu onClick={this.onMenuClick} mode="inline" className="sidebar-bg" theme="dark" defaultSelectedKeys={['content']} style={{height:window.screen.availHeight ,backgroundColor:"#404040",overflow:'hidden',left:"0",top:"0",zIndex:"1048"}}>
-                                    <Menu.Item key="content"><Icon type="home" /><span className="nav-text">首页</span></Menu.Item>
-                                    <Menu.Item key="topic"><Icon type="appstore" /><span className="nav-text">专题</span></Menu.Item>
-                       </Menu>
+
+<
+Menu;
+onClick = {this.onMenuClick
+}
+mode = "inline";
+className = "sidebar-bg";
+theme = "dark";
+defaultSelectedKeys = {['content']
+}
+style = {
+{
+    window.screen.availHeight , backgroundColor
+:
+    "#404040", overflow
+:
+    'hidden', left
+:
+    "0", top
+:
+    "0", zIndex
+:
+    "1048"
+}
+;
+;
+;
+;
+;
+;
+}>
+<Menu.Item; key="content"><Icon; type="home" /><span; className="nav-text">首页</span></Menu.Item>
+< Menu.Item;
+;
+key = "topic" > < Icon;
+type = "appstore" / > < span;
+className = "nav-text" > 专题 < /span></
+Menu.Item >
+</Menu>
 
                     </Col>
-                    <Col xs={{span:22,offset:2}} >
-                        {this.props.children}
+< Col;;
+;
+xs = {
+{
+    22, offset
+:
+    2
+}
+;
+} >
+{this.props.children}
                     </Col>
                 </Row>
-            </div>
+            </div>;
         )
     }
 

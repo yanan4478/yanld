@@ -4,7 +4,10 @@
 import {
     Action_AuthLogin_Request,
     Action_AuthLogin_Response,
-    Action_AuthLogin_FAILURE
+    Action_AuthLogin_FAILURE,
+    Action_Enter_Request,
+    Action_Enter_Response,
+    Action_Enter_FAILURE,
 } from '../actions/LoginActions';
 
 function posts(state = {
@@ -18,7 +21,7 @@ function posts(state = {
             return Object.assign({}, state, {
                 isFetching: true,
                 didInvalidate: false
-            })
+            });
         case Action_AuthLogin_Response:
             return Object.assign({}, state, {
                 isFetching: false,
@@ -26,7 +29,7 @@ function posts(state = {
                 isAuthenticated:true,
                 Action_AuthLogin_Response: action.response,
                 lastUpdated: action.receivedAt
-            })
+            });
         default:
             return state
     }

@@ -1,7 +1,7 @@
 /**
  * Created by XK on 2016/6/28.
  */
-require("../../less/component/list.less")
+require("../../less/component/list.less");
 import React from 'react';
 
 import {connect} from 'react-redux';
@@ -12,12 +12,12 @@ export default class List extends React.Component{
     };
     static propTypes: {
 
-        }
+        };
     render=()=>{
         return (
             <div>
-                <ul className="list">{this.props.children}</ul>
-            </div>
+                <ul; className="list">{this.props.children}</ul>
+            </div>;
         )
 
     }
