@@ -3,7 +3,7 @@ package com.yanld.module.dal.dataobject;
 /**
  * Created by yanan on 16/6/28.
  */
-public class YanldUser {
+public class YanldUserDO {
     private long id;
     private String name;
     private String password;
