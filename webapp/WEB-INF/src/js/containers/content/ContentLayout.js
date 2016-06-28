@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 
 import AllPostsPage from './AllPostsPage'
 
-import { Tabs,Row,Col } from 'antd';
+import { Tabs,Row,Col,Icon } from 'antd';
 const TabPane = Tabs.TabPane;
 
 class ContentLayout extends Component {
@@ -50,6 +50,7 @@ class ContentLayout extends Component {
     }
 
     renderAllPosts(){
+
         return <AllPostsPage />;
     }
 
@@ -57,23 +58,29 @@ class ContentLayout extends Component {
 
         return (
 
-                <Row>
-                    <Col span={8} >
-                            <img src={require("res/img/cover/contentCover.jpg")} style={{position:"fixed",left:"45px",top:"0",display:"block"}} />
-                            <div style={{position:"absolute",bottom:"0",color:"#fff"}}>
-                                <h1>IT老炮</h1>
-                                <h3>上班嚼干活，下班聊八卦</h3>
-                                <p>一个集内涵与深度于一体的社区</p>
-                                <a class="btn btn btn-large btn-success" id="write-button" data-signin-link="true" data-toggle="modal" href="/sign_in">提笔写篇文章</a>
-                            </div>
+                <Row >
+                    <Col xs={{span:0}} sm={{span:5}} lg={{span:6}} style={{position:"fixed"}} >
+                        <img src={require("res/img/cover/contentCover.jpg")}  style={{width:"100%",height:window.screen.availHeight}}/>
+                          <div style={{position:"fixed",bottom:"10%",color:"#fff",opacity:"0.8",paddingLeft:"14px",fontFamily: '"lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif'}}>
+                                <h1 style={{lineHeight:"50px",fontSize:"30px"}}>IT老炮</h1>
+                                <h3 style={{lineHeight:"30px",fontSize:"20px"}}>上班嚼干货，下班聊八卦</h3>
+                                <p style={{lineHeight:"30px",fontSize:"11px"}}>一个集内涵与深度于一体的IT社区</p>
+                                <a class="btn btn btn-large btn-success" id="write-button" data-signin-link="true" data-toggle="modal"  style={{textAlign:"center",padding:"5px",lineHeight:"40px",fontSize:"14px",color:"#fff",backgroundColor:"#49BE38",borderRadius:"5px"}}><Icon type="edit" />  提笔写篇文章</a>
+                            </div>{/**/}
 
 
                     </Col>
-                    <Col span={15} >
-                         <Tabs defaultActiveKey="1" onChange={this.callback} >
-                            <TabPane tab="上班时间看干货" key="1">{this.renderAllPosts()}</TabPane>
-                            <TabPane tab="闲暇看八卦" key="2">{this.props.children}</TabPane>
-                         </Tabs>
+                    <Col xs={{span:24,offset:0}} sm={{span:19,offset:5}} lg={{span:18,push:2}}  >
+                        <Row>
+                            <Col xs={{span:24,offset:0}} sm={{span:16}}  >
+                                <Tabs defaultActiveKey="1" onChange={this.callback} >
+                                    <TabPane tab="上班时间看干货" key="1">{this.renderAllPosts()}</TabPane>
+                                    <TabPane tab="闲暇看八卦" key="2">{this.props.children}</TabPane>
+                                </Tabs>
+                            </Col>
+                            <Col xs={{span:0,offset:0}} sm={{span:8}} ></Col>
+                        </Row>
+                        {/**/}
                     </Col>
                 </Row>
 

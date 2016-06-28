@@ -3,9 +3,35 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-    <!--<mvc:resources mapping="*/resources/**" location="*/resources/*"/>-->
+
+    <bean id="handlerInterceptor1" class="com.yanld.module.interceptor.HandlerInterceptor1"/>
+    <bean id="handlerInterceptor2" class="com.yanld.module.interceptor.HandlerInterceptor2"/>
+    <bean id="stopWatchHandlerInceptor" class="com.yanld.module.interceptor.StopWatchHandlerInceptor"/>
+    <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="stopWatchHandlerInceptor"/>
+                <ref bean="handlerInterceptor1"/>
+                <ref bean="handlerInterceptor2"/>
+            </list>
+        </property>
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+
+    <bean name="/home1" class="com.yanld.module.controller.Home1Controller"/>
+    <bean name="/home2" class="com.yanld.module.controller.Home2Controller"/>
+    <bean name="/home3" class="com.yanld.module.controller.Home3Controller">
+        <property name="supportedMethods" value="POST"/>
+    </bean>
+    <bean name="/home4" class="com.yanld.module.controller.Home4Controller">
+        <property name="requireSession" value="true"/>
+    </bean>
+    <bean name="/test" class="com.yanld.module.controller.TestController"/>
+
+
+    <mvc:resources mapping="*/resources/**" location="*/resources/*"/>
     <mvc:annotation-driven/>
-    <context:component-scan base-package="com.yanld.module.controller" />
+    <context:component-scan base-package="com.yanld.module.controller"/>
 
     <!--静态资源的访问，如js，css，image-->
     <!--<mvc:default-servlet-handler/>-->
@@ -30,4 +56,5 @@
         <property name="suffix" value=".html"/>
         <property name="contentType" value="text/html; charset=UTF-8"/>
     </bean>
+
 </beans>

@@ -16,4 +16,8 @@ public class HomeService {
         }
         return Lists.newArrayList(dous);
     }
+
+    public void print() {
+        System.out.println("调用一把");
+    }
 }
