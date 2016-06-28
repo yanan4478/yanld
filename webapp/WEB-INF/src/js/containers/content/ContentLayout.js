@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 
 import AllPostsPage from './AllPostsPage'
 
-import { Tabs } from 'antd';
+import { Tabs,Row,Col } from 'antd';
 const TabPane = Tabs.TabPane;
 
 class ContentLayout extends Component {
@@ -56,15 +56,28 @@ class ContentLayout extends Component {
     render(){
 
         return (
-            <div>
-                <Tabs defaultActiveKey="1" onChange={this.callback}>
-                    <TabPane tab="所有贴" key="1">{this.renderAllPosts()}</TabPane>
-                    <TabPane tab="图文贴" key="2">{this.props.children}</TabPane>
-                    <TabPane tab="产品贴" key="3">{this.props.children}</TabPane>
-                    <TabPane tab="活动贴" key="4">{this.props.children}</TabPane>
-                    <TabPane tab="直播贴" key="5">{this.props.children}</TabPane>
-                </Tabs>
-            </div>
+
+                <Row>
+                    <Col span={8} >
+                            <img src={require("res/img/cover/contentCover.jpg")} style={{position:"fixed",left:"45px",top:"0",display:"block"}} />
+                            <div style={{position:"absolute",bottom:"0",color:"#fff"}}>
+                                <h1>IT老炮</h1>
+                                <h3>上班嚼干活，下班聊八卦</h3>
+                                <p>一个集内涵与深度于一体的社区</p>
+                                <a class="btn btn btn-large btn-success" id="write-button" data-signin-link="true" data-toggle="modal" href="/sign_in">提笔写篇文章</a>
+                            </div>
+
+
+                    </Col>
+                    <Col span={15} >
+                         <Tabs defaultActiveKey="1" onChange={this.callback} >
+                            <TabPane tab="上班时间看干货" key="1">{this.renderAllPosts()}</TabPane>
+                            <TabPane tab="闲暇看八卦" key="2">{this.props.children}</TabPane>
+                         </Tabs>
+                    </Col>
+                </Row>
+
+
         )
     }
 }

@@ -48,9 +48,8 @@ module.exports = function configureRoutes(reducerRegistry) {
 
             <Route path="page" component={requireAuthentication(Layout)}>
                 <Route path="content" getComponent={loadContainerAsync(require('bundle?lazy!./containers/content/ContentLayout.js'))}></Route>
-                <Route path="nav1" getComponent={loadContainerAsync(require('bundle?lazy!./containers/user/Userlist.js'))}></Route>
-                <Route path="nav2" getComponent={loadContainerAsync(require('bundle?lazy!./containers/circle/Circle.js'))}></Route>
-                <Route path="nav3" getComponent={loadContainerAsync(require('bundle?lazy!./containers/order/Order.js'))}></Route>
+                <Route path="topic" getComponent={loadContainerAsync(require('bundle?lazy!./containers/topic/Topic.js'))}></Route>
+
             </Route>
         </Route>
     )
