@@ -62,14 +62,16 @@ class Layout extends Component {
         return (
             <div>
             {/*left size*/}
-                <Row>
-                    <Col span={2}>
-                            <Menu onClick={this.onMenuClick} mode="inline" className="sidebar-bg" theme="dark" defaultSelectedKeys={['content']} style={{height:window.screen.availHeight ,backgroundColor:"#404040",overflow:'hidden',position:"fixed",left:"0",top:"0",zIndex:"1048"}}>
-                              <Menu.Item key="content"><Icon type="home" /><span className="nav-text">首页</span></Menu.Item>
-                                <Menu.Item key="topic"><Icon type="appstore" /><span className="nav-text">专题</span></Menu.Item>
-                            </Menu>
+                <Row style={{overflow:"hidden"}}>
+                    <Col xs={{span:2}} style={{position:"fixed"}} >
+
+                                <Menu onClick={this.onMenuClick} mode="inline" className="sidebar-bg" theme="dark" defaultSelectedKeys={['content']} style={{height:window.screen.availHeight ,backgroundColor:"#404040",overflow:'hidden',left:"0",top:"0",zIndex:"1048"}}>
+                                    <Menu.Item key="content"><Icon type="home" /><span className="nav-text">首页</span></Menu.Item>
+                                    <Menu.Item key="topic"><Icon type="appstore" /><span className="nav-text">专题</span></Menu.Item>
+                       </Menu>
+
                     </Col>
-                    <Col span={22}>
+                    <Col xs={{span:22,offset:2}} >
                         {this.props.children}
                     </Col>
                 </Row>
