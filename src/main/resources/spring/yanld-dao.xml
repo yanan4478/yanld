@@ -3,7 +3,29 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
        <context:annotation-config/>
-       <context:component-scan base-package="com.yanld.module.service"/>
-       <bean id="homeService" class="com.yanld.module.service.HomeService"/>
+       <context:component-scan base-package="com.yanld.module.dal.dao.impl"/>
+
+       <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+              <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+              <property name="url" value="jdbc:mysql://localhost:3306/yanld" />
+              <property name="username" value="root" />
+              <property name="password" value="8371593" />
+       </bean>
+
+       <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+              <property name="dataSource" ref="dataSource" />
+              <!--<property name="typeAliases" value="com.mybatis3.domain.Student, com.mybatis3.domain.Tutor" /> <property name="typeAliasesPackage" value="com.mybatis3.domain" />-->
+              <!--<property name="typeHandlers" value="com.mybatis3.typehandlers.PhoneTypeHandler" />-->
+              <!--<property name="typeHandlersPackage" value="com.mybatis3.typehandlers" />-->
+              <property name="mapperLocations" value="classpath*:/mybatis/mappers/*.xml" />
+              <!--<property name="configLocation" value="/config/mybatisconfig.xml" />-->
+       </bean>
+
+       <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+              <constructor-arg index="0" ref="sqlSessionFactory" />
+       </bean>
+
+       <bean id="yanldUserDao" class="com.yanld.module.dal.dao.impl.YanldUserDaoImpl"/>
 </beans>

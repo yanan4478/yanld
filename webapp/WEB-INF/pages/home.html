@@ -5,6 +5,10 @@
     <title></title>
 </head>
 <body>
-    什么节奏${doudou}
+    <#list users as user>
+        <h1>编号：${user.id}</h1>
+        <h1>名字：${user.name}</h1>
+        <h1>密码：${user.password}</h1>
+    </#list>
 </body>
 </html>
