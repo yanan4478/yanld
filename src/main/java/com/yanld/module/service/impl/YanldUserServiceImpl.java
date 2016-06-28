@@ -1,7 +1,7 @@
 package com.yanld.module.service.impl;
 
 import com.yanld.module.dal.dao.YanldUserDao;
-import com.yanld.module.dal.dataobject.YanldUser;
+import com.yanld.module.dal.dataobject.YanldUserDO;
 import com.yanld.module.service.YanldUserService;
 
 import javax.annotation.Resource;
@@ -16,7 +16,7 @@ public class YanldUserServiceImpl implements YanldUserService {
     private YanldUserDao yanldUserDao;
 
     @Override
-    public List<YanldUser> queryAllYanldUser() {
+    public List<YanldUserDO> queryAllYanldUser() {
         return yanldUserDao.queryAllYanldUser();
     }
 }

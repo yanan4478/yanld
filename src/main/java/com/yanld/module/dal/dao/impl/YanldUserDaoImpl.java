@@ -1,7 +1,7 @@
 package com.yanld.module.dal.dao.impl;
 
 import com.yanld.module.dal.dao.YanldUserDao;
-import com.yanld.module.dal.dataobject.YanldUser;
+import com.yanld.module.dal.dataobject.YanldUserDO;
 import com.yanld.module.dal.mapper.YanldUserMapper;
 import org.apache.ibatis.session.SqlSession;
 
@@ -17,7 +17,7 @@ public class YanldUserDaoImpl implements YanldUserDao
     SqlSession sqlSession;
 
     @Override
-    public List<YanldUser> queryAllYanldUser() {
+    public List<YanldUserDO> queryAllYanldUser() {
         YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
         return mapper.queryAllYanldUser();
     }

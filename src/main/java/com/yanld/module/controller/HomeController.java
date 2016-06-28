@@ -1,6 +1,6 @@
 package com.yanld.module.controller;
 
-import com.yanld.module.dal.dataobject.YanldUser;
+import com.yanld.module.dal.dataobject.YanldUserDO;
 import com.yanld.module.service.YanldUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +20,8 @@ public class HomeController {
 
     @RequestMapping({"/","/home"})
     public String showHomePage(Map<String, Object> model) {
-        List<YanldUser> yanldUserList = yanldUserService.queryAllYanldUser();
-        model.put("users", yanldUserList);
+        List<YanldUserDO> yanldUserDOList = yanldUserService.queryAllYanldUser();
+        model.put("users", yanldUserDOList);
         return "home";
     }
 }
