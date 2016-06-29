@@ -10,5 +10,6 @@ import java.util.Date;
 public class MyTest {
     @Test
     public void test1() {
+        System.out.println("http://www.baicom.com/goubi.Mp4".matches(""));
     }
 }
