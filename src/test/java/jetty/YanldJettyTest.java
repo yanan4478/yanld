@@ -1,26 +1,41 @@
 package jetty;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.util.component.AbstractLifeCycle;
+import org.eclipse.jetty.util.component.LifeCycle;
 import org.eclipse.jetty.webapp.WebAppContext;
-
-import java.util.Map;
-import java.util.Properties;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 
 /**
  * Created by yanan on 16/6/22.
  */
 public class YanldJettyTest {
+    private static final int PORT = 8888;
 
-    public static void doStart() {
-        System.setProperty("log4j.configuration", "file:/Users/yanan/gitHub/yanld/src/main/resources/config/log4j.properties");
+    private static ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+
+    public static void doStart() throws Exception {
+        String webDefault = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + "**/webdefault.xml";
+        Resource web = resolver.getResources(webDefault)[0];
+        String descriptor = web.getFile().getAbsolutePath();
 
         WebAppContext webAppContext = new WebAppContext();
         webAppContext.setContextPath("/");
-        webAppContext.setDescriptor("./webapp/WEB-INF/web.xml");
-        webAppContext.setResourceBase("./webapp");
+        webAppContext.setDefaultsDescriptor(descriptor);
+        webAppContext.setResourceBase(descriptor.replaceAll("target.*$", "webapp"));
         webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());
-        Server server = new Server(8888);
+
+        Server server = new Server(PORT);
+        server.addLifeCycleListener(new AbstractLifeCycle.AbstractLifeCycleListener() {
+            @Override
+            public void lifeCycleStarted(LifeCycle event) {
+                System.out.println("------------------------YanldJetty started! Port:" + PORT + "------------------------");
+            }
+        });
         server.setHandler(webAppContext);
+
         try {
             server.start();
             server.join();
@@ -29,7 +44,7 @@ public class YanldJettyTest {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         doStart();
     }
 }
