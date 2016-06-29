@@ -2,7 +2,7 @@
  * Created by xgz on 16/5/18.
  */
 import React, { Component } from 'react';
-
+import * as Login from "actions/LoginActions.js";
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router';
 import { bindActionCreators } from 'redux';
@@ -27,7 +27,12 @@ class ContentLayout extends Component {
     }
 
     componentWillMount() {
-
+        let account = "yanan";
+        let password = "8371593";
+        this.props.actions.Enter(account,password,(err,res)=>{
+            console.log("---------------")
+            console.log(res);
+        })
     }
 
     componentDidMount() {
@@ -97,7 +102,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         dispath:dispatch,
-        //actions: bindActionCreators(DocsCreators, dispatch),
+        actions: bindActionCreators(Login, dispatch),
         pushState: bindActionCreators(pushState, dispatch)
     }
 }
