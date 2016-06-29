@@ -17,14 +17,13 @@ public class YanldJettyTest {
     private static ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
     public static void doStart() throws Exception {
-        String webdefault = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + "**/webdefault.xml";
-        Resource web = resolver.getResources(webdefault)[0];
+        String webDefault = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + "**/webdefault.xml";
+        Resource web = resolver.getResources(webDefault)[0];
         String descriptor = web.getFile().getAbsolutePath();
 
         WebAppContext webAppContext = new WebAppContext();
         webAppContext.setContextPath("/");
         webAppContext.setDefaultsDescriptor(descriptor);
-        //webAppContext.setDescriptor("./webapp/WEB-INF/web.xml");
         webAppContext.setResourceBase(descriptor.replaceAll("target.*$", "webapp"));
         webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());
 
