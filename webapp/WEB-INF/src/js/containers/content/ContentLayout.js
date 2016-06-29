@@ -19,7 +19,7 @@ class ContentLayout extends Component {
     };
 
     state = {
-
+        gossip:false,
     }
 
     static propTypes = {
@@ -27,12 +27,12 @@ class ContentLayout extends Component {
     }
 
     componentWillMount() {
-        let account = "yanan";
+        /*  let account = "yanan";
         let password = "8371593";
         this.props.actions.Enter(account,password,(err,res)=>{
             console.log("---------------")
             console.log(res);
-        })
+        })*/
     }
 
     componentDidMount() {
@@ -49,18 +49,22 @@ class ContentLayout extends Component {
 
     callback = (key)=>{
         console.log(key);
+        key == "gossip"?this.setState({gossip:true}):this.setState({gossip:false});
         //this.props.pushState(null,"/client/page/content/")
         //document.location.href = `/client/page/content/${key}`
 
     }
 
-    renderAllPosts(){
-
+    renderAllPosts=()=>{
+        let type;
+       type= this.state.gossip?2:1;
+        return <AllPostsPage type={type}/>;
+    }
+    renderGossip=()=>{
         return <AllPostsPage />;
     }
-
     render(){
-
+        var _this = this;
         return (
 
             <Row >
@@ -78,12 +82,18 @@ class ContentLayout extends Component {
                 <Col xs={{span:24,offset:0}} sm={{span:19,offset:5}} lg={{span:18,push:2}}  >
                     <Row>
                         <Col xs={{span:24,offset:0}} sm={{span:16}}  >
-                            <Tabs defaultActiveKey="1" onChange={this.callback} >
-                                <TabPane tab="上班时间看干货" key="1">{this.renderAllPosts()}</TabPane>
-                                <TabPane tab="闲暇看八卦" key="2">{this.props.children}</TabPane>
+                            <Tabs defaultActiveKey="tech" onChange={_this.callback} >
+                                <TabPane tab="上班时间看干货" key="tech">{_this.renderAllPosts()}</TabPane>
+                                <TabPane tab="闲暇看八卦" key="gossip">{_this.state.gossip?_this.renderGossip():_this.props.children}</TabPane>
                             </Tabs>
                         </Col>
-                        <Col xs={{span:0,offset:0}} sm={{span:8}} ></Col>
+                        <Col xs={{span:0,offset:0}} sm={{span:8}} >
+                            <div style={{position:"relative",left:"60%",top:"10px",color:"#fff"}}>
+                                <button style={{width:"60px",height:"30px",lineHeight:"30px",position:"absolute",top:"0",borderRadius:"30px 30px 0 0",backgroundColor:"#2DB7F5",border:"none",borderBottom:"1px solid #D9D9D9 "}}>注册</button>
+                                <button style={{width:"60px",height:"30px",lineHeight:"30px",position:"absolute",top:"30px",borderRadius:"0px 0px 30px 30px",backgroundColor:"#2DB7F5",border:"none"}}>登录</button>
+                            </div>
+
+                        </Col>
                     </Row>
                     {/**/}
                 </Col>
