@@ -16,8 +16,8 @@ export default class List extends React.Component{
     render=()=>{
         return (
             <div>
-                <ul; className="list">{this.props.children}</ul>
-            </div>;
+                <ul className="list">{this.props.children}</ul>
+            </div>
         )
 
     }

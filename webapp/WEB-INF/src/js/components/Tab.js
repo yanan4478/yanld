@@ -17,8 +17,8 @@ export default class Tab extends React.Component{
     render=()=>{
         return (
             <div>
-                <a; onClick={this.props.onSelect} className="tab">{this.props.text}</a>
-            </div>;
+                <a onClick={this.props.onSelect} className="tab">{this.props.text}</a>
+            </div>
         )
 
     }
