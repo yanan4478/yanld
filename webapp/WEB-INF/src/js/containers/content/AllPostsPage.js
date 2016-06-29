@@ -48,7 +48,7 @@ class AllPostsPage extends Component {
    renderItem=(item)=>{
        console.log("=======")
        return (
-           <ListItem;
+           <ListItem
                author={item.author}
                title={item.title}
                createDate={item.CreateDate}
@@ -78,26 +78,26 @@ class AllPostsPage extends Component {
 
             <div>
                 <Row >
-                    <Col; span={24}>
-                        <Tab; key="hot"; text="热门"; onSelect={_this.handleSelect};;></Tab>
-                        <Tab; key="java"; text="JAVA"; onSelect={_this.handleSelect}></Tab>
-                        <Tab; key="web"; text="WEB前端"; onSelect={_this.handleSelect}></Tab>
-                        <Tab; key="ios"; text="IOS"; onSelect={_this.handleSelect}></Tab>
-                        <Tab; key="android"; text="安卓"; onSelect={_this.handleSelect}></Tab>
+                    <Col span={24}>
+                        <Tab key="hot" text="热门" onSelect={_this.handleSelect}></Tab>
+                        <Tab key="java" text="JAVA" onSelect={_this.handleSelect}></Tab>
+                        <Tab key="web" text="WEB前端" onSelect={_this.handleSelect}></Tab>
+                        <Tab key="ios" text="IOS" onSelect={_this.handleSelect}></Tab>
+                        <Tab key="android" text="安卓" onSelect={_this.handleSelect}></Tab>
                     </Col>
                 </Row>
-                <Row; style={{"20px"};;}>
-                    <Col; span={24}>
+                <Row style={{marginTop:"20px"}}>
+                    <Col span={24}>
                         <List>
                             {
-                              items.map(function(item){
-                                     return _this.renderItem(item)
-                             });
+                                items.map(function(item){
+                                    return _this.renderItem(item)
+                                })
                             }
                         </List>
                     </Col>
                 </Row>
-            </div>;
+            </div>
         )
     }
 }
