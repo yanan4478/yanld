@@ -2,7 +2,7 @@ package other;
 
 import org.junit.Test;
 
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by yanan on 16/6/15.
@@ -10,6 +10,9 @@ import java.util.Date;
 public class MyTest {
     @Test
     public void test1() {
-        System.out.println("http://www.baicom.com/goubi.Mp4".matches(""));
+        List<Integer> list=new ArrayList<>();
+        list.add(1);
+        list.add(2);
+
     }
 }

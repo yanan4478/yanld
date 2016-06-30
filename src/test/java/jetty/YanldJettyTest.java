@@ -25,6 +25,7 @@ public class YanldJettyTest {
         webAppContext.setContextPath("/");
         webAppContext.setDefaultsDescriptor(descriptor);
         webAppContext.setResourceBase(descriptor.replaceAll("target.*$", "webapp"));
+        //webAppContext.setWar("/usr/local/jetty/webapps/yanld-1.0-SNAPSHOT.war");
         webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());
 
         Server server = new Server(PORT);
