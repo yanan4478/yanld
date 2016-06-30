@@ -59,11 +59,34 @@ class AllPostsPage extends Component {
            />
        )
    }
+    renderTech=()=>{
+        console.log("咋出不来")
+        var _this = this;
+        return(
+        <div>
+            <Tab key="hot" text="热门" onSelect={_this.handleSelect}></Tab>
+            <Tab key="java" text="JAVA" onSelect={_this.handleSelect}></Tab>
+            <Tab key="web" text="WEB前端" onSelect={_this.handleSelect}></Tab>
+            <Tab key="ios" text="IOS" onSelect={_this.handleSelect}></Tab>
+            <Tab key="android" text="安卓" onSelect={_this.handleSelect}></Tab>
+        </div>)
+    }
+    renderGossip=()=>{
+        var _this = this;
+        return(
+        <div>
+            <Tab key="bigbang" text="劲爆" onSelect={_this.handleSelect}></Tab>
+            <Tab key="alibaba" text="阿里系" onSelect={_this.handleSelect}></Tab>
+            <Tab key="tencent" text="腾讯系" onSelect={_this.handleSelect}></Tab>
+            <Tab key="baidu" text="百度系" onSelect={_this.handleSelect}></Tab>
+            <Tab key="more" text="更多" onSelect={_this.handleSelect}></Tab>
+        </div>)
+    }
     render(){
         console.log("props",this.props);
         var _this = this;
         const items =[
-            {title:"快让开，你自作多情的样子太丑了",author:"顾一宸",CreateDate:"3月之前",read:" 7101",comment:" 191",like:"246",dislike:"10"},
+            {title:"阿里天使投资人与蘑菇街CEO的秘密",author:"顾一宸",CreateDate:"3月之前",read:" 7101",comment:" 191",like:"246",dislike:"10"},
             {title:"干货又来了！提高英语听力秘诀+关键+工具）",CreateDate:"顾一宸",time:"3月之前",read:" 7101",comment:" 191",like:"246",dislike:"10"},
             {title:"你这么怂，我看还是别上班了！",author:"顾一宸",CreateDate:"3月之前",read:" 7101",comment:" 191",like:"246",dislike:"10"},
             {title:"读完这本书，让你更加了解情爱",author:"顾一宸",CreateDate:"3月之前",read:" 7101",comment:" 191",like:"246",dislike:"10"},
@@ -79,11 +102,12 @@ class AllPostsPage extends Component {
             <div>
                 <Row >
                     <Col span={24}>
-                        <Tab key="hot" text="热门" onSelect={_this.handleSelect}></Tab>
+                        {/* <Tab key="hot" text="热门" onSelect={_this.handleSelect}></Tab>
                         <Tab key="java" text="JAVA" onSelect={_this.handleSelect}></Tab>
                         <Tab key="web" text="WEB前端" onSelect={_this.handleSelect}></Tab>
                         <Tab key="ios" text="IOS" onSelect={_this.handleSelect}></Tab>
-                        <Tab key="android" text="安卓" onSelect={_this.handleSelect}></Tab>
+                        <Tab key="android" text="安卓" onSelect={_this.handleSelect}></Tab>*/}
+                        {_this.props.type==1?_this.renderTech():_this.renderGossip()}
                     </Col>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
