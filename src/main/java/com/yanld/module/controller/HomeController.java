@@ -22,6 +22,6 @@ public class HomeController {
     public String showHomePage(Map<String, Object> model) {
         List<YanldUserDO> yanldUserDOList = yanldUserService.queryAllYanldUser();
         model.put("users", yanldUserDOList);
-        return "home";
+        return "index";
     }
 }
