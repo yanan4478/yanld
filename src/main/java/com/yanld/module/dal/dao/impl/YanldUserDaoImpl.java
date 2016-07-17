@@ -18,12 +18,12 @@ public class YanldUserDaoImpl extends AbstractDao implements YanldUserDao
 {
     @Override
     public List<YanldUserDO> queryAllYanldUser() {
-        String s = redisTemplate.execute(new RedisCallback<String>() {
-            @Override
-            public String doInRedis(RedisConnection redisConnection) throws DataAccessException {
-                return redisConnection.ping();
-            }
-        });
+//        String s = redisTemplate.execute(new RedisCallback<String>() {
+//            @Override
+//            public String doInRedis(RedisConnection redisConnection) throws DataAccessException {
+//                return redisConnection.ping();
+//            }
+//        });
 
         YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
         return mapper.queryAllYanldUser();
