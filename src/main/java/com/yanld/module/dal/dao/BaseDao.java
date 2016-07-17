@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * Created by yanan on 16/7/8.
  */
-public abstract class AbstractDao {
+public abstract class BaseDao {
     @Resource
     protected SqlSession sqlSession;
 

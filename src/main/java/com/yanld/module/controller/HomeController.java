@@ -18,7 +18,7 @@ public class HomeController {
     @Resource
     private YanldUserService yanldUserService;
 
-    @RequestMapping({"/","/home"})
+    @RequestMapping({"/h","/home"})
     public String showHomePage(Map<String, Object> model) {
         List<YanldUserDO> yanldUserDOList = yanldUserService.queryAllYanldUser();
         model.put("users", yanldUserDOList);

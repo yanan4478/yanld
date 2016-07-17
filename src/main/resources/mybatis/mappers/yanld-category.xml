@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yanld.module.dal.mapper.YanldCategoryMapper">
+    <resultMap id="yanldCategoryResult" type="com.yanld.module.dal.dataobject.YanldCategoryDO">
+        <result column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="category_name" property="categoryName"/>
+    </resultMap>
+
+    <sql id="fields">
+        `id`,
+        create_time,
+        modify_time,
+        is_deleted,
+        category_name
+    </sql>
+
+    <insert id="insertCategory" parameterType="map">
+        insert into yanld_category(
+        <include refid="fields"/>
+        )
+        values (
+        #{id},
+        now(),
+        now(),
+        0,
+        #{categoryName}
+        )
+    </insert>
+
+    <delete id="deleteCategory" parameterType="long">
+        delete from yanld_category
+        where `id` = #{id}
+    </delete>
+
+    <update id="logicDeleteCategory" parameterType="map">
+        update yanld_category
+        set
+        modify_time=now(),
+        category_name=#{categoryName}
+        where
+        `id`=#{id}
+    </update>
+
+    <update id="updateCategory" parameterType="map">
+        update yanld_category
+        set
+        modify_time=now(),
+        is_deleted=1
+        where
+        `id`=#{id}
+    </update>
+
+    <select id="selectCategory" parameterType="long" resultMap="yanldCategoryResult">
+        select
+        <include refid="fields"/>
+        from yanld_category
+        where
+        is_deleted=0
+        and
+        `id`=#{id}
+    </select>
+
+    <select id="selectCategories" parameterType="map" resultMap="yanldCategoryResult">
+        select
+        <include refid="fields"/>
+        from yanld_category
+        where
+        is_deleted=0
+    </select>
+
+</mapper>
