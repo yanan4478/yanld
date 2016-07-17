@@ -1,0 +1,39 @@
+*{
+    margin:0;
+    border:0;
+    padding:0;
+}
+html{
+    //height:100%;
+}
+body{
+   // width:100%;
+    height:100%;
+    //border:1px solid black;
+   // overflow:hidden;
+}
+.lf{
+    float:left;
+}
+.rt{
+    float:right;
+}
+.overflow{
+    overflow:hidden;
+}
+.overflow-x{
+      overflow-x:hidden;
+  }
+.overflow-y{
+    overflow-y:hidden;
+}
+div,p,h1,h2,h3,h4,h5,h6,b,s,u,button,input,ul,li,a{
+    border:none;
+    color:black;
+    font-family:'微软雅黑';
+    text-decoration: none;
+    list-style: none;
+}
+.border{
+    border:1px solid black;
+}

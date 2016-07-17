@@ -1,0 +1,138 @@
+.aside{
+    position:fixed;
+    width:10%;
+    height:100%;
+    background-color:#2a2a2a;
+
+}
+.content{
+    position:relative;
+    left:10%;
+    width:89%;
+    //height:100%;
+    //overflow:hidden;
+}
+.leftSide{
+    width:20%;
+    height:100%;
+    background-image: url(./../image/bg.jpg);
+    backgroud-size:100% 100%;
+    position:fixed;
+
+}
+.middleSide{
+   position:absolute;
+    left:23%;
+    width:60%;
+    height:100%;
+    //overflow:hidden;
+
+}
+.rightSide{
+   position:absolute;
+    left:93%;
+    width:17%;
+    height:100%;
+}
+/*left side*/
+
+.aside ul li a{
+    display:block;
+    color:#999999;
+    width:100%;
+    height:100%;
+    padding:10px 10px 10px 10px;
+}
+.aside ul li a:active{
+    background-color:#e78170;
+    color: white;
+    text-shadow: 0 1px 0 #de533a;
+
+}
+#mainPage a{
+    background-color:#e78170;
+    color: white;
+    text-shadow: 0 1px 0 #de533a;
+}
+.topSide{
+    position:fixed;
+    width:52%;
+    height:50px;
+    border-bottom: 2px solid #d9d9d9;
+    padding-left:20px;
+}
+.tabPane{
+    width:80%;
+
+}
+
+
+.tab{
+    width:10%;
+    line-height:50px;
+    text-align:center;
+    border:none;
+    font-size: 12px;
+}
+.tabPane>li.active{
+    border-bottom:1px solid #555555;
+}
+.tab:hover {
+    background-color:#eeeeee;
+    color:#555;
+}
+.mainContent{
+    position:relative;
+    top:50px;
+}
+.tabs{
+    position:absolute;
+    top:0px;
+    padding-left:20px;
+
+}
+.tabs>.tabsStyle{
+    margin: 10px 15px 5px 0;
+    line-height:48px;
+    text-align:center;
+}
+.tabs>.tabsStyle>a{
+    padding: 5px 10px;
+    //border: 1px solid #d9d9d9;
+    border-radius: 14px;
+    box-sizing: border-box;
+    font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1.5;
+}
+.tabs>.tabsStyle>a.active  {
+    color: white;
+    border-color: #e78170;
+    background: #e78170;}
+.articleList {
+    position: absolute;
+    width: 100%;
+    top: 50px;
+}
+.articleList>.article{
+    padding:20px 20px;
+    height:100px;
+    overflow:hidden;
+    border-bottom: 1px dotted #ddd;
+}
+.articleList>.article .mainTitle{
+    width:100%;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+.articleList>.article .author{
+    color: #4094c7;
+    margin: 8px 0;
+    font-size: 12px;
+}
+
+.articleList>.article .peitu{
+    width:100px;
+}
