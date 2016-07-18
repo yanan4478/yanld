@@ -3,18 +3,73 @@
 <mapper namespace="com.yanld.module.dal.mapper.YanldUserMapper">
     <resultMap id="YanldUserResult" type="com.yanld.module.dal.dataobject.YanldUserDO" >
         <result property="id" column="id"/>
-        <result property="name" column="name"/>
-        <result property="password" column="password"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_password" property="userPassword"/>
     </resultMap>
-    <select id="queryAllYanldUser" resultMap="YanldUserResult">
-        SELECT * FROM yanld_user
+    <sql id="fields">
+        `id`,
+        create_time,
+        modify_time,
+        is_deleted,
+        user_name,
+        user_password
+    </sql>
+
+    <insert id="insertUser" parameterType="map">
+        insert into yanld_user(
+        <include refid="fields"/>
+        )
+        values (
+        #{id},
+        now(),
+        now(),
+        0,
+        #{userName},
+        #{userPassword}
+        )
+    </insert>
+
+    <delete id="deleteUser" parameterType="long">
+        delete from yanld_user
+        where `id` = #{id}
+    </delete>
+
+    <update id="logicDeleteUser" parameterType="map">
+        update yanld_user
+        set
+        modify_time=now(),
+        is_deleted=1
+        where
+        `id`=#{id}
+    </update>
+
+    <update id="updateUser" parameterType="map">
+        update yanld_user
+        set
+        modify_time=now(),
+        user_name=#{userName}
+        where
+        `id`=#{id}
+    </update>
+
+    <select id="selectUser" parameterType="long" resultMap="yanldUserResult">
+        select
+        <include refid="fields"/>
+        from yanld_user
+        where
+        is_deleted=0
+        and
+        `id`=#{id}
     </select>
-    <!--<select id="findStudentById" parameterType="int" resultType="Student">-->
-        <!--SELECT STUD_ID AS STUDID, NAME, EMAIL, DOB-->
-        <!--FROM STUDENTS WHERE STUD_ID=#{Id}-->
-    <!--</select>-->
-    <!--<insert id="insertStudent" parameterType="Student">-->
-        <!--INSERT INTO STUDENTS(STUD_ID,NAME,EMAIL,DOB)-->
-        <!--VALUES(#{studId },#{name},#{email},#{dob})-->
-    <!--</insert>-->
+
+    <select id="selectUsers" parameterType="map" resultMap="yanldUserResult">
+        select
+        <include refid="fields"/>
+        from yanld_user
+        where
+        is_deleted=0
+    </select>
 </mapper>

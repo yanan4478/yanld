@@ -20,12 +20,14 @@
     <div class="middleSide ">
        <div class="topSide">
            <ul class="overflow tabPane">
-              <li class="lf tab active"><a href="">发现</a></li>
+              <li class="lf tab active"><a href="">文章</a></li>
           </ul>
         </div>
         <div class="mainContent border">
             <ul class="tabs">
-                <li class="lf tabsStyle"><a href="" class="active">标签</a></li>
+                <#list categories as category>
+                <li class="lf tabsStyle"><a href="" class="active">${category.categoryName}</a></li>
+                </#list>>
             </ul>
             <ul class="articleList border">
                 <li class="article ">

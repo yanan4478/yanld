@@ -20,7 +20,7 @@ public class HomeController {
 
     @RequestMapping({"/h","/home"})
     public String showHomePage(Map<String, Object> model) {
-        List<YanldUserDO> yanldUserDOList = yanldUserService.queryAllYanldUser();
+        List<YanldUserDO> yanldUserDOList = yanldUserService.selectUsers();
         model.put("users", yanldUserDOList);
         return "demo";
     }

@@ -15,15 +15,50 @@ import java.util.List;
 public class YanldUserDaoImpl extends BaseDao implements YanldUserDao
 {
     @Override
-    public List<YanldUserDO> queryAllYanldUser() {
-//        String s = redisTemplate.execute(new RedisCallback<String>() {
-//            @Override
-//            public String doInRedis(RedisConnection redisConnection) throws DataAccessException {
-//                return redisConnection.ping();
-//            }
-//        });
-
+    public long insertUser() {
         YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
-        return mapper.queryAllYanldUser();
+        return mapper.insertUser();
     }
+
+    @Override
+    public int deleteUser() {
+        YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
+        return mapper.deleteUser();
+    }
+
+    @Override
+    public int logicDeleteUser() {
+        YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
+        return mapper.logicDeleteUser();
+    }
+
+    @Override
+    public int updateUser() {
+        YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
+        return mapper.updateUser();
+    }
+
+    @Override
+    public YanldUserDO selectUser() {
+        YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
+        return mapper.selectUser();
+    }
+
+    @Override
+    public List<YanldUserDO> selectUsers() {
+        YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
+        return mapper.selectUsers();
+    }
+//    @Override
+//    public List<YanldUserDO> queryAllYanldUser() {
+////        String s = redisTemplate.execute(new RedisCallback<String>() {
+////            @Override
+////            public String doInRedis(RedisConnection redisConnection) throws DataAccessException {
+////                return redisConnection.ping();
+////            }
+////        });
+//
+//        YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
+//        return mapper.queryAllYanldUser();
+//    }
 }

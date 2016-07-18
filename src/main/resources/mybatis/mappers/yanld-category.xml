@@ -39,7 +39,7 @@
         update yanld_category
         set
         modify_time=now(),
-        category_name=#{categoryName}
+        is_deleted=1
         where
         `id`=#{id}
     </update>
@@ -48,7 +48,7 @@
         update yanld_category
         set
         modify_time=now(),
-        is_deleted=1
+        category_name=#{categoryName}
         where
         `id`=#{id}
     </update>

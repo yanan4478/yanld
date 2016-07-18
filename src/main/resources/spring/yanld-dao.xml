@@ -53,6 +53,4 @@
         <property name="connectionFactory" ref="connectionFactory"/>
     </bean>
 
-    <bean id="yanldUserDao" class="com.yanld.module.dal.dao.impl.YanldUserDaoImpl"/>
-
 </beans>

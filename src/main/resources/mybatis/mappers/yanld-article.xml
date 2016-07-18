@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yanld.module.dal.mapper.YanldArticleMapper">
+    <resultMap id="YanldArticleResult" type="com.yanld.module.dal.dataobject.YanldArticleDO" >
+        <result property="id" column="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="article_title" property="articleTitle"/>
+        <result column="article_content" property="articleContent"/>
+        <result column="article_id" property="articleId"/>
+        <result column="read_num" property="readNum"/>
+        <result column="article_cover_image" property="articleCoverImage"/>
+    </resultMap>
+    <sql id="fields">
+        `id`,
+        create_time,
+        modify_time,
+        is_deleted,
+        article_title,
+        article_content,
+        article_id,
+        read_num,
+        article_cover_image
+    </sql>
+
+    <insert id="insertArticle" parameterType="map">
+        insert into yanld_article(
+        <include refid="fields"/>
+        )
+        values (
+        #{id},
+        now(),
+        now(),
+        0,
+        #{articleTitle},
+        #{articleContent},
+        #{userId},
+        #{readNum},
+        #{articleCoverImage}
+        )
+    </insert>
+
+    <delete id="deleteArticle" parameterType="long">
+        delete from yanld_article
+        where `id` = #{id}
+    </delete>
+
+    <update id="logicDeleteArticle" parameterType="map">
+        update yanld_article
+        set
+        modify_time=now(),
+        is_deleted=1
+        where
+        `id`=#{id}
+    </update>
+
+    <update id="updateArticle" parameterType="map">
+        update yanld_article
+        set
+        modify_time=now(),
+        article_title=#{articleTitle},
+        article_content=#{articleContent},
+        user_id=#{userId},
+        read_num=#{readNum},
+        article_cover_image=#{articleCoverImage}
+        where
+        `id`=#{id}
+    </update>
+
+    <select id="selectArticle" parameterType="long" resultMap="yanldArticleResult">
+        select
+        <include refid="fields"/>
+        from yanld_article
+        where
+        is_deleted=0
+        and
+        `id`=#{id}
+    </select>
+
+    <select id="selectArticles" parameterType="map" resultMap="yanldArticleResult">
+        select
+        <include refid="fields"/>
+        from yanld_article
+        where
+        is_deleted=0
+    </select>
+</mapper>

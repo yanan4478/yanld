@@ -3,32 +3,23 @@ package com.yanld.module.dal.dataobject;
 /**
  * Created by yanan on 16/6/28.
  */
-public class YanldUserDO {
-    private long id;
-    private String name;
-    private String password;
+public class YanldUserDO extends BaseDO {
+    private String userName;
+    private String userPassword;
 
-    public long getId() {
-        return id;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getName() {
-        return name;
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 }

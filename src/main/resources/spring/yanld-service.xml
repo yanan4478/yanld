@@ -7,5 +7,4 @@
        <context:annotation-config/>
        <context:component-scan base-package="com.yanld.module.service.impl"/>
 
-       <bean id="yanldUserService" class="com.yanld.module.service.impl.YanldUserServiceImpl"/>
 </beans>
