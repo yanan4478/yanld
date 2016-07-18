@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class HomeController2 {
 
-    @RequestMapping({"/wqq"})
+    @RequestMapping({"/wqqq"})
     public void showHomePage(HttpServletResponse response) throws Exception {
         response.getWriter().write("hehe");
     }
