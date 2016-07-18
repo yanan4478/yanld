@@ -1,14 +1,12 @@
 package com.yanld.module.controller;
 
-import com.yanld.module.dal.dataobject.YanldCategoryDO;
-import com.yanld.module.dal.dataobject.YanldUserDO;
-import com.yanld.module.service.YanldCategoryService;
-import com.yanld.module.service.YanldUserService;
+import com.yanld.module.bo.YanldIndexBO;
+import com.yanld.module.service.YanldIndexService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,12 +16,21 @@ import java.util.Map;
 public class IndexController {
 
     @Resource
-    private YanldCategoryService yanldCategoryService;
+    private YanldIndexService indexService;
 
     @RequestMapping({"/"})
     public String showIndex(Map<String, Object> model) {
-        List<YanldCategoryDO> yanldCategoryDOs = yanldCategoryService.selectCategories();
-        model.put("categories", yanldCategoryDOs);
+        YanldIndexBO indexBO = indexService.getIndexBO(1, 1);
+        model.put("indexBO", indexBO);
+        return "index";
+    }
+
+    @RequestMapping({"/{category:\\d+}-{page:\\d+}"})
+    public String showIndex(Map<String, Object> model,
+                            @PathVariable("category") int category,
+                            @PathVariable("page") int page) {
+        YanldIndexBO indexBO = indexService.getIndexBO(category, page);
+        model.put("indexBO", indexBO);
         return "index";
     }
 }

@@ -4,6 +4,7 @@ import com.yanld.module.dal.dao.BaseDao;
 import com.yanld.module.dal.dao.YanldCategoryMediaRelDao;
 import com.yanld.module.dal.dataobject.YanldCategoryMediaRelDO;
 import com.yanld.module.dal.mapper.YanldCategoryMediaRelMapper;
+import com.yanld.module.dal.query.YanldCategoryMediaRelQuery;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -45,8 +46,8 @@ public class YanldCategoryMediaRelDaoImpl extends BaseDao implements YanldCatego
     }
 
     @Override
-    public List<YanldCategoryMediaRelDO> selectCategoryMediaRels() {
+    public List<YanldCategoryMediaRelDO> selectCategoryMediaRels(YanldCategoryMediaRelQuery query) {
         YanldCategoryMediaRelMapper mapper = sqlSession.getMapper(YanldCategoryMediaRelMapper.class);
-        return mapper.selectCategoryMediaRels();
+        return mapper.selectCategoryMediaRels(query);
     }
 }

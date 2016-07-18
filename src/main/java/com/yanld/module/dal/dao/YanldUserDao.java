@@ -16,7 +16,7 @@ public interface YanldUserDao {
 
     int updateUser();
 
-    YanldUserDO selectUser();
+    YanldUserDO selectUser(long id);
 
     List<YanldUserDO> selectUsers();
 }

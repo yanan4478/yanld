@@ -39,9 +39,9 @@ public class YanldUserDaoImpl extends BaseDao implements YanldUserDao
     }
 
     @Override
-    public YanldUserDO selectUser() {
+    public YanldUserDO selectUser(long id) {
         YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
-        return mapper.selectUser();
+        return mapper.selectUser(id);
     }
 
     @Override

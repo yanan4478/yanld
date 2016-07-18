@@ -38,8 +38,8 @@ public class YanldUserServiceImpl implements YanldUserService {
     }
 
     @Override
-    public YanldUserDO selectUser() {
-        return yanldUserDao.selectUser();
+    public YanldUserDO selectUser(long id) {
+        return yanldUserDao.selectUser(id);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.yanld.module.service;
 
 import com.yanld.module.dal.dataobject.YanldCategoryMediaRelDO;
+import com.yanld.module.dal.query.YanldCategoryMediaRelQuery;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface YanldCategoryMediaRelService {
 
     YanldCategoryMediaRelDO selectCategoryMediaRel();
 
-    List<YanldCategoryMediaRelDO> selectCategoryMediaRels();
+    List<YanldCategoryMediaRelDO> selectCategoryMediaRels(YanldCategoryMediaRelQuery query);
 }

@@ -1,6 +1,7 @@
 package com.yanld.module.service;
 
 import com.yanld.module.dal.dataobject.YanldArticleDO;
+import com.yanld.module.dal.query.YanldArticleQuery;
 
 import java.util.List;
 
@@ -18,5 +19,7 @@ public interface YanldArticleService {
 
     YanldArticleDO selectArticle();
 
-    List<YanldArticleDO> selectArticles();
+    List<YanldArticleDO> selectArticles(YanldArticleQuery query);
+
+    List<YanldArticleDO> selectArticlesByIds(List<Long> ids);
 }

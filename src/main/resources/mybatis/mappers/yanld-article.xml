@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yanld.module.dal.mapper.YanldArticleMapper">
-    <resultMap id="YanldArticleResult" type="com.yanld.module.dal.dataobject.YanldArticleDO" >
+    <resultMap id="yanldArticleResult" type="com.yanld.module.dal.dataobject.YanldArticleDO" >
         <result property="id" column="id"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
@@ -82,7 +82,30 @@
         select
         <include refid="fields"/>
         from yanld_article
-        where
-        is_deleted=0
+        <where>
+            is_deleted=0
+            <if test="userId != 0 ">
+                AND user_id= #{userId}
+            </if>
+            <if test="limit != 0 ">
+                LIMIT #{limit} OFFSET #{offset}
+            </if>
+        </where>
     </select>
+
+    <select id="selectArticlesByIds" parameterType="map" resultMap="yanldArticleResult">
+        select
+        <include refid="fields"/>
+        from yanld_article
+        <if test="ids != null">
+            <where>
+                id IN
+                <foreach item="articleId" collection="ids"
+                         open="(" separator="," close=")">
+                    #{articleId}
+                </foreach>
+            </where>
+        </if>
+    </select>
+
 </mapper>

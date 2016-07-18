@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yanld.module.dal.mapper.YanldUserMapper">
-    <resultMap id="YanldUserResult" type="com.yanld.module.dal.dataobject.YanldUserDO" >
+    <resultMap id="yanldUserResult" type="com.yanld.module.dal.dataobject.YanldUserDO" >
         <result property="id" column="id"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>

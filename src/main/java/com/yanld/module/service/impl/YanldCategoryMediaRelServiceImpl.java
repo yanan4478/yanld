@@ -2,6 +2,7 @@ package com.yanld.module.service.impl;
 
 import com.yanld.module.dal.dao.YanldCategoryMediaRelDao;
 import com.yanld.module.dal.dataobject.YanldCategoryMediaRelDO;
+import com.yanld.module.dal.query.YanldCategoryMediaRelQuery;
 import com.yanld.module.service.YanldCategoryMediaRelService;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,7 @@ public class YanldCategoryMediaRelServiceImpl implements YanldCategoryMediaRelSe
     }
 
     @Override
-    public List<YanldCategoryMediaRelDO> selectCategoryMediaRels() {
-        return yanldCategoryMediaRelDao.selectCategoryMediaRels();
+    public List<YanldCategoryMediaRelDO> selectCategoryMediaRels(YanldCategoryMediaRelQuery query) {
+        return yanldCategoryMediaRelDao.selectCategoryMediaRels(query);
     }
 }
