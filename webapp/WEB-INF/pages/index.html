@@ -25,25 +25,21 @@
         </div>
         <div class="mainContent border">
             <ul class="tabs">
-                <#list categories as category>
-                <li class="lf tabsStyle"><a href="" class="active">${category.categoryName}</a></li>
-                </#list>>
+                <#list indexBO.categoryBOs as category>
+                <li class="lf tabsStyle"><a href="${category.categoryLink}" class="active">${category.categoryName}</a></li>
+                </#list>
             </ul>
             <ul class="articleList border">
-                <li class="article ">
+                <#list indexBO.indexArticleBOs as article>
+                <li class="article">
                     <div class="title lf">
-                        <p class="mainTitle">简书晚报160717——《简友们都是这样运动健身的，你也一起来吧！》</p>
-                        <p class="author">杨何</p>
+                        <p class="mainTitle">${article.articleTitle}</p>
+                        <p class="author">${article.authorName}</p>
+                        <p class="author">阅读数：${article.readNum}</p>
                     </div>
-                    <img class="peitu rt" src="http://upload-images.jianshu.io/upload_images/1917963-9a1879e072ea3139.jpg?imageMogr2/auto-orient/strip%7CimageView2/1/w/300/h/300" alt=""/>
+                    <img class="peitu rt" src="${article.thumbImage}" alt=""/>
                 </li>
-                <li class="article ">
-                    <div class="title lf">
-                        <p class="mainTitle">简书晚报160717——《简友们都是这样运动健身的，你也一起来吧！》</p>
-                        <p class="author">杨何</p>
-                    </div>
-                    <img class="peitu rt" src="http://upload-images.jianshu.io/upload_images/1917963-9a1879e072ea3139.jpg?imageMogr2/auto-orient/strip%7CimageView2/1/w/300/h/300" alt=""/>
-                </li>
+                </#list>
             </ul>
             <div>下</div>
         </div>

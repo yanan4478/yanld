@@ -67,7 +67,7 @@ public class YanldIndexServiceImpl extends BaseService implements YanldIndexServ
         for(YanldArticleDO articleDO : articleDOs) {
             YanldIndexArticleBO articleBO = new YanldIndexArticleBO();
             articleBO.setArticleTitle(articleDO.getArticleTitle());
-            articleBO.setReadNum(articleDO.getReadNum());
+            articleBO.setReadNum(articleDO.getArticleReadNum());
             articleBO.setThumbImage(articleDO.getArticleCoverImage());
             YanldUserDO userDO = userService.selectUser(articleDO.getUserId());
             articleBO.setAuthorName(userDO.getUserName());

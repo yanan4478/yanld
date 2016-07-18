@@ -4,6 +4,7 @@ import com.yanld.module.dal.dataobject.YanldArticleDO;
 import com.yanld.module.dal.query.YanldArticleQuery;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yanan on 16/6/28.
@@ -21,5 +22,5 @@ public interface YanldArticleMapper {
 
     List<YanldArticleDO> selectArticles(YanldArticleQuery query);
 
-    List<YanldArticleDO> selectArticlesByIds(List<Long> ids);
+    List<YanldArticleDO> selectArticlesByIds(Map<String, List<Long>> idsMap);
 }

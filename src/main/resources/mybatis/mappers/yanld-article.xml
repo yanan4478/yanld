@@ -8,8 +8,8 @@
         <result column="is_deleted" property="isDeleted"/>
         <result column="article_title" property="articleTitle"/>
         <result column="article_content" property="articleContent"/>
-        <result column="article_id" property="articleId"/>
-        <result column="read_num" property="readNum"/>
+        <result column="user_id" property="userId"/>
+        <result column="article_read_num" property="articleReadNum"/>
         <result column="article_cover_image" property="articleCoverImage"/>
     </resultMap>
     <sql id="fields">
@@ -19,8 +19,8 @@
         is_deleted,
         article_title,
         article_content,
-        article_id,
-        read_num,
+        user_id,
+        article_read_num,
         article_cover_image
     </sql>
 
@@ -36,7 +36,7 @@
         #{articleTitle},
         #{articleContent},
         #{userId},
-        #{readNum},
+        #{articleReadNum},
         #{articleCoverImage}
         )
     </insert>
@@ -62,7 +62,7 @@
         article_title=#{articleTitle},
         article_content=#{articleContent},
         user_id=#{userId},
-        read_num=#{readNum},
+        article_read_num=#{articleReadNum},
         article_cover_image=#{articleCoverImage}
         where
         `id`=#{id}

@@ -7,7 +7,7 @@ public class YanldArticleDO extends BaseDO {
     private String articleTitle;
     private String articleContent;
     private long userId;
-    private long readNum;
+    private long articleReadNum;
     private String articleCoverImage;
 
     public String getArticleTitle() {
@@ -34,12 +34,12 @@ public class YanldArticleDO extends BaseDO {
         this.userId = userId;
     }
 
-    public long getReadNum() {
-        return readNum;
+    public long getArticleReadNum() {
+        return articleReadNum;
     }
 
-    public void setReadNum(long readNum) {
-        this.readNum = readNum;
+    public void setArticleReadNum(long articleReadNum) {
+        this.articleReadNum = articleReadNum;
     }
 
     public String getArticleCoverImage() {
