@@ -1,7 +1,7 @@
 package com.yanld.module.service.impl;
 
-import com.yanld.module.dal.dao.YanldUserDao;
-import com.yanld.module.dal.dataobject.YanldUserDO;
+import com.yanld.module.common.dal.dao.YanldUserDao;
+import com.yanld.module.common.dal.dataobject.YanldUserDO;
 import com.yanld.module.service.YanldUserService;
 import org.springframework.stereotype.Service;
 

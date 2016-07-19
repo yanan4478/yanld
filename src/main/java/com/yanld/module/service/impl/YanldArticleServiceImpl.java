@@ -1,8 +1,8 @@
 package com.yanld.module.service.impl;
 
-import com.yanld.module.dal.dao.YanldArticleDao;
-import com.yanld.module.dal.dataobject.YanldArticleDO;
-import com.yanld.module.dal.query.YanldArticleQuery;
+import com.yanld.module.common.dal.dao.YanldArticleDao;
+import com.yanld.module.common.dal.dataobject.YanldArticleDO;
+import com.yanld.module.common.dal.query.YanldArticleQuery;
 import com.yanld.module.service.YanldArticleService;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +39,8 @@ public class YanldArticleServiceImpl implements YanldArticleService {
     }
 
     @Override
-    public YanldArticleDO selectArticle() {
-        return yanldArticleDao.selectArticle();
+    public YanldArticleDO selectArticle(long id) {
+        return yanldArticleDao.selectArticle(id);
     }
 
     @Override

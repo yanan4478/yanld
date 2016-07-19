@@ -3,12 +3,12 @@ package com.yanld.module.service.impl;
 import com.yanld.module.bo.YanldCategoryBO;
 import com.yanld.module.bo.YanldIndexArticleBO;
 import com.yanld.module.bo.YanldIndexBO;
-import com.yanld.module.constant.BaseConstant;
-import com.yanld.module.dal.dataobject.YanldArticleDO;
-import com.yanld.module.dal.dataobject.YanldCategoryDO;
-import com.yanld.module.dal.dataobject.YanldCategoryMediaRelDO;
-import com.yanld.module.dal.dataobject.YanldUserDO;
-import com.yanld.module.dal.query.YanldCategoryMediaRelQuery;
+import com.yanld.module.common.constant.BaseConstant;
+import com.yanld.module.common.dal.dataobject.YanldArticleDO;
+import com.yanld.module.common.dal.dataobject.YanldCategoryDO;
+import com.yanld.module.common.dal.dataobject.YanldCategoryMediaRelDO;
+import com.yanld.module.common.dal.dataobject.YanldUserDO;
+import com.yanld.module.common.dal.query.YanldCategoryMediaRelQuery;
 import com.yanld.module.service.*;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +66,7 @@ public class YanldIndexServiceImpl extends BaseService implements YanldIndexServ
         List<YanldArticleDO> articleDOs = articleService.selectArticlesByIds(articleIds);
         for(YanldArticleDO articleDO : articleDOs) {
             YanldIndexArticleBO articleBO = new YanldIndexArticleBO();
+            articleBO.setId(articleDO.getId());
             articleBO.setArticleTitle(articleDO.getArticleTitle());
             articleBO.setReadNum(articleDO.getArticleReadNum());
             articleBO.setThumbImage(articleDO.getArticleCoverImage());

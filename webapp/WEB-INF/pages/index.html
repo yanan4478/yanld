@@ -33,7 +33,7 @@
                 <#list indexBO.indexArticleBOs as article>
                 <li class="article">
                     <div class="title lf">
-                        <p class="mainTitle">${article.articleTitle}</p>
+                        <p class="mainTitle"><a href="/detail/article/${article.id}">${article.articleTitle}</a></p>
                         <p class="author">${article.authorName}</p>
                         <p class="author">阅读数：${article.readNum}</p>
                     </div>

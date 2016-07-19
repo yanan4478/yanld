@@ -1,14 +1,14 @@
-package com.yanld.module.service;
+package com.yanld.module.common.dal.dao;
 
-import com.yanld.module.common.dal.dataobject.YanldCategoryMediaRelDO;
 import com.yanld.module.common.dal.query.YanldCategoryMediaRelQuery;
+import com.yanld.module.common.dal.dataobject.YanldCategoryMediaRelDO;
 
 import java.util.List;
 
 /**
  * Created by yanan on 16/6/28.
  */
-public interface YanldCategoryMediaRelService {
+public interface YanldCategoryMediaRelDao {
     long insertCategoryMediaRel();
 
     int deleteCategoryMediaRel();

@@ -1,21 +1,21 @@
 package com.yanld.module.bo;
 
 /**
- * Created by yanan on 16/7/18.
+ * Created by yanan on 16/7/19.
  */
-public class YanldIndexArticleBO {
-    private long id;
+public class YanldDetailArticleBO {
+    private String createTime;
     private String articleTitle;
+    private String articleContent;
     private String authorName;
     private long readNum;
-    private String thumbImage;
 
-    public long getId() {
-        return id;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public String getArticleTitle() {
@@ -24,6 +24,14 @@ public class YanldIndexArticleBO {
 
     public void setArticleTitle(String articleTitle) {
         this.articleTitle = articleTitle;
+    }
+
+    public String getArticleContent() {
+        return articleContent;
+    }
+
+    public void setArticleContent(String articleContent) {
+        this.articleContent = articleContent;
     }
 
     public String getAuthorName() {
@@ -40,13 +48,5 @@ public class YanldIndexArticleBO {
 
     public void setReadNum(long readNum) {
         this.readNum = readNum;
-    }
-
-    public String getThumbImage() {
-        return thumbImage;
-    }
-
-    public void setThumbImage(String thumbImage) {
-        this.thumbImage = thumbImage;
     }
 }

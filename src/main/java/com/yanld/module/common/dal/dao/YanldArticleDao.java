@@ -1,14 +1,14 @@
-package com.yanld.module.service;
+package com.yanld.module.common.dal.dao;
 
-import com.yanld.module.common.dal.dataobject.YanldArticleDO;
 import com.yanld.module.common.dal.query.YanldArticleQuery;
+import com.yanld.module.common.dal.dataobject.YanldArticleDO;
 
 import java.util.List;
 
 /**
  * Created by yanan on 16/6/28.
  */
-public interface YanldArticleService {
+public interface YanldArticleDao {
     long insertArticle();
 
     int deleteArticle();

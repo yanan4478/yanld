@@ -1,6 +1,6 @@
 package com.yanld.module.controller;
 
-import com.yanld.module.dal.dataobject.YanldUserDO;
+import com.yanld.module.common.dal.dataobject.YanldUserDO;
 import com.yanld.module.service.YanldUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

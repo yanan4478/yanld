@@ -1,8 +1,8 @@
 package com.yanld.module.service.impl;
 
-import com.yanld.module.dal.dao.YanldCategoryMediaRelDao;
-import com.yanld.module.dal.dataobject.YanldCategoryMediaRelDO;
-import com.yanld.module.dal.query.YanldCategoryMediaRelQuery;
+import com.yanld.module.common.dal.dao.YanldCategoryMediaRelDao;
+import com.yanld.module.common.dal.dataobject.YanldCategoryMediaRelDO;
+import com.yanld.module.common.dal.query.YanldCategoryMediaRelQuery;
 import com.yanld.module.service.YanldCategoryMediaRelService;
 import org.springframework.stereotype.Service;
 
