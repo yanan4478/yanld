@@ -6,7 +6,11 @@ import com.yanld.module.common.dal.dao.YanldArticleDao;
 import com.yanld.module.common.dal.dataobject.YanldArticleDO;
 import com.yanld.module.common.dal.mapper.YanldArticleMapper;
 import com.yanld.module.common.dal.query.YanldArticleQuery;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Repository;
+import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,8 +20,7 @@ import java.util.Map;
  * Created by yanan on 16/6/27.
  */
 @Repository
-public class YanldArticleDaoImpl extends BaseDao implements YanldArticleDao
-{
+public class YanldArticleDaoImpl extends BaseDao implements YanldArticleDao {
     @Override
     public long insertArticle() {
         YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
@@ -56,7 +59,7 @@ public class YanldArticleDaoImpl extends BaseDao implements YanldArticleDao
 
     @Override
     public List<YanldArticleDO> selectArticlesByIds(List<Long> ids) {
-        if(ids.isEmpty()) {
+        if (ids.isEmpty()) {
             return Lists.newArrayList();
         }
         YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);

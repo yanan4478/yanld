@@ -15,4 +15,6 @@ public abstract class BaseDao {
 
     @Resource
     protected RedisTemplate<Serializable, Serializable> redisTemplate;
+
+    //public
 }

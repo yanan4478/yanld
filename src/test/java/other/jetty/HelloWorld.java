@@ -1,4 +1,4 @@
-package other;
+package other.jetty;
 
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
