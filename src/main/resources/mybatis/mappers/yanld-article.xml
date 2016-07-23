@@ -108,4 +108,14 @@
         </if>
     </select>
 
+    <select id="selectArticleCount" parameterType="map" resultMap="long">
+        select count(1) from yanld_article
+        <where>
+            is_deleted=0
+            <if test="userId != 0 ">
+                AND user_id= #{userId}
+            </if>
+        </where>
+    </select>
+
 </mapper>

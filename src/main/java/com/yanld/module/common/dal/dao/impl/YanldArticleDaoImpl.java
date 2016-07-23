@@ -22,33 +22,43 @@ import java.util.Map;
 @Repository
 public class YanldArticleDaoImpl extends BaseDao implements YanldArticleDao {
     @Override
-    public long insertArticle() {
+    public long insertArticle(YanldArticleDO yanldArticleDO) {
+        setObjectToRedis(yanldArticleDO);
         YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
-        return mapper.insertArticle();
+        return mapper.insertArticle(yanldArticleDO);
     }
 
     @Override
-    public int deleteArticle() {
+    public int deleteArticle(long id) {
+        deleteObjectInRedis(getObjectKeyInRedis(this, id));
         YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
         return mapper.deleteArticle();
     }
 
     @Override
-    public int logicDeleteArticle() {
+    public int logicDeleteArticle(long id) {
+        deleteObjectInRedis(getObjectKeyInRedis(this, id));
         YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
         return mapper.logicDeleteArticle();
     }
 
     @Override
-    public int updateArticle() {
+    public int updateArticle(YanldArticleDO yanldArticleDO) {
+        setObjectToRedis(yanldArticleDO);
         YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
         return mapper.updateArticle();
     }
 
     @Override
     public YanldArticleDO selectArticle(long id) {
+        YanldArticleDO yanldArticleDO = getObjectInRedis(getObjectKeyInRedis(this, id), new YanldArticleDO());
+        if (yanldArticleDO != null) {
+            return yanldArticleDO;
+        }
         YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
-        return mapper.selectArticle(id);
+        yanldArticleDO = mapper.selectArticle(id);
+        setObjectToRedis(yanldArticleDO);
+        return yanldArticleDO;
     }
 
     @Override
@@ -66,5 +76,11 @@ public class YanldArticleDaoImpl extends BaseDao implements YanldArticleDao {
         Map<String, List<Long>> idsMap = new HashMap<>();
         idsMap.put("ids", ids);
         return mapper.selectArticlesByIds(idsMap);
+    }
+
+    @Override
+    public long selectArticleCount(YanldArticleQuery query) {
+        YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
+        return mapper.selectArticleCount(query);
     }
 }

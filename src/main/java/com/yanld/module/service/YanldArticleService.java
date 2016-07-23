@@ -9,17 +9,19 @@ import java.util.List;
  * Created by yanan on 16/6/28.
  */
 public interface YanldArticleService {
-    long insertArticle();
+    long insertArticle(YanldArticleDO yanldArticleDO);
 
-    int deleteArticle();
+    int deleteArticle(long id);
 
-    int logicDeleteArticle();
+    int logicDeleteArticle(long id);
 
-    int updateArticle();
+    int updateArticle(YanldArticleDO yanldArticleDO);
 
     YanldArticleDO selectArticle(long id);
 
     List<YanldArticleDO> selectArticles(YanldArticleQuery query);
 
     List<YanldArticleDO> selectArticlesByIds(List<Long> ids);
+
+    long selectArticleCount(YanldArticleQuery query);
 }

@@ -105,7 +105,7 @@ public class RedisUtils {
         }
     }
 
-    public static <T> int setObject(RedisTemplate<Serializable, Serializable> redisTemplate,
+     public static <T> int setObject(RedisTemplate<Serializable, Serializable> redisTemplate,
                                     String objKey, T t) {
         try {
             Map map = BeanUtils.describe(t);
@@ -150,6 +150,17 @@ public class RedisUtils {
         } catch (Exception e) {
             logger.error(StackTraceUtils.getStackTrance(e));
             return null;
+        }
+    }
+
+    public static int delete(RedisTemplate<Serializable, Serializable> redisTemplate,
+                                        String key) {
+        try {
+            redisTemplate.delete(key);
+            return 1;
+        } catch (Exception e) {
+            logger.error(StackTraceUtils.getStackTrance(e));
+            return 0;
         }
     }
 }

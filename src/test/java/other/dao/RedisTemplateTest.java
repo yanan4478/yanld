@@ -1,12 +1,8 @@
 package other.dao;
 
 import com.yanld.module.common.dal.dataobject.YanldUserDO;
-import com.yanld.module.common.patch.DateConverter;
 import com.yanld.module.common.util.RedisUtils;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.converters.DateTimeConverter;
-import org.apache.commons.beanutils.locale.converters.DateLocaleConverter;
 import org.junit.Test;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -14,14 +10,12 @@ import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.hash.BeanUtilsHashMapper;
-import org.springframework.data.redis.hash.HashMapper;
 import other.BaseTest;
 import other.dao.pojo.User;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -210,9 +204,9 @@ public class RedisTemplateTest extends BaseTest {
             yanldUserDO.setUserPassword("8371593");
             Map map = BeanUtils.describe(yanldUserDO);
             YanldUserDO yanldUserDO1 = new YanldUserDO();
-            DateConverter dtConverter = new DateConverter();
+            //DateConverter dtConverter = new DateConverter();
             //dtConverter.setPattern("mon dd hh:mm:ss zzz yyyy");
-            ConvertUtils.register(dtConverter, Date.class);
+            //ConvertUtils.register(dtConverter, Date.class);
 
             BeanUtils.populate(yanldUserDO1, map);
             int a = 1;

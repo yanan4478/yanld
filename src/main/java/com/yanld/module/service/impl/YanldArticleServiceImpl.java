@@ -19,23 +19,23 @@ public class YanldArticleServiceImpl implements YanldArticleService {
     private YanldArticleDao yanldArticleDao;
 
     @Override
-    public long insertArticle() {
-        return yanldArticleDao.insertArticle();
+    public long insertArticle(YanldArticleDO yanldArticleDO) {
+        return yanldArticleDao.insertArticle(yanldArticleDO);
     }
 
     @Override
-    public int deleteArticle() {
-        return yanldArticleDao.deleteArticle();
+    public int deleteArticle(long id) {
+        return yanldArticleDao.deleteArticle(id);
     }
 
     @Override
-    public int logicDeleteArticle() {
-        return yanldArticleDao.logicDeleteArticle();
+    public int logicDeleteArticle(long id) {
+        return yanldArticleDao.logicDeleteArticle(id);
     }
 
     @Override
-    public int updateArticle() {
-        return yanldArticleDao.updateArticle();
+    public int updateArticle(YanldArticleDO yanldArticleDO) {
+        return yanldArticleDao.updateArticle(yanldArticleDO);
     }
 
     @Override
@@ -51,5 +51,10 @@ public class YanldArticleServiceImpl implements YanldArticleService {
     @Override
     public List<YanldArticleDO> selectArticlesByIds(List<Long> ids) {
         return yanldArticleDao.selectArticlesByIds(ids);
+    }
+
+    @Override
+    public long selectArticleCount(YanldArticleQuery query) {
+        return yanldArticleDao.selectArticleCount(query);
     }
 }
