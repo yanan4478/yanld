@@ -108,7 +108,7 @@
         </if>
     </select>
 
-    <select id="selectArticleCount" parameterType="map" resultMap="long">
+    <select id="selectArticleCount" parameterType="map" resultType="long">
         select count(1) from yanld_article
         <where>
             is_deleted=0
