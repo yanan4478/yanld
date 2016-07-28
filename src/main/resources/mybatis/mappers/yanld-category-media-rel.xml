@@ -76,10 +76,10 @@
         from yanld_category_media_rel
         <where>
             is_deleted=0
-            <if test="categoryId != 0 ">
+            <if test="categoryId != null">
                 AND category_id= #{categoryId}
             </if>
-            <if test="mediaId != 0 ">
+            <if test="mediaId != null">
                 AND media_id= #{mediaId}
             </if>
             <if test="limit != 0 ">

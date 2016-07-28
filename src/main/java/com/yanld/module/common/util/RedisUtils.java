@@ -1,6 +1,7 @@
 package com.yanld.module.common.util;
 
 import com.google.common.collect.Lists;
+import com.yanld.module.common.dal.dataobject.BaseDO;
 import com.yanld.module.common.patch.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by yanan on 16/7/20.
@@ -105,7 +103,7 @@ public class RedisUtils {
         }
     }
 
-     public static <T> int setObject(RedisTemplate<Serializable, Serializable> redisTemplate,
+    public static <T> int setObject(RedisTemplate<Serializable, Serializable> redisTemplate,
                                     String objKey, T t) {
         try {
             Map map = BeanUtils.describe(t);
@@ -154,10 +152,62 @@ public class RedisUtils {
     }
 
     public static int delete(RedisTemplate<Serializable, Serializable> redisTemplate,
-                                        String key) {
+                             String key) {
         try {
             redisTemplate.delete(key);
             return 1;
+        } catch (Exception e) {
+            logger.error(StackTraceUtils.getStackTrance(e));
+            return 0;
+        }
+    }
+
+    public static long leftPush(RedisTemplate<Serializable, Serializable> redisTemplate,
+                               String key, String value) {
+        try {
+            return redisTemplate.opsForList().leftPush(key, value);
+        } catch (Exception e) {
+            logger.error(StackTraceUtils.getStackTrance(e));
+            return 0;
+        }
+    }
+
+    public static long deleteFromList(RedisTemplate<Serializable, Serializable> redisTemplate,
+                                     String key, long idx, String value) {
+        try {
+            return redisTemplate.opsForList().remove(key, idx, value);
+        } catch (Exception e) {
+            logger.error(StackTraceUtils.getStackTrance(e));
+            return 0;
+        }
+    }
+
+    public static List<String> getList(RedisTemplate<Serializable, Serializable> redisTemplate,
+                                      String key, long start, long end) {
+        try {
+            List<Serializable> resultList = redisTemplate.opsForList().range(key, start, end);
+            String[] resultArray = resultList.toArray(new String[resultList.size()]);
+            return Arrays.asList(resultArray);
+        } catch (Exception e) {
+            logger.error(StackTraceUtils.getStackTrance(e));
+            return Lists.newArrayList();
+        }
+    }
+
+    public static List<? extends BaseDO> getList(RedisTemplate<Serializable, Serializable> redisTemplate,
+                                       List<String> keys) {
+        try {
+            return Lists.newArrayList();
+        } catch (Exception e) {
+            logger.error(StackTraceUtils.getStackTrance(e));
+            return Lists.newArrayList();
+        }
+    }
+
+    public static long getListCount(RedisTemplate<Serializable, Serializable> redisTemplate,
+                                       String key) {
+        try {
+            return redisTemplate.opsForList().size(key);
         } catch (Exception e) {
             logger.error(StackTraceUtils.getStackTrance(e));
             return 0;

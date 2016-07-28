@@ -4,13 +4,13 @@ package com.yanld.module.common.dal.query;
  * Created by yanan on 16/7/18.
  */
 public class YanldArticleQuery extends BaseQuery {
-    private long userId;
+    private Long userId;
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 }

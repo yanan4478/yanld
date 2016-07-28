@@ -84,7 +84,7 @@
         from yanld_article
         <where>
             is_deleted=0
-            <if test="userId != 0 ">
+            <if test="userId != null ">
                 AND user_id= #{userId}
             </if>
             <if test="limit != 0 ">
@@ -112,7 +112,7 @@
         select count(1) from yanld_article
         <where>
             is_deleted=0
-            <if test="userId != 0 ">
+            <if test="userId != null">
                 AND user_id= #{userId}
             </if>
         </where>

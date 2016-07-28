@@ -52,7 +52,7 @@ public class YanldIndexServiceImpl extends BaseService implements YanldIndexServ
         return categoryBOs;
     }
 
-    private List<YanldIndexArticleBO> getIndexArticles(int category, int page) {
+    private List<YanldIndexArticleBO> getIndexArticles(long category, int page) {
         List<YanldIndexArticleBO> indexArticleBOs = new ArrayList<>();
         YanldCategoryMediaRelQuery relQuery = new YanldCategoryMediaRelQuery();
         relQuery.setCategoryId(category);
