@@ -9,6 +9,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.SerializationUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -126,25 +128,12 @@ public class RedisUtils {
         }
     }
 
-    public static <T> T getObject(RedisTemplate<Serializable, Serializable> redisTemplate,
-                                  String objKey, T t) {
+    public static <T extends BaseDO> T getObject(RedisTemplate<Serializable, Serializable> redisTemplate,
+                                  String objKey, T dto) {
         try {
-            Field[] fields = t.getClass().getDeclaredFields();
-            Field[] superFields = t.getClass().getSuperclass().getDeclaredFields();
-            List<Object> hashKeys = new ArrayList<>();
-            for (Field field : fields) {
-                hashKeys.add(field.getName());
-            }
-            for (Field field : superFields) {
-                hashKeys.add(field.getName());
-            }
+            List<Object> hashKeys = getHashKeys(dto);
             List<Object> valueList = redisTemplate.opsForHash().multiGet(objKey, hashKeys);
-            Map<Object, Object> map = new HashMap<>();
-            for (int i = 0; i < hashKeys.size(); i++) {
-                map.put(hashKeys.get(i), valueList.get(i));
-            }
-            BeanUtils.populate(t, map);
-            return t;
+            return getDTO(hashKeys, valueList, dto);
         } catch (Exception e) {
             logger.error(StackTraceUtils.getStackTrance(e));
             return null;
@@ -163,7 +152,7 @@ public class RedisUtils {
     }
 
     public static long leftPush(RedisTemplate<Serializable, Serializable> redisTemplate,
-                               String key, String value) {
+                                String key, String value) {
         try {
             return redisTemplate.opsForList().leftPush(key, value);
         } catch (Exception e) {
@@ -173,7 +162,7 @@ public class RedisUtils {
     }
 
     public static long deleteFromList(RedisTemplate<Serializable, Serializable> redisTemplate,
-                                     String key, long idx, String value) {
+                                      String key, long idx, String value) {
         try {
             return redisTemplate.opsForList().remove(key, idx, value);
         } catch (Exception e) {
@@ -183,7 +172,7 @@ public class RedisUtils {
     }
 
     public static List<String> getList(RedisTemplate<Serializable, Serializable> redisTemplate,
-                                      String key, long start, long end) {
+                                       String key, long start, long end) {
         try {
             List<Serializable> resultList = redisTemplate.opsForList().range(key, start, end);
             String[] resultArray = resultList.toArray(new String[resultList.size()]);
@@ -194,18 +183,77 @@ public class RedisUtils {
         }
     }
 
-    public static List<? extends BaseDO> getList(RedisTemplate<Serializable, Serializable> redisTemplate,
-                                       List<String> keys) {
+    @SuppressWarnings("unchecked")
+    public static <T extends BaseDO> List<T> getList(RedisTemplate<Serializable, Serializable> redisTemplate,
+                                                     List<String> objKeys, T dto) {
         try {
-            return Lists.newArrayList();
+            RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+            final List<byte[]> rawKeys = new ArrayList<>();
+            for (String key : objKeys) {
+                byte[] rawKey = keySerializer.serialize(key);
+                rawKeys.add(rawKey);
+            }
+
+            List<Object> hashKeys = getHashKeys(dto);
+            final byte[][] rawHashKeys = new byte[hashKeys.size()][];
+            RedisSerializer hashKeySerializer = redisTemplate.getHashKeySerializer();
+            int counter = 0;
+            for (Object hashKey : hashKeys) {
+                rawHashKeys[counter++] = hashKeySerializer.serialize(hashKey);
+            }
+
+            List<List<byte[]>> resultList =  redisTemplate.execute(new RedisCallback<List<List<byte[]>>>() {
+                @Override
+                public List<List<byte[]>> doInRedis(RedisConnection connection) throws DataAccessException {
+                    connection.openPipeline();
+                    List<List<byte[]>> values = new ArrayList<>();
+                    for (byte[] rawKey : rawKeys) {
+                        List<byte[]> rawValues = connection.hMGet(rawKey, rawHashKeys);
+                        values.add(rawValues);
+                    }
+                    connection.closePipeline();
+                    return values;
+                }
+            });
+
+            RedisSerializer hashValueSerializer = redisTemplate.getHashValueSerializer();
+            List<T> dtos = new ArrayList<>();
+            for(List<byte[]> rawValues : resultList) {
+                List<Object> valueList = SerializationUtils.deserialize(rawValues, hashValueSerializer);
+                T resultDTO = getDTO(hashKeys, valueList, dto);
+                dtos.add(resultDTO);
+            }
+            return dtos;
         } catch (Exception e) {
             logger.error(StackTraceUtils.getStackTrance(e));
             return Lists.newArrayList();
         }
     }
 
+    private static <T extends BaseDO> List<Object> getHashKeys(T dto) {
+        List<Object> hashKeys = new ArrayList<>();
+        Field[] fields = dto.getClass().getDeclaredFields();
+        Field[] superFields = dto.getClass().getSuperclass().getDeclaredFields();
+        for (Field field : fields) {
+            hashKeys.add(field.getName());
+        }
+        for (Field field : superFields) {
+            hashKeys.add(field.getName());
+        }
+        return hashKeys;
+    }
+
+    private static <T extends BaseDO> T getDTO(List<Object> hashKeys, List<Object> valueList, T dto) throws Exception{
+        Map<Object, Object> map = new HashMap<>();
+        for (int i = 0; i < hashKeys.size(); i++) {
+            map.put(hashKeys.get(i), valueList.get(i));
+        }
+        BeanUtils.populate(dto, map);
+        return dto;
+    }
+
     public static long getListCount(RedisTemplate<Serializable, Serializable> redisTemplate,
-                                       String key) {
+                                    String key) {
         try {
             return redisTemplate.opsForList().size(key);
         } catch (Exception e) {

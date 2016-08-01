@@ -117,7 +117,7 @@ public abstract class BaseDao {
         return RedisUtils.getObject(redisTemplate, objectKey, t);
     }
 
-    protected List<? extends BaseDO> getObjectListInRedis(BaseQuery query) {
+    protected <T extends BaseDO> List<T> getObjectListInRedis(BaseQuery query, T dto) {
         try {
             String key = getBaseListName(query.getClass().getSimpleName().replace("Query", "DO"));
             Field[] qryFields = query.getClass().getDeclaredFields();
@@ -129,7 +129,7 @@ public abstract class BaseDao {
             long start = query.getOffset() + 1;
             long end = start + query.getLimit() - 1;
             List<String> idList = RedisUtils.getList(redisTemplate, key, start, end);
-            return getObjectListInRedis(idList);
+            return getObjectListInRedis(idList, dto);
         } catch (IllegalAccessException e) {
             logger.error(StackTraceUtils.getStackTrance(e));
             return Lists.newArrayList();
@@ -157,8 +157,8 @@ public abstract class BaseDao {
         return key;
     }
 
-    protected List<? extends BaseDO> getObjectListInRedis(List<String> ids) {
-        return RedisUtils.getList(redisTemplate, ids);
+    protected <T extends BaseDO> List<T> getObjectListInRedis(List<String> ids, T t) {
+        return RedisUtils.getList(redisTemplate, ids, t);
     }
 
     protected <T extends BaseDao> String getEntityName(T t) {

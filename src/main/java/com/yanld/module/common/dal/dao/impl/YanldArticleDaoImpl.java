@@ -35,7 +35,7 @@ public class YanldArticleDaoImpl extends BaseDao implements YanldArticleDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<YanldArticleDO> selectArticles(YanldArticleQuery query) {
-        List<YanldArticleDO> yanldArticleDOs = (List<YanldArticleDO>)getObjectListInRedis(query);
+        List<YanldArticleDO> yanldArticleDOs = getObjectListInRedis(query, new YanldArticleDO());
         if(!DataUtils.isBlank(yanldArticleDOs)) {
             return yanldArticleDOs;
         }
@@ -75,7 +75,7 @@ public class YanldArticleDaoImpl extends BaseDao implements YanldArticleDao {
         if (ids.isEmpty()) {
             return Lists.newArrayList();
         }
-        List<YanldArticleDO> yanldArticleDOs = (List<YanldArticleDO>)getObjectListInRedis(DataUtils.toStringList(ids));
+        List<YanldArticleDO> yanldArticleDOs = getObjectListInRedis(DataUtils.toStringList(ids), new YanldArticleDO());
         if(!DataUtils.isBlank(yanldArticleDOs)) {
             return yanldArticleDOs;
         }

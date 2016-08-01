@@ -22,8 +22,6 @@ public class AllTest {
 
     @Test
     public void test2() {
-        System.out.println(1 & 1);
-        System.out.println(1 & 0);
-        System.out.println(0 & 0);
+
     }
 }
