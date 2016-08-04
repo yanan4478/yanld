@@ -16,7 +16,7 @@ public interface YanldArticleMapper {
 
     int logicDeleteArticle();
 
-    int updateArticle();
+    int updateArticle(YanldArticleDO yanldArticleDO);
 
     YanldArticleDO selectArticle(long id);
 

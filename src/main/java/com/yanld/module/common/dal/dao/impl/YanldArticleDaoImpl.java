@@ -54,7 +54,7 @@ public class YanldArticleDaoImpl extends BaseDao implements YanldArticleDao {
     public int updateArticle(YanldArticleDO yanldArticleDO) {
         setObjectToRedis(yanldArticleDO);
         YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
-        return mapper.updateArticle();
+        return mapper.updateArticle(yanldArticleDO);
     }
 
     @Override

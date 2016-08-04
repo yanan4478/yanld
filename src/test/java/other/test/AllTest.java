@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by yanan on 16/7/25.
@@ -22,6 +25,9 @@ public class AllTest {
 
     @Test
     public void test2() {
-
+        Map<String, AtomicLong> map = new HashMap<>();
+        map.put("hehe", new AtomicLong(1l));
+        map.get("hehe").incrementAndGet();
+        System.out.println(map.get("hehe"));
     }
 }

@@ -129,7 +129,7 @@ public class RedisUtils {
     }
 
     public static <T extends BaseDO> T getObject(RedisTemplate<Serializable, Serializable> redisTemplate,
-                                  String objKey, T dto) {
+                                                 String objKey, T dto) {
         try {
             List<Object> hashKeys = getHashKeys(dto);
             List<Object> valueList = redisTemplate.opsForHash().multiGet(objKey, hashKeys);
@@ -202,7 +202,7 @@ public class RedisUtils {
                 rawHashKeys[counter++] = hashKeySerializer.serialize(hashKey);
             }
 
-            List<List<byte[]>> resultList =  redisTemplate.execute(new RedisCallback<List<List<byte[]>>>() {
+            List<List<byte[]>> resultList = redisTemplate.execute(new RedisCallback<List<List<byte[]>>>() {
                 @Override
                 public List<List<byte[]>> doInRedis(RedisConnection connection) throws DataAccessException {
                     connection.openPipeline();
@@ -217,13 +217,13 @@ public class RedisUtils {
             });
 
             RedisSerializer hashValueSerializer = redisTemplate.getHashValueSerializer();
-            List<T> dtos = new ArrayList<>();
-            for(List<byte[]> rawValues : resultList) {
+            List<T> dtoList = new ArrayList<>();
+            for (List<byte[]> rawValues : resultList) {
                 List<Object> valueList = SerializationUtils.deserialize(rawValues, hashValueSerializer);
                 T resultDTO = getDTO(hashKeys, valueList, dto);
-                dtos.add(resultDTO);
+                dtoList.add(resultDTO);
             }
-            return dtos;
+            return dtoList;
         } catch (Exception e) {
             logger.error(StackTraceUtils.getStackTrance(e));
             return Lists.newArrayList();
@@ -243,7 +243,7 @@ public class RedisUtils {
         return hashKeys;
     }
 
-    private static <T extends BaseDO> T getDTO(List<Object> hashKeys, List<Object> valueList, T dto) throws Exception{
+    private static <T extends BaseDO> T getDTO(List<Object> hashKeys, List<Object> valueList, T dto) throws Exception {
         Map<Object, Object> map = new HashMap<>();
         for (int i = 0; i < hashKeys.size(); i++) {
             map.put(hashKeys.get(i), valueList.get(i));

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yanld.module.common.dal.mapper.YanldSequenceMapper">
+    <resultMap id="yanldSequenceResult" type="com.yanld.module.common.dal.dataobject.YanldSequenceDO" >
+        <result column="table_name" property="tableName"/>
+        <result column="seq" property="seq"/>
+    </resultMap>
+    <sql id="fields">
+        `table_name`,
+        seq
+    </sql>
+
+    <update id="updateSequence" parameterType="map">
+        update yanld_sequence
+        set
+        seq=#{seq}
+        where
+        `table_name`=#{tableName}
+    </update>
+
+    <select id="selectSequence" parameterType="String" resultMap="yanldSequenceResult">
+        select
+        <include refid="fields"/>
+        from yanld_sequence
+        where
+        `table_name`=#{tableName}
+    </select>
+</mapper>
