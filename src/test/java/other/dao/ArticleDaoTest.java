@@ -6,6 +6,8 @@ import org.junit.Test;
 import other.BaseTest;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yanan on 16/8/2.
@@ -16,9 +18,12 @@ public class ArticleDaoTest extends BaseTest {
 
     @Test
     public void testInsert() {
-        YanldArticleDO yanldArticleDO = new YanldArticleDO();
-        //yanldArticleDO.setArticleContent();
-        //yanldArticleDao.insertArticle()
+        List<String> list = new ArrayList<>();
+        list.add("33");
+        list.add("44");
+        list.add("33");
+        list.add("55");
+        System.out.println(list);
     }
 
 

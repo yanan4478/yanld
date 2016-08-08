@@ -12,9 +12,9 @@ import java.util.Map;
 public interface YanldArticleMapper {
     long insertArticle(YanldArticleDO yanldArticleDO);
 
-    int deleteArticle();
+    int deleteArticle(long id);
 
-    int logicDeleteArticle();
+    int logicDeleteArticle(long id);
 
     int updateArticle(YanldArticleDO yanldArticleDO);
 

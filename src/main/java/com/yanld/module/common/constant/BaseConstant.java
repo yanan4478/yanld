@@ -8,4 +8,8 @@ public class BaseConstant {
 
     public static final int MEDIA_TYPE_ARTICLE = 1;
 
+    public static final short IS_NOT_DELETED = 0;
+
+    public static final short IS_DELETED = 1;
+
 }

@@ -110,6 +110,14 @@ public class RedisUtils {
         try {
             Map map = BeanUtils.describe(t);
             map.remove("class");
+            Iterator iterator = map.keySet().iterator();
+            while (iterator.hasNext()) {
+                Object key = iterator.next();
+                if (map.get(key) == null) {
+                    iterator.remove();
+                    map.remove(key);
+                }
+            }
             redisTemplate.opsForHash().putAll(objKey, map);
             return 1;
         } catch (Exception e) {
@@ -133,6 +141,9 @@ public class RedisUtils {
         try {
             List<Object> hashKeys = getHashKeys(dto);
             List<Object> valueList = redisTemplate.opsForHash().multiGet(objKey, hashKeys);
+            if (valueList.get(0) == null) {
+                return null;
+            }
             return getDTO(hashKeys, valueList, dto);
         } catch (Exception e) {
             logger.error(StackTraceUtils.getStackTrance(e));
@@ -202,25 +213,20 @@ public class RedisUtils {
                 rawHashKeys[counter++] = hashKeySerializer.serialize(hashKey);
             }
 
-            List<List<byte[]>> resultList = redisTemplate.execute(new RedisCallback<List<List<byte[]>>>() {
+            List<Object> resultList = redisTemplate.executePipelined(new RedisCallback() {
                 @Override
-                public List<List<byte[]>> doInRedis(RedisConnection connection) throws DataAccessException {
-                    connection.openPipeline();
-                    List<List<byte[]>> values = new ArrayList<>();
+                public Object doInRedis(RedisConnection connection) throws DataAccessException {
                     for (byte[] rawKey : rawKeys) {
-                        List<byte[]> rawValues = connection.hMGet(rawKey, rawHashKeys);
-                        values.add(rawValues);
+                        connection.hMGet(rawKey, rawHashKeys);
                     }
-                    connection.closePipeline();
-                    return values;
+                    return null;
                 }
             });
 
-            RedisSerializer hashValueSerializer = redisTemplate.getHashValueSerializer();
             List<T> dtoList = new ArrayList<>();
-            for (List<byte[]> rawValues : resultList) {
-                List<Object> valueList = SerializationUtils.deserialize(rawValues, hashValueSerializer);
-                T resultDTO = getDTO(hashKeys, valueList, dto);
+            for (Object valueList : resultList) {
+                T tempDto = (T) dto.getClass().newInstance();
+                T resultDTO = getDTO(hashKeys, (List<Object>) valueList, tempDto);
                 dtoList.add(resultDTO);
             }
             return dtoList;

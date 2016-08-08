@@ -10,6 +10,7 @@ import javafx.util.Pair;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
@@ -31,24 +32,24 @@ public abstract class BaseDao {
     @Resource
     protected RedisTemplate<Serializable, Serializable> redisTemplate;
 
-    protected <T extends BaseDO> int setObjectToRedis(String objectKey, T t) {
-        return RedisUtils.setObject(redisTemplate, objectKey, t);
+    protected <T extends BaseDO> int setObjectToRedis(String objectKey, T dto) {
+        return RedisUtils.setObject(redisTemplate, objectKey, dto);
     }
 
-    protected <T extends BaseDO> int setObjectToRedis(T t) {
-        return setObjectToRedis(t.getClass().getSimpleName() + ":" + t.getId(), t);
+    protected <T extends BaseDO> int setObjectToRedis(T dto) {
+        return setObjectToRedis(dto.getClass().getSimpleName() + ":" + dto.getId(), dto);
     }
 
-    protected <T extends BaseDO> int setObjectToRedisWithList(String objectKey, T t) {
-        return RedisUtils.setObject(redisTemplate, objectKey, t) & setObjectToList(t);
+    protected <T extends BaseDO> int setObjectToRedisWithList(String objectKey, T dto) {
+        return RedisUtils.setObject(redisTemplate, objectKey, dto) & setObjectToList(dto);
     }
 
-    private <T extends BaseDO> int setObjectToList(T t) {
+    private <T extends BaseDO> int setObjectToList(T dto) {
         try {
-            String queryName = getQueryName(t);
+            String queryName = getQueryName(dto);
             Class qryClz = Class.forName(queryName);
             BaseQuery query = (BaseQuery) qryClz.newInstance();
-            operationInList(t, query, String.valueOf(t.getId()), true);
+            operationInList(dto, query, dto.getId(), true);
             return 1;
         } catch (Exception e) {
             logger.error(StackTraceUtils.getStackTrance(e));
@@ -56,23 +57,20 @@ public abstract class BaseDao {
         }
     }
 
-    protected <T extends BaseDO> int setObjectToRedisWithList(T t) {
-        return setObjectToRedisWithList(t.getClass().getSimpleName() + ":" + t.getId(), t);
+    protected <T extends BaseDO> int setObjectToRedisWithList(T dto) {
+        return setObjectToRedisWithList(dto.getClass().getSimpleName() + ":" + dto.getId(), dto);
     }
 
-    protected int deleteObjectInRedis(String key) {
-        return RedisUtils.delete(redisTemplate, key) & deleteObjectFromList(key);
+    protected int deleteObjectInRedis(BaseDO dto) {
+        return deleteObjectFromList(dto) &
+                RedisUtils.delete(redisTemplate, dto.getClass().getSimpleName() + ":" + dto.getId());
     }
 
-    private int deleteObjectFromList(String key) {
+    private int deleteObjectFromList(BaseDO dto) {
         try {
-            String[] info = key.split(":");
-            String nameDO = info[0];
-            String id = info[1];
-            String queryName = nameDO.replace("DO", "Query");
-            BaseDO pojo = (BaseDO) Class.forName(nameDO).newInstance();
+            String queryName = getQueryName(dto);
             BaseQuery query = (BaseQuery) Class.forName(queryName).newInstance();
-            operationInList(pojo, query, id, false);
+            operationInList(dto, query, dto.getId(), false);
             return 1;
         } catch (Exception e) {
             logger.error(StackTraceUtils.getStackTrance(e));
@@ -80,24 +78,25 @@ public abstract class BaseDao {
         }
     }
 
-    private <T extends BaseDO, Q extends BaseQuery> void operationInList(T pojo, Q query, String id, boolean set) throws Exception {
+    private <T extends BaseDO, Q extends BaseQuery> void operationInList(T dto, Q query, long id, boolean set) throws Exception {
         Field[] qryFields = query.getClass().getDeclaredFields();
         String[] qryFieldNames = new String[qryFields.length];
         for (int i = 0; i < qryFields.length; i++) {
             qryFieldNames[i] = qryFields[i].getName();
         }
-        Field[] fields = pojo.getClass().getDeclaredFields();
+        Field[] fields = dto.getClass().getDeclaredFields();
         List<Pair<String, Object>> queryPairs = new ArrayList<>();
         for (String qryFieldName : qryFieldNames) {
             for (Field field : fields) {
-                if ((field.getType().isInstance(Number.class)
+                field.setAccessible(true);
+                if ((Number.class.isInstance(field.get(dto))
                         || field.getType().isInstance(String.class))
                         && qryFieldName.equals(field.getName())) {
-                    queryPairs.add(new Pair<>(qryFieldName, field.get(pojo)));
+                    queryPairs.add(new Pair<>(qryFieldName, field.get(dto)));
                 }
             }
         }
-        String keyList = getBaseListName(pojo);
+        String keyList = getBaseListName(dto);
         for (int i = 0; i < Math.pow(2, queryPairs.size()); i++) {
             for (int j = i, k = 0; j > 0; j = j >> 1, k++) {
                 if (j % 2 == 1) {
@@ -106,15 +105,15 @@ public abstract class BaseDao {
                 }
             }
             if (set) {
-                RedisUtils.leftPush(redisTemplate, keyList, id);
+                RedisUtils.leftPush(redisTemplate, keyList, String.valueOf(id));
             } else {
-                RedisUtils.deleteFromList(redisTemplate, keyList, 1, id);
+                RedisUtils.deleteFromList(redisTemplate, keyList, 1, String.valueOf(id));
             }
         }
     }
 
-    protected <T extends BaseDO> T getObjectInRedis(String objectKey, T t) {
-        return RedisUtils.getObject(redisTemplate, objectKey, t);
+    protected <T extends BaseDO> T getObjectInRedis(String objectKey, T dto) {
+        return RedisUtils.getObject(redisTemplate, objectKey, dto);
     }
 
     protected <T extends BaseDO> List<T> getObjectListInRedis(BaseQuery query, T dto) {
@@ -157,27 +156,37 @@ public abstract class BaseDao {
         return key;
     }
 
-    protected <T extends BaseDO> List<T> getObjectListInRedis(List<String> ids, T t) {
-        return RedisUtils.getList(redisTemplate, ids, t);
+    protected <T extends BaseDO> List<T> getObjectListInRedis(List<String> ids, T dto) {
+        return RedisUtils.getList(redisTemplate, ids, dto);
     }
 
-    protected <T extends BaseDao> String getEntityName(T t) {
-        return t.getClass().getSimpleName().replace("DaoImpl", "DO");
+    protected <T extends BaseDao> String getEntityName(T dao) {
+        return dao.getClass().getSimpleName().replace("DaoImpl", "DO");
     }
 
-    protected <T extends BaseDO> String getBaseListName(T t) {
-        return getBaseListName(t.getClass().getSimpleName());
+    protected <T extends BaseDO> String getBaseListName(T dto) {
+        return getBaseListName(dto.getClass().getSimpleName());
     }
 
     protected String getBaseListName(String nameDO) {
         return Joiner.on("").join(nameDO, "List");
     }
 
-    protected <T extends BaseDO> String getQueryName(T t) {
-        return t.getClass().getName().replace("DO", "Query");
+    protected <T extends BaseDO> String getQueryName(T dto) {
+        return dto.getClass().getName().replace("dataobject.YanldArticleDO", "query.YanldArticleQuery");
     }
 
-    protected <T extends BaseDao> String getObjectKeyInRedis(T t, long id) {
-        return getEntityName(t) + ":" + id;
+    protected <T extends BaseDao> String getObjectKeyInRedis(T dao, long id) {
+        return getEntityName(dao) + ":" + id;
+    }
+
+    protected <T extends BaseDO> List<String> toRedisIds(List<Long> ids, T dto){
+        List<String> resultList = new ArrayList<>();
+        String dtoName = dto.getClass().getSimpleName();
+        for(Long id : ids) {
+            String redisId = Joiner.on("").join(dtoName,":",id);
+            resultList.add(redisId);
+        }
+        return resultList;
     }
 }

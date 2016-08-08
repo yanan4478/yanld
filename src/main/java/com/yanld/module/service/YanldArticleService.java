@@ -11,11 +11,11 @@ import java.util.List;
 public interface YanldArticleService {
     long insertArticle(YanldArticleDO yanldArticleDO);
 
-    int deleteArticle(long id);
+    long deleteArticle(long id);
 
-    int logicDeleteArticle(long id);
+    long logicDeleteArticle(long id);
 
-    int updateArticle(YanldArticleDO yanldArticleDO);
+    long updateArticle(YanldArticleDO yanldArticleDO);
 
     YanldArticleDO selectArticle(long id);
 
