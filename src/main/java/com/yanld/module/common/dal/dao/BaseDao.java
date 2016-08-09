@@ -160,7 +160,7 @@ public abstract class BaseDao {
         return RedisUtils.getList(redisTemplate, ids, dto);
     }
 
-    protected <T extends BaseDao> String getEntityName(T dao) {
+    protected <T extends BaseDao> String getDtoName(T dao) {
         return dao.getClass().getSimpleName().replace("DaoImpl", "DO");
     }
 
@@ -177,7 +177,7 @@ public abstract class BaseDao {
     }
 
     protected <T extends BaseDao> String getObjectKeyInRedis(T dao, long id) {
-        return getEntityName(dao) + ":" + id;
+        return getDtoName(dao) + ":" + id;
     }
 
     protected <T extends BaseDO> List<String> toRedisIds(List<?> ids, T dto) {
