@@ -7,8 +7,8 @@
 }
 .content{
     position:relative;
-    left:10%;
-    width:89%;
+    //left:10%;
+    width:100%;
     //height:100%;
     //overflow:hidden;
 }
@@ -23,14 +23,14 @@
 .middleSide{
    position:absolute;
     left:23%;
-    width:60%;
+    width:70%;
     height:100%;
     //overflow:hidden;
 
 }
 .rightSide{
    position:absolute;
-    left:93%;
+    left:90%;
     width:17%;
     height:100%;
 }
@@ -113,7 +113,7 @@
 .articleList {
     position: absolute;
     width: 100%;
-    top: 50px;
+    top: 60px;
 }
 .articleList>.article{
     padding:20px 20px;
@@ -135,4 +135,12 @@
 
 .articleList>.article .peitu{
     width:100px;
+}
+.bottom_policy{
+    position:fixed;
+    width:70%;
+    bottom:0;
+    text-align:center;
+    line-height:30px;
+    border-bottom:10px;
 }

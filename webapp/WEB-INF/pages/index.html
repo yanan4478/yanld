@@ -7,12 +7,7 @@
     <link rel="stylesheet" href="/css/layout.css"/>
 </head>
 <body>
-<div class="aside  overflow">
-    <ul>
-        <li class="mainPage menuItem" id="mainPage"><a href="">首页</a></li>
-        <li class="topic menuItem" id="topic"><a href="">专题</a></li>
-    </ul>
-</div>
+
 <div class="content  ">
     <div class="leftSide ">
 
@@ -29,7 +24,7 @@
                 <li class="lf tabsStyle"><a href="${category.categoryLink}" class="active">${category.categoryName}</a></li>
                 </#list>
             </ul>
-            <ul class="articleList border">
+            <ul class="articleList">
                 <#list indexBO.indexArticleBOs as article>
                 <li class="article">
                     <div class="title lf">
@@ -41,11 +36,11 @@
                 </li>
                 </#list>
             </ul>
-            <div>下</div>
+            <div class="bottom_policy">浙ICP备16026181号-1</div>
         </div>
 
     </div>
-   <div class="rightSide border ">右</div>
+   <!--<div class="rightSide border ">右</div>-->
 </div>
 
 </body>
