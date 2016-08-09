@@ -1,6 +1,7 @@
 package other.service;
 
 import com.yanld.module.common.dal.dataobject.YanldArticleDO;
+import com.yanld.module.common.dal.query.YanldArticleQuery;
 import com.yanld.module.service.YanldArticleService;
 import org.junit.Test;
 import other.BaseTest;
@@ -47,7 +48,7 @@ public class ArticleServiceTest extends BaseTest{
     @Test
     public void testSelectById() {
         YanldArticleDO articleDO1 = articleService.selectArticle(201);
-        YanldArticleDO articleDO2 = articleService.selectArticle(301);
+        YanldArticleDO articleDO2 = articleService.selectArticle(401);
         System.out.println("end");
     }
 
@@ -55,22 +56,28 @@ public class ArticleServiceTest extends BaseTest{
     public void testSelectByIds() {
         List<Long> ids = new ArrayList<>();
         ids.add(201l);
-        ids.add(301l);
+        ids.add(401l);
         List<YanldArticleDO> articleDOs = articleService.selectArticlesByIds(ids);
         System.out.println("end");
     }
 
     @Test
     public void testSelectByQuery() {
-        YanldArticleDO articleDO1 = articleService.selectArticle(201);
-        YanldArticleDO articleDO2 = articleService.selectArticle(301);
+        YanldArticleQuery query = new YanldArticleQuery();
+        query.setUserId(2l);
+        //query.setLimit(10);
+        //query.setOffset(0);
+        List<YanldArticleDO> articleDOs = articleService.selectArticles(query);
         System.out.println("end");
     }
 
     @Test
     public void testSelectCount() {
-        YanldArticleDO articleDO1 = articleService.selectArticle(201);
-        YanldArticleDO articleDO2 = articleService.selectArticle(301);
+        YanldArticleQuery query = new YanldArticleQuery();
+        query.setUserId(1l);
+        query.setLimit(10);
+        query.setOffset(0);
+        long count = articleService.selectArticleCount(query);
         System.out.println("end");
     }
 }

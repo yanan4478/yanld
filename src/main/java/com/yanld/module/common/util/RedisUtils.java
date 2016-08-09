@@ -225,9 +225,14 @@ public class RedisUtils {
 
             List<T> dtoList = new ArrayList<>();
             for (Object valueList : resultList) {
-                T tempDto = (T) dto.getClass().newInstance();
-                T resultDTO = getDTO(hashKeys, (List<Object>) valueList, tempDto);
-                dtoList.add(resultDTO);
+                List<Object> values = (List<Object>) valueList;
+                if(values.get(0) == null) {
+                    dtoList.add(null);
+                } else {
+                    T tempDto = (T) dto.getClass().newInstance();
+                    T resultDTO = getDTO(hashKeys, values, tempDto);
+                    dtoList.add(resultDTO);
+                }
             }
             return dtoList;
         } catch (Exception e) {

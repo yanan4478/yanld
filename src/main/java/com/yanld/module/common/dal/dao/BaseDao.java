@@ -118,16 +118,15 @@ public abstract class BaseDao {
 
     protected <T extends BaseDO> List<T> getObjectListInRedis(BaseQuery query, T dto) {
         try {
-            String key = getBaseListName(query.getClass().getSimpleName().replace("Query", "DO"));
-            Field[] qryFields = query.getClass().getDeclaredFields();
-            for (Field field : qryFields) {
-                if (field.get(query) != null) {
-                    key += ("_" + field.getName() + ":" + String.valueOf(field.get(query)));
-                }
-            }
-            long start = query.getOffset() + 1;
+            String key = getQueryKey(query);
+            long start = query.getOffset();
             long end = start + query.getLimit() - 1;
+            if (query.getLimit() <= 0) {
+                start = 0;
+                end = -1;
+            }
             List<String> idList = RedisUtils.getList(redisTemplate, key, start, end);
+            idList = toRedisIds(idList, dto);
             return getObjectListInRedis(idList, dto);
         } catch (IllegalAccessException e) {
             logger.error(StackTraceUtils.getStackTrance(e));
@@ -149,6 +148,7 @@ public abstract class BaseDao {
         String key = getBaseListName(query.getClass().getSimpleName().replace("Query", "DO"));
         Field[] qryFields = query.getClass().getDeclaredFields();
         for (Field field : qryFields) {
+            field.setAccessible(true);
             if (field.get(query) != null) {
                 key += ("_" + field.getName() + ":" + String.valueOf(field.get(query)));
             }
@@ -180,11 +180,11 @@ public abstract class BaseDao {
         return getEntityName(dao) + ":" + id;
     }
 
-    protected <T extends BaseDO> List<String> toRedisIds(List<Long> ids, T dto){
+    protected <T extends BaseDO> List<String> toRedisIds(List<?> ids, T dto) {
         List<String> resultList = new ArrayList<>();
         String dtoName = dto.getClass().getSimpleName();
-        for(Long id : ids) {
-            String redisId = Joiner.on("").join(dtoName,":",id);
+        for (Object id : ids) {
+            String redisId = Joiner.on("").join(dtoName, ":", id);
             resultList.add(redisId);
         }
         return resultList;
