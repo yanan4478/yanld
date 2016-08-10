@@ -8,6 +8,7 @@ import other.BaseTest;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +25,8 @@ public class ArticleServiceTest extends BaseTest{
         articleDO.setArticleCoverImage("http://upload-images.jianshu.io/upload_images/1529049-34634a6a3b11b599.jpeg?imageMogr2/auto-orient/strip%7CimageView2/1/w/300/h/300");
         articleDO.setArticleReadNum(56);
         articleDO.setUserId(1);
+        articleDO.setCreateTime(new Date());
+        articleDO.setModifyTime(new Date());
         articleService.insertArticle(articleDO);
     }
 

@@ -4,22 +4,22 @@ package com.yanld.module.common.dal.query;
  * Created by yanan on 16/7/18.
  */
 public class BaseQuery {
-    protected int limit;
-    protected int offset;
+    protected long limit;
+    protected long offset;
 
-    public int getLimit() {
+    public long getLimit() {
         return limit;
     }
 
-    public void setLimit(int limit) {
+    public void setLimit(long limit) {
         this.limit = limit;
     }
 
-    public int getOffset() {
+    public long getOffset() {
         return offset;
     }
 
-    public void setOffset(int offset) {
+    public void setOffset(long offset) {
         this.offset = offset;
     }
 }

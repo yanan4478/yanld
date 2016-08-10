@@ -79,6 +79,17 @@ public abstract class BaseDao {
     }
 
     private <T extends BaseDO, Q extends BaseQuery> void operationInList(T dto, Q query, long id, boolean set) throws Exception {
+        List<String> listKeys = getListKeys(dto,query);
+        for (String listKey : listKeys) {
+            if (set) {
+                RedisUtils.leftPush(redisTemplate, listKey, String.valueOf(id));
+            } else {
+                RedisUtils.deleteFromList(redisTemplate, listKey, 1, String.valueOf(id));
+            }
+        }
+    }
+
+    public static <T extends BaseDO, Q extends BaseQuery>  List<String> getListKeys(T dto, Q query) throws Exception{
         Field[] qryFields = query.getClass().getDeclaredFields();
         String[] qryFieldNames = new String[qryFields.length];
         for (int i = 0; i < qryFields.length; i++) {
@@ -96,20 +107,18 @@ public abstract class BaseDao {
                 }
             }
         }
-        String keyList = getBaseListName(dto);
+        String listKey = getBaseListName(dto);
+        List<String> listKeys = new ArrayList<>();
         for (int i = 0; i < Math.pow(2, queryPairs.size()); i++) {
             for (int j = i, k = 0; j > 0; j = j >> 1, k++) {
                 if (j % 2 == 1) {
                     Pair<String, Object> pair = queryPairs.get(k);
-                    keyList += ("_" + pair.getKey() + ":" + pair.getValue());
+                    listKey += ("_" + pair.getKey() + ":" + pair.getValue());
                 }
             }
-            if (set) {
-                RedisUtils.leftPush(redisTemplate, keyList, String.valueOf(id));
-            } else {
-                RedisUtils.deleteFromList(redisTemplate, keyList, 1, String.valueOf(id));
-            }
+            listKeys.add(listKey);
         }
+        return listKeys;
     }
 
     protected <T extends BaseDO> T getObjectInRedis(String objectKey, T dto) {
@@ -164,11 +173,11 @@ public abstract class BaseDao {
         return dao.getClass().getSimpleName().replace("DaoImpl", "DO");
     }
 
-    protected <T extends BaseDO> String getBaseListName(T dto) {
+    protected static  <T extends BaseDO> String getBaseListName(T dto) {
         return getBaseListName(dto.getClass().getSimpleName());
     }
 
-    protected String getBaseListName(String nameDO) {
+    protected static String getBaseListName(String nameDO) {
         return Joiner.on("").join(nameDO, "List");
     }
 

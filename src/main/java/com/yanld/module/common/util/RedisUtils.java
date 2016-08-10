@@ -105,25 +105,30 @@ public class RedisUtils {
         }
     }
 
-    public static <T> int setObject(RedisTemplate<Serializable, Serializable> redisTemplate,
-                                    String objKey, T t) {
+    public static <T extends BaseDO> int setObject(RedisTemplate<Serializable, Serializable> redisTemplate,
+                                                   String objKey, T dto) {
         try {
-            Map map = BeanUtils.describe(t);
-            map.remove("class");
-            Iterator iterator = map.keySet().iterator();
-            while (iterator.hasNext()) {
-                Object key = iterator.next();
-                if (map.get(key) == null) {
-                    iterator.remove();
-                    map.remove(key);
-                }
-            }
+            Map map = objToMap(dto);
             redisTemplate.opsForHash().putAll(objKey, map);
             return 1;
         } catch (Exception e) {
             logger.error(StackTraceUtils.getStackTrance(e));
             return 0;
         }
+    }
+
+    private static <T extends BaseDO> Map objToMap(T dto) throws Exception {
+        Map map = BeanUtils.describe(dto);
+        map.remove("class");
+        Iterator iterator = map.keySet().iterator();
+        while (iterator.hasNext()) {
+            Object key = iterator.next();
+            if (map.get(key) == null) {
+                iterator.remove();
+                map.remove(key);
+            }
+        }
+        return map;
     }
 
     public static String getObjectField(RedisTemplate<Serializable, Serializable> redisTemplate,
@@ -141,7 +146,7 @@ public class RedisUtils {
         try {
             List<Object> hashKeys = getHashKeys(dto);
             List<Object> valueList = redisTemplate.opsForHash().multiGet(objKey, hashKeys);
-            if (valueList.get(0) == null) {
+            if (DataUtils.isValueAllNull(valueList)) {
                 return null;
             }
             return getDTO(hashKeys, valueList, dto);
@@ -226,11 +231,9 @@ public class RedisUtils {
             List<T> dtoList = new ArrayList<>();
             for (Object valueList : resultList) {
                 List<Object> values = (List<Object>) valueList;
-                if(values.get(0) == null) {
-                    dtoList.add(null);
-                } else {
+                if (!DataUtils.isValueAllNull(values)) {
                     T tempDto = (T) dto.getClass().newInstance();
-                    T resultDTO = getDTO(hashKeys, values, tempDto);
+                    T resultDTO = getDTO(hashKeys, (List<Object>) valueList, tempDto);
                     dtoList.add(resultDTO);
                 }
             }
@@ -272,4 +275,47 @@ public class RedisUtils {
             return 0;
         }
     }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends BaseDO> void setDataFromDBToRedis(RedisTemplate<Serializable, Serializable> redisTemplate,
+                                                                  List<T> dtos, Map<String, List<String>> listData) {
+        try {
+            LinkedHashMap<String, Map> dtoMaps = new LinkedHashMap<>();
+            for (T dto : dtos) {
+                String key = dto.getClass().getSimpleName() + ":" + dto.getId();
+                Map dtoMap = objToMap(dto);
+                dtoMaps.put(key, dtoMap);
+            }
+
+            LinkedHashMap<byte[], Map<byte[], byte[]>> rawDtoMaps = new LinkedHashMap<>();
+            RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+            RedisSerializer hashKeySerializer = redisTemplate.getHashKeySerializer();
+            RedisSerializer hashValueSerializer = redisTemplate.getHashValueSerializer();
+            for (Map.Entry<String, Map> entry : dtoMaps.entrySet()) {
+                byte[] rawKey = keySerializer.serialize(entry.getKey());
+                Map<?, ?> dtoMap = entry.getValue();
+                Map<byte[], byte[]> hashes = new LinkedHashMap<>(dtoMap.size());
+
+                for (Map.Entry dtoEntry : dtoMap.entrySet()) {
+                    byte[] rawHashKey = hashKeySerializer.serialize(dtoEntry.getKey());
+                    byte[] rawHashValue = hashValueSerializer.serialize(dtoEntry.getValue());
+                    hashes.put(rawHashKey, rawHashValue);
+                }
+                rawDtoMaps.put(rawKey, hashes);
+            }
+
+            redisTemplate.executePipelined(new RedisCallback() {
+                @Override
+                public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                    for (Map.Entry<byte[], Map<byte[], byte[]>> entry : rawDtoMaps.entrySet()) {
+                        connection.hMSet(entry.getKey(), entry.getValue());
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e) {
+            logger.error(StackTraceUtils.getStackTrance(e));
+        }
+    }
+
 }
