@@ -24,9 +24,7 @@ public class ArticleServiceTest extends BaseTest{
         articleDO.setArticleTitle("我是文章标题，哇咔咔");
         articleDO.setArticleCoverImage("http://upload-images.jianshu.io/upload_images/1529049-34634a6a3b11b599.jpeg?imageMogr2/auto-orient/strip%7CimageView2/1/w/300/h/300");
         articleDO.setArticleReadNum(56);
-        articleDO.setUserId(1);
-        articleDO.setCreateTime(new Date());
-        articleDO.setModifyTime(new Date());
+        articleDO.setUserId(2);
         articleService.insertArticle(articleDO);
     }
 

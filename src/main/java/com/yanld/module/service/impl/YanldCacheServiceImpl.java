@@ -43,46 +43,46 @@ public class YanldCacheServiceImpl implements YanldCacheService, ApplicationList
     @SuppressWarnings("unchecked")
     @Override
     public void onApplicationEvent(ContextRefreshedEvent applicationEvent) {
-//        if (!isStart) {
-//            isStart = true;
-//            List<String> items = Splitter.on(",").omitEmptyStrings().trimResults().splitToList(YANLD_CACHE_ARRAY);
-//            for (String item : items) {
-//                String serviceName = getInvokeName(item, YANLD_SERVICE);
-//                String queryName = getInvokeName(item, YANLD_QUERY);
-//                String selectCountMethodName = getInvokeName(item, YANLD_SELECTCOUNT_METHOD);
-//                String selectListMethodName = getInvokeName(item, YANLD_SELECTLIST_METHOD);
-//                try {
-//                    BaseService service = BeanFactoryUtils.getBean(serviceName);
-//                    Class<?> queryClass = Class.forName(queryName);
-//                    BaseQuery query = (BaseQuery) queryClass.newInstance();
-//                    Method selectCountMethod = service.getClass().getDeclaredMethod(selectCountMethodName, queryClass);
-//                    long count = (long) selectCountMethod.invoke(service, query);
-//                    Method selectListMethod = service.getClass().getDeclaredMethod(selectListMethodName, queryClass);
-//                    for (int i = 0; i <= count / 100; i++) {
-//                        query.setLimit(100);
-//                        query.setOffset(i * 100);
-//                        List<BaseDO> dtoList = (List<BaseDO>) selectListMethod.invoke(service, query);
-//                        Map<String, List<String>> listKeyMap = new HashMap<>();
-//                        for (BaseDO dto : dtoList) {
-//                            List<String> listKeys = BaseDao.getListKeys(dto, query);
-//                            for (String listKey : listKeys) {
-//                                if (listKeyMap.get(listKey) == null) {
-//                                    List<String> ids = new ArrayList<>();
-//                                    ids.add(String.valueOf(dto.getId()));
-//                                    listKeyMap.put(listKey, ids);
-//                                } else {
-//                                    listKeyMap.get(listKey).add(String.valueOf(dto.getId()));
-//                                }
-//                            }
-//                        }
-//                        RedisUtils.setDataFromDBToRedis(redisTemplate, dtoList, listKeyMap);
-//                    }
-//                } catch (Exception e) {
-//                    logger.error(StackTraceUtils.getStackTrance(e));
-//                    logger.error("no class for " + serviceName);
-//                }
-//            }
-//        }
+        if (!isStart) {
+            isStart = true;
+            List<String> items = Splitter.on(",").omitEmptyStrings().trimResults().splitToList(YANLD_CACHE_ARRAY);
+            for (String item : items) {
+                String serviceName = getInvokeName(item, YANLD_SERVICE);
+                String queryName = getInvokeName(item, YANLD_QUERY);
+                String selectCountMethodName = getInvokeName(item, YANLD_SELECTCOUNT_METHOD);
+                String selectListMethodName = getInvokeName(item, YANLD_SELECTLIST_METHOD);
+                try {
+                    BaseService service = BeanFactoryUtils.getBean(serviceName);
+                    Class<?> queryClass = Class.forName(queryName);
+                    BaseQuery query = (BaseQuery) queryClass.newInstance();
+                    Method selectCountMethod = service.getClass().getDeclaredMethod(selectCountMethodName, queryClass);
+                    long count = (long) selectCountMethod.invoke(service, query);
+                    Method selectListMethod = service.getClass().getDeclaredMethod(selectListMethodName, queryClass);
+                    for (int i = 0; i <= count / 100; i++) {
+                        query.setLimit(100);
+                        query.setOffset(i * 100);
+                        List<BaseDO> dtoList = (List<BaseDO>) selectListMethod.invoke(service, query);
+                        Map<String, List<String>> listKeyMap = new HashMap<>();
+                        for (BaseDO dto : dtoList) {
+                            List<String> listKeys = BaseDao.getListKeys(dto, query);
+                            for (String listKey : listKeys) {
+                                if (listKeyMap.get(listKey) == null) {
+                                    List<String> ids = new ArrayList<>();
+                                    ids.add(String.valueOf(dto.getId()));
+                                    listKeyMap.put(listKey, ids);
+                                } else {
+                                    listKeyMap.get(listKey).add(String.valueOf(dto.getId()));
+                                }
+                            }
+                        }
+                        RedisUtils.setDataFromDBToRedis(redisTemplate, dtoList, listKeyMap);
+                    }
+                } catch (Exception e) {
+                    logger.error(StackTraceUtils.getStackTrance(e));
+                    logger.error("no class for " + serviceName);
+                }
+            }
+        }
     }
 }
 

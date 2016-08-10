@@ -278,7 +278,7 @@ public class RedisUtils {
 
     @SuppressWarnings("unchecked")
     public static <T extends BaseDO> void setDataFromDBToRedis(RedisTemplate<Serializable, Serializable> redisTemplate,
-                                                                  List<T> dtos, Map<String, List<String>> listData) {
+                                                               List<T> dtos, Map<String, List<String>> listDataMap) {
         try {
             LinkedHashMap<String, Map> dtoMaps = new LinkedHashMap<>();
             for (T dto : dtos) {
@@ -289,6 +289,7 @@ public class RedisUtils {
 
             LinkedHashMap<byte[], Map<byte[], byte[]>> rawDtoMaps = new LinkedHashMap<>();
             RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+            RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
             RedisSerializer hashKeySerializer = redisTemplate.getHashKeySerializer();
             RedisSerializer hashValueSerializer = redisTemplate.getHashValueSerializer();
             for (Map.Entry<String, Map> entry : dtoMaps.entrySet()) {
@@ -304,11 +305,28 @@ public class RedisUtils {
                 rawDtoMaps.put(rawKey, hashes);
             }
 
+            Map<byte[], byte[][]> rawListDataMap = new HashMap<>();
+            for (Map.Entry<String, List<String>> entry : listDataMap.entrySet()) {
+                List<String> ids = entry.getValue();
+                byte[] rawKey = keySerializer.serialize(entry.getKey());
+                byte[][] rawValues = new byte[ids.size()][];
+                int idx = 0;
+                for (String value : ids) {
+                    byte[] rawValue = valueSerializer.serialize(value);
+                    rawValues[idx] = rawValue;
+                    ++idx;
+                }
+                rawListDataMap.put(rawKey, rawValues);
+            }
+
             redisTemplate.executePipelined(new RedisCallback() {
                 @Override
                 public Object doInRedis(RedisConnection connection) throws DataAccessException {
                     for (Map.Entry<byte[], Map<byte[], byte[]>> entry : rawDtoMaps.entrySet()) {
                         connection.hMSet(entry.getKey(), entry.getValue());
+                    }
+                    for (Map.Entry<byte[], byte[][]> entry : rawListDataMap.entrySet()) {
+                        connection.lPush(entry.getKey(), entry.getValue());
                     }
                     return null;
                 }

@@ -9,6 +9,7 @@ import com.yanld.module.common.dal.query.YanldArticleQuery;
 import com.yanld.module.common.util.DataUtils;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,12 +69,12 @@ public class YanldArticleDaoImpl extends BaseDao implements YanldArticleDao {
 
     @Override
     public YanldArticleDO selectArticle(long id) {
-//        YanldArticleDO yanldArticleDO = getObjectInRedis(getObjectKeyInRedis(this, id), new YanldArticleDO());
-//        if (yanldArticleDO != null) {
-//            return yanldArticleDO;
-//        }
+        YanldArticleDO yanldArticleDO = getObjectInRedis(getObjectKeyInRedis(this, id), new YanldArticleDO());
+        if (yanldArticleDO != null) {
+            return yanldArticleDO;
+        }
         YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
-        YanldArticleDO yanldArticleDO = mapper.selectArticle(id);
+        yanldArticleDO = mapper.selectArticle(id);
         if (yanldArticleDO != null) {
             setObjectToRedis(yanldArticleDO);
         }
