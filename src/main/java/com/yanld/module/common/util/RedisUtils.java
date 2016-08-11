@@ -318,7 +318,6 @@ public class RedisUtils {
                 }
                 rawListDataMap.put(rawKey, rawValues);
             }
-
             redisTemplate.executePipelined(new RedisCallback() {
                 @Override
                 public Object doInRedis(RedisConnection connection) throws DataAccessException {
