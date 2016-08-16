@@ -8,20 +8,20 @@ import java.util.List;
 /**
  * Created by yanan on 16/6/28.
  */
-public interface YanldArticleDao {
-    long insertArticle(YanldArticleDO yanldArticleDO);
+public interface YanldArticleDao extends BaseDao {
+    Long insertArticle(YanldArticleDO yanldArticleDO);
 
-    long deleteArticle(long id);
+    Long deleteArticle(Long id);
 
-    long logicDeleteArticle(long id);
+    Long logicDeleteArticle(Long id);
 
-    long updateArticle(YanldArticleDO yanldArticleDO);
+    Long updateArticle(YanldArticleDO yanldArticleDO);
 
-    YanldArticleDO selectArticle(long id);
+    YanldArticleDO selectArticle(Long id);
 
-    List<YanldArticleDO> selectArticles(YanldArticleQuery query);
+    List<YanldArticleDO> selectArticleQuery(YanldArticleQuery query);
 
     List<YanldArticleDO> selectArticlesByIds(List<Long> ids);
 
-    long selectArticleCount(YanldArticleQuery query);
+    Long selectArticleCount(YanldArticleQuery query);
 }

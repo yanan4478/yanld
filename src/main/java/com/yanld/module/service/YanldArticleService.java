@@ -9,19 +9,19 @@ import java.util.List;
  * Created by yanan on 16/6/28.
  */
 public interface YanldArticleService {
-    long insertArticle(YanldArticleDO yanldArticleDO);
+    Long insertArticle(YanldArticleDO yanldArticleDO) throws Exception;
 
-    long deleteArticle(long id);
+    Long deleteArticle(Long id) throws Exception;
 
-    long logicDeleteArticle(long id);
+    Long logicDeleteArticle(Long id) throws Exception;
 
-    long updateArticle(YanldArticleDO yanldArticleDO);
+    Long updateArticle(YanldArticleDO yanldArticleDO) throws Exception;
 
-    YanldArticleDO selectArticle(long id);
+    YanldArticleDO selectArticle(Long id) throws Exception;
 
-    List<YanldArticleDO> selectArticles(YanldArticleQuery query);
+    List<YanldArticleDO> selectArticleQuery(YanldArticleQuery query) throws Exception;
 
-    List<YanldArticleDO> selectArticlesByIds(List<Long> ids);
+    List<YanldArticleDO> selectArticlesByIds(List<Long> ids) throws Exception;
 
-    long selectArticleCount(YanldArticleQuery query);
+    Long selectArticleCount(YanldArticleQuery query) throws Exception;
 }

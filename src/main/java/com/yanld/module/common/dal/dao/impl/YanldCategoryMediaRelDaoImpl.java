@@ -1,6 +1,6 @@
 package com.yanld.module.common.dal.dao.impl;
 
-import com.yanld.module.common.dal.dao.BaseDao;
+import com.yanld.module.common.dal.dao.AbstractDao;
 import com.yanld.module.common.dal.dao.YanldCategoryMediaRelDao;
 import com.yanld.module.common.dal.dataobject.YanldCategoryMediaRelDO;
 import com.yanld.module.common.dal.mapper.YanldCategoryMediaRelMapper;
@@ -13,7 +13,7 @@ import java.util.List;
  * Created by yanan on 16/6/27.
  */
 @Repository
-public class YanldCategoryMediaRelDaoImpl extends BaseDao implements YanldCategoryMediaRelDao
+public class YanldCategoryMediaRelDaoImpl extends AbstractDao implements YanldCategoryMediaRelDao
 {
     @Override
     public long insertCategoryMediaRel() {

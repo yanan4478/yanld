@@ -23,11 +23,15 @@ public class Home4Controller {
 
     @RequestMapping({"/hehe"})
     public String showHomePage(Map<String, Object> model) {
-        YanldArticleDO articleDO = yanldUserService.selectArticle(1);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(articleDO.getCreateTime());
-        articleDO.setArticleTitle(date);
-        model.put("articleDO", articleDO);
-        return "article";
+        try {
+            YanldArticleDO articleDO = yanldUserService.selectArticle(1l);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String date = sdf.format(articleDO.getCreateTime());
+            articleDO.setArticleTitle(date);
+            model.put("articleDO", articleDO);
+            return "article";
+        } catch (Exception e) {
+            return "redirect:error";
+        }
     }
 }

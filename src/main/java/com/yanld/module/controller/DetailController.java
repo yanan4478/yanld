@@ -23,8 +23,12 @@ public class DetailController {
     @RequestMapping({"/detail/article/{articleId:\\d+}"})
     public String showIndex(Map<String, Object> model,
                             @PathVariable("articleId") long articleId) {
-        YanldDetailArticleBO detailArticleBO = detailService.getDetailArticleBO(articleId);
-        model.put("detailArticleBO", detailArticleBO);
-        return "detailArticle";
+        try {
+            YanldDetailArticleBO detailArticleBO = detailService.getDetailArticleBO(articleId);
+            model.put("detailArticleBO", detailArticleBO);
+            return "detailArticle";
+        } catch (Exception e) {
+            return "redirect:error";
+        }
     }
 }

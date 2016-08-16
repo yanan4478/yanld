@@ -14,71 +14,72 @@ import java.util.List;
 /**
  * Created by yanan on 16/8/4.
  */
-public class ArticleServiceTest extends BaseTest{
+public class ArticleServiceTest extends BaseTest {
     @Resource
     private YanldArticleService articleService;
 
     @Test
-    public void testInsert() {
+    public void testInsert() throws Exception {
         YanldArticleDO articleDO = new YanldArticleDO();
         articleDO.setArticleTitle("我是文章标题，哇咔咔");
         articleDO.setArticleCoverImage("http://upload-images.jianshu.io/upload_images/1529049-34634a6a3b11b599.jpeg?imageMogr2/auto-orient/strip%7CimageView2/1/w/300/h/300");
         articleDO.setArticleReadNum(56);
-        articleDO.setUserId(2);
+        articleDO.setUserId(1);
         articleService.insertArticle(articleDO);
     }
 
     @Test
-    public void testDelete() {
-        //articleService.deleteArticle(201);
-        articleService.logicDeleteArticle(301);
+    public void testDelete() throws Exception {
+        //articleService.deleteArticle(801l);
+        articleService.logicDeleteArticle(301l);
     }
 
     @Test
-     public void testUpdate() {
+    public void testUpdate() throws Exception {
         YanldArticleDO articleDO = new YanldArticleDO();
         articleDO.setArticleContent("我呵呵呵");
         articleDO.setArticleCoverImage("http://upload-images.jianshu.io/upload_images/1529049-34634a6a3b11b599.jpeg?imageMogr2/auto-orient/strip%7CimageView2/1/w/300/h/300");
         articleDO.setArticleTitle("我豆豆豆");
         articleDO.setArticleReadNum(1002);
         articleDO.setUserId(1);
-        articleDO.setId(301);
+        articleDO.setId(701);
         articleService.updateArticle(articleDO);
     }
 
     @Test
-    public void testSelectById() {
-        YanldArticleDO articleDO1 = articleService.selectArticle(201);
-        YanldArticleDO articleDO2 = articleService.selectArticle(401);
+    public void testSelectById() throws Exception {
+        //YanldArticleDO articleDO1 = articleService.selectArticle(201l);
+        YanldArticleDO articleDO2 = articleService.selectArticle(801l);
         System.out.println("end");
     }
 
     @Test
-    public void testSelectByIds() {
+    public void testSelectByIds() throws Exception {
         List<Long> ids = new ArrayList<>();
-        ids.add(201l);
-        ids.add(401l);
+        //ids.add(201l);
+        //ids.add(301l);
+        //ids.add(401l);
         List<YanldArticleDO> articleDOs = articleService.selectArticlesByIds(ids);
         System.out.println("end");
     }
 
     @Test
-    public void testSelectByQuery() {
+    public void testSelectByQuery() throws Exception {
         YanldArticleQuery query = new YanldArticleQuery();
         query.setUserId(2l);
         //query.setLimit(10);
         //query.setOffset(0);
-        List<YanldArticleDO> articleDOs = articleService.selectArticles(query);
+        List<YanldArticleDO> articleDOs = articleService.selectArticleQuery(query);
         System.out.println("end");
     }
 
     @Test
-    public void testSelectCount() {
+    public void testSelectCount() throws Exception {
         YanldArticleQuery query = new YanldArticleQuery();
         query.setUserId(1l);
-        query.setLimit(10);
+        query.setLimit(5);
         query.setOffset(0);
         long count = articleService.selectArticleCount(query);
-        System.out.println("end");
+        System.out.println(count);
     }
 }

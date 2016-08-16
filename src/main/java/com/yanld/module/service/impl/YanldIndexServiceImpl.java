@@ -20,7 +20,7 @@ import java.util.List;
  * Created by yanan on 16/7/18.
  */
 @Service
-public class YanldIndexServiceImpl extends BaseService implements YanldIndexService {
+public class YanldIndexServiceImpl extends AbstractService implements YanldIndexService {
     @Resource
     private YanldCategoryService categoryService;
     @Resource
@@ -31,7 +31,7 @@ public class YanldIndexServiceImpl extends BaseService implements YanldIndexServ
     private YanldUserService userService;
 
     @Override
-    public YanldIndexBO getIndexBO(int category, int page) {
+    public YanldIndexBO getIndexBO(int category, int page) throws Exception{
         YanldIndexBO yanldIndexBO = new YanldIndexBO();
         List<YanldCategoryBO> categoryBOs = getCategories();
         List<YanldIndexArticleBO> indexArticleBOs = getIndexArticles(category, page);
@@ -52,7 +52,7 @@ public class YanldIndexServiceImpl extends BaseService implements YanldIndexServ
         return categoryBOs;
     }
 
-    private List<YanldIndexArticleBO> getIndexArticles(long category, int page) {
+    private List<YanldIndexArticleBO> getIndexArticles(long category, int page) throws Exception{
         List<YanldIndexArticleBO> indexArticleBOs = new ArrayList<>();
         YanldCategoryMediaRelQuery relQuery = new YanldCategoryMediaRelQuery();
         relQuery.setCategoryId(category);

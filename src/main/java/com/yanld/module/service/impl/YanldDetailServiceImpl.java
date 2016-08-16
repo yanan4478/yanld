@@ -22,7 +22,7 @@ public class YanldDetailServiceImpl implements YanldDetailService {
     private YanldUserService userService;
 
     @Override
-    public YanldDetailArticleBO getDetailArticleBO(long articleId) {
+    public YanldDetailArticleBO getDetailArticleBO(long articleId) throws Exception{
         YanldArticleDO articleDO = articleService.selectArticle(articleId);
         YanldDetailArticleBO articleBO = new YanldDetailArticleBO();
         articleBO.setArticleTitle(articleDO.getArticleTitle());

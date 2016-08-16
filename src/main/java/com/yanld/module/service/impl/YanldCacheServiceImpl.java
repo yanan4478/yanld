@@ -1,13 +1,13 @@
 package com.yanld.module.service.impl;
 
 import com.google.common.base.Splitter;
-import com.yanld.module.common.dal.dao.BaseDao;
+import com.yanld.module.common.dal.dao.AbstractDao;
+import com.yanld.module.common.dal.dao.impl.YanldDaoProxyImpl;
 import com.yanld.module.common.dal.dataobject.BaseDO;
 import com.yanld.module.common.dal.query.BaseQuery;
 import com.yanld.module.common.util.BeanFactoryUtils;
 import com.yanld.module.common.util.RedisUtils;
 import com.yanld.module.common.util.StackTraceUtils;
-import com.yanld.module.service.BaseService;
 import com.yanld.module.service.YanldCacheService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,16 +47,19 @@ public class YanldCacheServiceImpl implements YanldCacheService, ApplicationList
             isStart = true;
             List<String> items = Splitter.on(",").omitEmptyStrings().trimResults().splitToList(YANLD_CACHE_ARRAY);
             for (String item : items) {
-                String serviceName = getInvokeName(item, YANLD_SERVICE);
+                String daoName = getInvokeName(item, YANLD_DAO);
                 String queryName = getInvokeName(item, YANLD_QUERY);
                 String selectCountMethodName = getInvokeName(item, YANLD_SELECTCOUNT_METHOD);
                 String selectListMethodName = getInvokeName(item, YANLD_SELECTLIST_METHOD);
                 try {
-                    BaseService service = BeanFactoryUtils.getBean(serviceName);
+                    AbstractDao service = BeanFactoryUtils.getBean(daoName);
                     Class<?> queryClass = Class.forName(queryName);
                     BaseQuery query = (BaseQuery) queryClass.newInstance();
                     Method selectCountMethod = service.getClass().getDeclaredMethod(selectCountMethodName, queryClass);
                     long count = (long) selectCountMethod.invoke(service, query);
+                    if (count == 0) {
+                        return;
+                    }
                     Method selectListMethod = service.getClass().getDeclaredMethod(selectListMethodName, queryClass);
                     for (int i = 0; i <= count / 100; i++) {
                         query.setLimit(100);
@@ -64,7 +67,7 @@ public class YanldCacheServiceImpl implements YanldCacheService, ApplicationList
                         List<BaseDO> dtoList = (List<BaseDO>) selectListMethod.invoke(service, query);
                         Map<String, List<String>> listKeyMap = new HashMap<>();
                         for (BaseDO dto : dtoList) {
-                            List<String> listKeys = BaseDao.getListKeys(dto, query);
+                            List<String> listKeys = YanldDaoProxyImpl.getListKeys(dto, query);
                             for (String listKey : listKeys) {
                                 if (listKeyMap.get(listKey) == null) {
                                     List<String> ids = new ArrayList<>();
@@ -79,7 +82,7 @@ public class YanldCacheServiceImpl implements YanldCacheService, ApplicationList
                     }
                 } catch (Exception e) {
                     logger.error(StackTraceUtils.getStackTrance(e));
-                    logger.error("no class for " + serviceName);
+                    logger.error("no class for " + daoName);
                 }
             }
         }

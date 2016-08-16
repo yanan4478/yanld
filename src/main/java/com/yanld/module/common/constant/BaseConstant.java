@@ -12,4 +12,8 @@ public class BaseConstant {
 
     public static final short IS_DELETED = 1;
 
+    public static final String YANLD_DO_TEMPLATE = "com.yanld.module.common.dal.dataobject.Yanld{0}DO";
+
+    public static final String YANLD_QUERY_TEMPLATE = "com.yanld.module.common.dal.query.Yanld{0}Query";
+
 }

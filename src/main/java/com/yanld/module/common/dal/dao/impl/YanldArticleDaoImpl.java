@@ -1,15 +1,13 @@
 package com.yanld.module.common.dal.dao.impl;
 
-import com.google.common.collect.Lists;
-import com.yanld.module.common.dal.dao.BaseDao;
+import com.yanld.module.common.annotation.OperateInRedis;
+import com.yanld.module.common.dal.dao.AbstractDao;
 import com.yanld.module.common.dal.dao.YanldArticleDao;
 import com.yanld.module.common.dal.dataobject.YanldArticleDO;
 import com.yanld.module.common.dal.mapper.YanldArticleMapper;
 import com.yanld.module.common.dal.query.YanldArticleQuery;
-import com.yanld.module.common.util.DataUtils;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,79 +16,41 @@ import java.util.Map;
  * Created by yanan on 16/6/27.
  */
 @Repository
-public class YanldArticleDaoImpl extends BaseDao implements YanldArticleDao {
+public class YanldArticleDaoImpl extends AbstractDao implements YanldArticleDao {
     @Override
-    public long insertArticle(YanldArticleDO yanldArticleDO) {
-        long result = sqlSession.getMapper(YanldArticleMapper.class).insertArticle(yanldArticleDO);
-        if(result > 0) {
-            setObjectToRedisWithList(yanldArticleDO);
-        }
+    @OperateInRedis
+    public Long insertArticle(YanldArticleDO yanldArticleDO) {
+        sqlSession.getMapper(YanldArticleMapper.class).insertArticle(yanldArticleDO);
         return yanldArticleDO.getId();
     }
 
     @Override
-    public long deleteArticle(long id) {
-        YanldArticleDO articleDO = selectArticle(id);
-        if(articleDO == null) {
-            return 0;
-        }
-        long result = sqlSession.getMapper(YanldArticleMapper.class).deleteArticle(id);
-        if(result > 0) {
-            deleteObjectInRedis(articleDO);
-        }
-        return result;
+    @OperateInRedis
+    public Long deleteArticle(Long id) {
+        return sqlSession.getMapper(YanldArticleMapper.class).deleteArticle(id);
     }
 
     @Override
-    public long logicDeleteArticle(long id) {
-        YanldArticleDO articleDO = selectArticle(id);
-        if(articleDO == null) {
-            return 0;
-        }
-        long result = sqlSession.getMapper(YanldArticleMapper.class).logicDeleteArticle(id);
-        if(result > 0) {
-            deleteObjectInRedis(articleDO);
-        }
-        return result;
+    @OperateInRedis
+    public Long logicDeleteArticle(Long id) {
+        return sqlSession.getMapper(YanldArticleMapper.class).logicDeleteArticle(id);
     }
 
     @Override
-    public long updateArticle(YanldArticleDO yanldArticleDO) {
-        YanldArticleDO articleDO = selectArticle(yanldArticleDO.getId());
-        if(articleDO == null) {
-            return 0;
-        }
-        long result = sqlSession.getMapper(YanldArticleMapper.class).updateArticle(yanldArticleDO);
-        if(result > 0) {
-            setObjectToRedis(yanldArticleDO);
-        }
-        return result;
+    @OperateInRedis
+    public Long updateArticle(YanldArticleDO yanldArticleDO) {
+        return sqlSession.getMapper(YanldArticleMapper.class).updateArticle(yanldArticleDO);
     }
 
     @Override
-    public YanldArticleDO selectArticle(long id) {
-        YanldArticleDO yanldArticleDO = getObjectInRedis(getObjectKeyInRedis(this, id), new YanldArticleDO());
-        if (yanldArticleDO != null) {
-            return yanldArticleDO;
-        }
-        YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
-        yanldArticleDO = mapper.selectArticle(id);
-        if (yanldArticleDO != null) {
-            setObjectToRedis(yanldArticleDO);
-        }
-        return yanldArticleDO;
+    @OperateInRedis
+    public YanldArticleDO selectArticle(Long id) {
+        return sqlSession.getMapper(YanldArticleMapper.class).selectArticle(id);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @OperateInRedis
     public List<YanldArticleDO> selectArticlesByIds(List<Long> ids) {
-        if (ids.isEmpty()) {
-            return Lists.newArrayList();
-        }
-        List<YanldArticleDO> yanldArticleDOs = getObjectListInRedis(toRedisIds(ids, new YanldArticleDO()), new YanldArticleDO());
-        if(!DataUtils.isBlank(yanldArticleDOs)) {
-            return yanldArticleDOs;
-        }
         YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
         Map<String, List<Long>> idsMap = new HashMap<>();
         idsMap.put("ids", ids);
@@ -98,23 +58,14 @@ public class YanldArticleDaoImpl extends BaseDao implements YanldArticleDao {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<YanldArticleDO> selectArticles(YanldArticleQuery query) {
-        List<YanldArticleDO> yanldArticleDOs = getObjectListInRedis(query, new YanldArticleDO());
-        if(!DataUtils.isBlank(yanldArticleDOs)) {
-            return yanldArticleDOs;
-        }
-        YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
-        return mapper.selectArticles(query);
+    @OperateInRedis
+    public List<YanldArticleDO> selectArticleQuery(YanldArticleQuery query) {
+        return sqlSession.getMapper(YanldArticleMapper.class).selectArticles(query);
     }
 
     @Override
-    public long selectArticleCount(YanldArticleQuery query) {
-        long count = getObjectCount(query);
-        if(count != 0) {
-            return count;
-        }
-        YanldArticleMapper mapper = sqlSession.getMapper(YanldArticleMapper.class);
-        return mapper.selectArticleCount(query);
+    @OperateInRedis
+    public Long selectArticleCount(YanldArticleQuery query) {
+        return sqlSession.getMapper(YanldArticleMapper.class).selectArticleCount(query);
     }
 }

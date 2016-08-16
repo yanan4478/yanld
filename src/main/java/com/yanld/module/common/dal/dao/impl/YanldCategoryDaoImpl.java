@@ -2,7 +2,7 @@ package com.yanld.module.common.dal.dao.impl;
 
 import com.yanld.module.common.dal.dao.YanldCategoryDao;
 import com.yanld.module.common.dal.mapper.YanldCategoryMapper;
-import com.yanld.module.common.dal.dao.BaseDao;
+import com.yanld.module.common.dal.dao.AbstractDao;
 import com.yanld.module.common.dal.dataobject.YanldCategoryDO;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * Created by yanan on 16/7/18.
  */
 @Repository
-public class YanldCategoryDaoImpl extends BaseDao implements YanldCategoryDao {
+public class YanldCategoryDaoImpl extends AbstractDao implements YanldCategoryDao {
     @Override
     public long insertCategory() {
         YanldCategoryMapper mapper = sqlSession.getMapper(YanldCategoryMapper.class);

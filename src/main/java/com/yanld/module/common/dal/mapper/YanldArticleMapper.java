@@ -10,13 +10,13 @@ import java.util.Map;
  * Created by yanan on 16/6/28.
  */
 public interface YanldArticleMapper {
-    long insertArticle(YanldArticleDO yanldArticleDO);
+    Long insertArticle(YanldArticleDO yanldArticleDO);
 
-    int deleteArticle(long id);
+    Long deleteArticle(long id);
 
-    int logicDeleteArticle(long id);
+    Long logicDeleteArticle(long id);
 
-    int updateArticle(YanldArticleDO yanldArticleDO);
+    Long updateArticle(YanldArticleDO yanldArticleDO);
 
     YanldArticleDO selectArticle(long id);
 
@@ -24,5 +24,5 @@ public interface YanldArticleMapper {
 
     List<YanldArticleDO> selectArticlesByIds(Map<String, List<Long>> idsMap);
 
-    long selectArticleCount(YanldArticleQuery query);
+    Long selectArticleCount(YanldArticleQuery query);
 }

@@ -31,7 +31,7 @@ public class ArticleDaoTest extends BaseTest {
 
     @Test
     public void testSelect() {
-        YanldArticleDO articleDO = yanldArticleDao.selectArticle(301);
+        YanldArticleDO articleDO = yanldArticleDao.selectArticle(301l);
         Date date = new Date();
         System.out.println(date);
         int a = 1;

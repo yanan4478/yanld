@@ -1,6 +1,6 @@
 package com.yanld.module.common.dal.dao.impl;
 
-import com.yanld.module.common.dal.dao.BaseDao;
+import com.yanld.module.common.dal.dao.AbstractDao;
 import com.yanld.module.common.dal.dao.YanldUserDao;
 import com.yanld.module.common.dal.dataobject.YanldUserDO;
 import com.yanld.module.common.dal.mapper.YanldUserMapper;
@@ -12,7 +12,7 @@ import java.util.List;
  * Created by yanan on 16/6/27.
  */
 @Repository
-public class YanldUserDaoImpl extends BaseDao implements YanldUserDao
+public class YanldUserDaoImpl extends AbstractDao implements YanldUserDao
 {
     @Override
     public long insertUser() {
