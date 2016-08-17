@@ -1,4 +1,4 @@
-package com.yanld.module.common.dal.dao.impl;
+package com.yanld.module.common.proxy;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -6,7 +6,6 @@ import com.yanld.module.common.annotation.OperateInRedis;
 import com.yanld.module.common.constant.BaseConstant;
 import com.yanld.module.common.constant.DaoOptEnum;
 import com.yanld.module.common.dal.dao.BaseDao;
-import com.yanld.module.common.dal.dao.YanldDaoProxy;
 import com.yanld.module.common.dal.dataobject.BaseDO;
 import com.yanld.module.common.dal.query.BaseQuery;
 import com.yanld.module.common.exception.DaoMethodNotExistException;
@@ -18,26 +17,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by yanan on 16/8/14.
+ * Created by yanan on 16/8/17.
  */
-public class YanldDaoProxyImpl implements YanldDaoProxy {
-    private static final Logger logger = LoggerFactory.getLogger(YanldDaoProxyImpl.class);
+public class DaoProxy implements InvocationHandler {
+    private static final Logger logger = LoggerFactory.getLogger(InvocationHandler.class);
 
-    @Resource
+    private BaseDao dao;
+
     private RedisTemplate<Serializable, Serializable> redisTemplate;
 
-    @SuppressWarnings("unchecked")
-    public <P, R> R invoke(BaseDao dao, P param, Class<R> resultClazz) throws Exception {
-        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+    public DaoProxy(BaseDao dao, RedisTemplate<Serializable, Serializable> redisTemplate) {
+        this.dao = dao;
+        this.redisTemplate = redisTemplate;
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        method = dao.getClass().getMethod(method.getName(), method.getParameterTypes());
+        String methodName = method.getName();
         DaoOptEnum opt = null;
         for (DaoOptEnum optEnum : DaoOptEnum.values()) {
             if (methodName.matches(optEnum.getReg())) {
@@ -48,92 +54,87 @@ public class YanldDaoProxyImpl implements YanldDaoProxy {
         if (opt == null) {
             throw new DaoMethodNotExistException("the dao method " + methodName + "is not exist!!");
         }
-        R result = null;
+        Object result = null;
         switch (opt) {
             case INSERT:
-                result = (R) doInsert(dao, methodName, param);
+                result = doInsert(dao, method, args);
                 break;
             case LOGIC_DELETE:
-                result = (R) doLogicDelete(dao, methodName, (Long) param);
+                result = doLogicDelete(dao, method, args);
                 break;
             case DELETE:
-                result = (R) doDelete(dao, methodName, (Long) param);
+                result = doDelete(dao, method, args);
                 break;
             case UPDATE:
-                result = (R) doUpdate(dao, methodName, param);
+                result = doUpdate(dao, method, args);
                 break;
             case SELECT:
-                result = doSelect(dao, methodName, (Long) param, resultClazz);
+                result = doSelect(dao, method, args);
                 break;
             case SELECT_IDS:
-                result = doSelectIds(dao, methodName, (List<Long>) param);
+                result = doSelectIds(dao, method, args);
                 break;
             case SELECT_QUERY:
-                result = doSelectQuery(dao, methodName, (BaseQuery) param);
+                result = doSelectQuery(dao, method, args);
                 break;
             case SELECT_COUNT:
-                result = (R) doSelectCount(dao, methodName, param);
+                result = doSelectCount(dao, method, args);
                 break;
             default:
         }
         return result;
     }
 
-    private <P> Long doInsert(BaseDao dao, String methodName, P param) throws Exception {
-        Method method = dao.getClass().getDeclaredMethod(methodName, param.getClass());
-        Long result = (Long) method.invoke(dao, param);
+    private Long doInsert(BaseDao dao, Method method, Object[] args) throws Exception {
+        Long result = (Long) method.invoke(dao, args);
         if (method.isAnnotationPresent(OperateInRedis.class) && result > 0) {
-            setObjectToRedisWithList((BaseDO) param);
+            setObjectToRedisWithList((BaseDO) args[0]);
         }
         return result;
     }
 
-    private Long doLogicDelete(BaseDao dao, String methodName, Long param) throws Exception {
-        Method method = dao.getClass().getDeclaredMethod(methodName, param.getClass());
-        Long result = (Long) method.invoke(dao, param);
+    private Long doLogicDelete(BaseDao dao, Method method, Object[] args) throws Exception {
+        Long result = (Long) method.invoke(dao, args);
         if (method.isAnnotationPresent(OperateInRedis.class) && result > 0) {
-            String dtoName = MessageFormat.format(BaseConstant.YANLD_DO_TEMPLATE, methodName.replace("logicDelete", ""));
+            String dtoName = MessageFormat.format(BaseConstant.YANLD_DO_TEMPLATE, method.getName().replace("logicDelete", ""));
             Class<?> clazz = Class.forName(dtoName);
             BaseDO baseDO = (BaseDO) clazz.newInstance();
-            baseDO = getObjectInRedis(getObjectKeyInRedis(dao, param), baseDO);
+            baseDO = getObjectInRedis(getObjectKeyInRedis(dao, (long) args[0]), baseDO);
             deleteObjectInRedis(baseDO);
         }
         return result;
     }
 
-    private Long doDelete(BaseDao dao, String methodName, Long param) throws Exception {
-        Method method = dao.getClass().getDeclaredMethod(methodName, param.getClass());
-        Long result = (Long) method.invoke(dao, param);
+    private Long doDelete(BaseDao dao, Method method, Object[] args) throws Exception {
+        Long result = (Long) method.invoke(dao, args);
         if (method.isAnnotationPresent(OperateInRedis.class) && result > 0) {
-            String dtoName = MessageFormat.format(BaseConstant.YANLD_DO_TEMPLATE, methodName.replace("delete", ""));
+            String dtoName = MessageFormat.format(BaseConstant.YANLD_DO_TEMPLATE, method.getName().replace("delete", ""));
             Class<?> clazz = Class.forName(dtoName);
             BaseDO baseDO = (BaseDO) clazz.newInstance();
-            baseDO = getObjectInRedis(getObjectKeyInRedis(dao, param), baseDO);
+            baseDO = getObjectInRedis(getObjectKeyInRedis(dao, (long) args[0]), baseDO);
             deleteObjectInRedis(baseDO);
         }
         return result;
     }
 
-    private <P> Long doUpdate(BaseDao dao, String methodName, P param) throws Exception {
-        Method method = dao.getClass().getDeclaredMethod(methodName, param.getClass());
-        Long result = (Long) method.invoke(dao, param);
+    private Long doUpdate(BaseDao dao, Method method, Object[] args) throws Exception {
+        Long result = (Long) method.invoke(dao, args);
         if (method.isAnnotationPresent(OperateInRedis.class) && result > 0) {
-            setObjectToRedis((BaseDO) param);
+            setObjectToRedis((BaseDO) args[0]);
         }
         return result;
     }
 
     @SuppressWarnings("unchecked")
-    private <R> R doSelect(BaseDao dao, String methodName, Long param, Class<R> resultClazz) throws Exception {
-        Method method = dao.getClass().getDeclaredMethod(methodName, param.getClass());
+    private Object doSelect(BaseDao dao, Method method, Object[] args) throws Exception {
         boolean operateInRedis = method.isAnnotationPresent(OperateInRedis.class);
         if (operateInRedis) {
-            BaseDO dto = getObjectInRedis(getObjectKeyInRedis(dao, param), (BaseDO) resultClazz.newInstance());
+            BaseDO dto = getObjectInRedis(getObjectKeyInRedis(dao, (Long) args[0]), (BaseDO) method.getReturnType().newInstance());
             if (dto != null) {
-                return (R) dto;
+                return dto;
             }
         }
-        R result = (R) method.invoke(dao, param);
+        Object result =  method.invoke(dao, (long) args[0]);
         if (operateInRedis) {
             if (result != null) {
                 setObjectToRedis((BaseDO) result);
@@ -143,48 +144,45 @@ public class YanldDaoProxyImpl implements YanldDaoProxy {
     }
 
     @SuppressWarnings("unchecked")
-    private <R> R doSelectIds(BaseDao dao, String methodName, List<Long> param) throws Exception {
+    private List doSelectIds(BaseDao dao, Method method, Object[] args) throws Exception {
+        List<String> param = (List<String>) args[0];
         if (param.isEmpty()) {
-            return (R) Lists.newArrayList();
+            return Lists.newArrayList();
         }
-        Method method = dao.getClass().getDeclaredMethod(methodName, List.class);
         if (method.isAnnotationPresent(OperateInRedis.class)) {
-            String dtoName = MessageFormat.format(BaseConstant.YANLD_DO_TEMPLATE, methodName.replaceAll("select|sByIds", ""));
+            String dtoName = MessageFormat.format(BaseConstant.YANLD_DO_TEMPLATE, method.getName().replaceAll("select|sByIds", ""));
             Class<?> clazz = Class.forName(dtoName);
             BaseDO baseDO = (BaseDO) clazz.newInstance();
             List<BaseDO> baseDOs = getObjectListInRedis(toRedisIds(param, baseDO), baseDO);
             if (!DataUtils.isBlank(baseDOs)) {
-                return (R) baseDOs;
+                return baseDOs;
             }
         }
-        return (R) method.invoke(dao, param);
+        return (List) method.invoke(dao, param);
     }
 
     @SuppressWarnings("unchecked")
-    private <R> R doSelectQuery(BaseDao dao, String methodName, BaseQuery param) throws Exception {
-        String queryName = MessageFormat.format(BaseConstant.YANLD_QUERY_TEMPLATE, methodName.replaceAll("select|Query", ""));
-        Method method = dao.getClass().getDeclaredMethod(methodName, Class.forName(queryName));
+    private Object doSelectQuery(BaseDao dao, Method method, Object[] args) throws Exception {
         if (method.isAnnotationPresent(OperateInRedis.class)) {
-            String dtoName = MessageFormat.format(BaseConstant.YANLD_DO_TEMPLATE, methodName.replaceAll("select|Query", ""));
+            String dtoName = MessageFormat.format(BaseConstant.YANLD_DO_TEMPLATE, method.getName().replaceAll("select|Query", ""));
             Class<?> clazz = Class.forName(dtoName);
             BaseDO baseDO = (BaseDO) clazz.newInstance();
-            List<BaseDO> baseDOs = getObjectListInRedis(param, baseDO);
+            List<BaseDO> baseDOs = getObjectListInRedis((BaseQuery) args[0], baseDO);
             if (!DataUtils.isBlank(baseDOs)) {
-                return (R) baseDOs;
+                return baseDOs;
             }
         }
-        return (R) method.invoke(dao, param);
+        return method.invoke(dao, (BaseQuery) args[0]);
     }
 
-    private <P> Long doSelectCount(BaseDao dao, String methodName, P param) throws Exception {
-        Method method = dao.getClass().getDeclaredMethod(methodName, param.getClass());
+    private Long doSelectCount(BaseDao dao, Method method, Object[] args) throws Exception {
         if (method.isAnnotationPresent(OperateInRedis.class)) {
-            long count = getObjectCount((BaseQuery) param);
+            long count = getObjectCount((BaseQuery) args[0]);
             if (count != 0) {
                 return count;
             }
         }
-        return (Long) method.invoke(dao, param);
+        return (Long) method.invoke(dao, (BaseQuery) args[0]);
     }
 
     private <T extends BaseDO> int setObjectToRedis(String objectKey, T dto) {
@@ -217,6 +215,9 @@ public class YanldDaoProxyImpl implements YanldDaoProxy {
     }
 
     private int deleteObjectInRedis(BaseDO dto) {
+        if(dto == null) {
+            return 0;
+        }
         return deleteObjectFromList(dto) &
                 RedisUtils.delete(redisTemplate, dto.getClass().getSimpleName() + ":" + dto.getId());
     }

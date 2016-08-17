@@ -2,9 +2,9 @@ package com.yanld.module.service.impl;
 
 import com.google.common.base.Splitter;
 import com.yanld.module.common.dal.dao.AbstractDao;
-import com.yanld.module.common.dal.dao.impl.YanldDaoProxyImpl;
 import com.yanld.module.common.dal.dataobject.BaseDO;
 import com.yanld.module.common.dal.query.BaseQuery;
+import com.yanld.module.common.proxy.DaoProxy;
 import com.yanld.module.common.util.BeanFactoryUtils;
 import com.yanld.module.common.util.RedisUtils;
 import com.yanld.module.common.util.StackTraceUtils;
@@ -67,7 +67,7 @@ public class YanldCacheServiceImpl implements YanldCacheService, ApplicationList
                         List<BaseDO> dtoList = (List<BaseDO>) selectListMethod.invoke(service, query);
                         Map<String, List<String>> listKeyMap = new HashMap<>();
                         for (BaseDO dto : dtoList) {
-                            List<String> listKeys = YanldDaoProxyImpl.getListKeys(dto, query);
+                            List<String> listKeys = DaoProxy.getListKeys(dto, query);
                             for (String listKey : listKeys) {
                                 if (listKeyMap.get(listKey) == null) {
                                     List<String> ids = new ArrayList<>();

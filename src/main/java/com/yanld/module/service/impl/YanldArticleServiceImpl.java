@@ -1,7 +1,6 @@
 package com.yanld.module.service.impl;
 
 import com.yanld.module.common.dal.dao.YanldArticleDao;
-import com.yanld.module.common.dal.dao.YanldDaoProxy;
 import com.yanld.module.common.dal.dataobject.YanldArticleDO;
 import com.yanld.module.common.dal.query.YanldArticleQuery;
 import com.yanld.module.service.AbstractService;
@@ -20,49 +19,46 @@ public class YanldArticleServiceImpl extends AbstractService implements YanldArt
     @Resource
     private YanldArticleDao yanldArticleDao;
 
-    @Resource
-    private YanldDaoProxy yanldDaoProxy;
-
     @Override
     public Long insertArticle(YanldArticleDO yanldArticleDO) throws Exception {
         fillDOBaseInfo(yanldArticleDO);
-        return yanldDaoProxy.invoke(yanldArticleDao, yanldArticleDO, Long.class);
+        return getProxyDao(yanldArticleDao).insertArticle(yanldArticleDO);
     }
 
     @Override
     public Long deleteArticle(Long id) throws Exception {
-        return yanldDaoProxy.invoke(yanldArticleDao, id, Long.class);
+        return getProxyDao(yanldArticleDao).deleteArticle(id);
     }
 
     @Override
     public Long logicDeleteArticle(Long id) throws Exception {
-        return yanldDaoProxy.invoke(yanldArticleDao, id, Long.class);
+        return getProxyDao(yanldArticleDao).logicDeleteArticle(id);
     }
 
     @Override
     public Long updateArticle(YanldArticleDO yanldArticleDO) throws Exception {
-        return yanldDaoProxy.invoke(yanldArticleDao, yanldArticleDO, Long.class);
+        return getProxyDao(yanldArticleDao).updateArticle(yanldArticleDO);
     }
 
     @Override
     public YanldArticleDO selectArticle(Long id) throws Exception {
-        return yanldDaoProxy.invoke(yanldArticleDao, id, YanldArticleDO.class);
+        return getProxyDao(yanldArticleDao).selectArticle(id);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<YanldArticleDO> selectArticleQuery(YanldArticleQuery query) throws Exception {
-        return yanldDaoProxy.invoke(yanldArticleDao, query, List.class);
+        return getProxyDao(yanldArticleDao).selectArticleQuery(query);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<YanldArticleDO> selectArticlesByIds(List<Long> ids) throws Exception {
-        return yanldDaoProxy.invoke(yanldArticleDao, ids, List.class);
+        return getProxyDao(yanldArticleDao).selectArticlesByIds(ids);
     }
 
     @Override
     public Long selectArticleCount(YanldArticleQuery query) throws Exception {
-        return yanldDaoProxy.invoke(yanldArticleDao, query, Long.class);
+        return getProxyDao(yanldArticleDao).selectArticleCount(query);
     }
 }

@@ -30,8 +30,8 @@ public class ArticleServiceTest extends BaseTest {
 
     @Test
     public void testDelete() throws Exception {
-        //articleService.deleteArticle(801l);
-        articleService.logicDeleteArticle(301l);
+        articleService.deleteArticle(1301l);
+        //articleService.logicDeleteArticle(1301l);
     }
 
     @Test
@@ -42,23 +42,23 @@ public class ArticleServiceTest extends BaseTest {
         articleDO.setArticleTitle("我豆豆豆");
         articleDO.setArticleReadNum(1002);
         articleDO.setUserId(1);
-        articleDO.setId(701);
+        articleDO.setId(1301);
         articleService.updateArticle(articleDO);
     }
 
     @Test
     public void testSelectById() throws Exception {
         //YanldArticleDO articleDO1 = articleService.selectArticle(201l);
-        YanldArticleDO articleDO2 = articleService.selectArticle(801l);
+        YanldArticleDO articleDO2 = articleService.selectArticle(701l);
         System.out.println("end");
     }
 
     @Test
     public void testSelectByIds() throws Exception {
         List<Long> ids = new ArrayList<>();
-        //ids.add(201l);
-        //ids.add(301l);
-        //ids.add(401l);
+        ids.add(201l);
+        ids.add(301l);
+        ids.add(801l);
         List<YanldArticleDO> articleDOs = articleService.selectArticlesByIds(ids);
         System.out.println("end");
     }
@@ -80,6 +80,8 @@ public class ArticleServiceTest extends BaseTest {
         query.setLimit(5);
         query.setOffset(0);
         long count = articleService.selectArticleCount(query);
+        long count1 = articleService.selectArticleCount(new YanldArticleQuery());
         System.out.println(count);
+        System.out.println(count1);
     }
 }

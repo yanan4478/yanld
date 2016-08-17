@@ -53,6 +53,6 @@
         <property name="connectionFactory" ref="connectionFactory"/>
     </bean>
 
-    <bean id="yanldDaoProxy" class="com.yanld.module.common.dal.dao.impl.YanldDaoProxyImpl"/>
+    <bean id="proxyFactory" class="com.yanld.module.common.proxy.DaoProxyFactory"/>
 
 </beans>
