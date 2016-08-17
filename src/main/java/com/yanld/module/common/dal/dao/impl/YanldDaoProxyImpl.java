@@ -36,7 +36,7 @@ public class YanldDaoProxyImpl implements YanldDaoProxy {
     private RedisTemplate<Serializable, Serializable> redisTemplate;
 
     @SuppressWarnings("unchecked")
-    public <T, R> R invoke(BaseDao dao, T param, Class<R> resultClazz) throws Exception {
+    public <P, R> R invoke(BaseDao dao, P param, Class<R> resultClazz) throws Exception {
         String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
         DaoOptEnum opt = null;
         for (DaoOptEnum optEnum : DaoOptEnum.values()) {
