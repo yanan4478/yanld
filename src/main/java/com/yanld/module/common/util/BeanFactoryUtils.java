@@ -20,6 +20,7 @@ public class BeanFactoryUtils implements ApplicationContextAware {
         return applicationContext;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T getBean(String beanName) {
         return (T)applicationContext.getBean(beanName);
     }

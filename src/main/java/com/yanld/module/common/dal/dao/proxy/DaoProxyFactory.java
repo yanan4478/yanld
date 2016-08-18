@@ -1,4 +1,4 @@
-package com.yanld.module.common.proxy;
+package com.yanld.module.common.dal.dao.proxy;
 
 import com.yanld.module.common.dal.dao.BaseDao;
 import org.springframework.data.redis.core.RedisTemplate;

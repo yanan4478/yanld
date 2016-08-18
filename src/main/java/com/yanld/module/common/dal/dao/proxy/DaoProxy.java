@@ -1,4 +1,4 @@
-package com.yanld.module.common.proxy;
+package com.yanld.module.common.dal.dao.proxy;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;

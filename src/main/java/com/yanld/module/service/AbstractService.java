@@ -4,7 +4,7 @@ import com.yanld.module.common.constant.BaseConstant;
 import com.yanld.module.common.dal.dao.BaseDao;
 import com.yanld.module.common.dal.dataobject.BaseDO;
 import com.yanld.module.common.exception.TableNotExistException;
-import com.yanld.module.common.proxy.DaoProxyFactory;
+import com.yanld.module.common.dal.dao.proxy.DaoProxyFactory;
 
 import javax.annotation.Resource;
 import java.util.Date;
