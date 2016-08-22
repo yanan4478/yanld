@@ -45,6 +45,9 @@ public class YanldCacheServiceImpl implements YanldCacheService, ApplicationList
     public void onApplicationEvent(ContextRefreshedEvent applicationEvent) {
         if (!isStart) {
             isStart = true;
+            if(!RedisUtils.isEmpty(redisTemplate)) {
+                RedisUtils.flushAll(redisTemplate);
+            }
             List<String> items = Splitter.on(",").omitEmptyStrings().trimResults().splitToList(YANLD_CACHE_ARRAY);
             for (String item : items) {
                 String daoName = getInvokeName(item, YANLD_DAO);

@@ -5,6 +5,7 @@ import com.yanld.module.common.dal.dataobject.YanldArticleDO;
 import com.yanld.module.common.dal.query.YanldArticleQuery;
 import com.yanld.module.service.AbstractService;
 import com.yanld.module.service.YanldArticleService;
+import com.yanld.module.service.YanldSequenceService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,7 +22,7 @@ public class YanldArticleServiceImpl extends AbstractService implements YanldArt
 
     @Override
     public Long insertArticle(YanldArticleDO yanldArticleDO) throws Exception {
-        fillDOBaseInfo(yanldArticleDO);
+        fillDOBaseInfo(yanldArticleDO, YanldSequenceService.TABLE_YANLD_ARTICLE);
         return getProxyDao(yanldArticleDao).insertArticle(yanldArticleDO);
     }
 

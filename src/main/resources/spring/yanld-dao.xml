@@ -2,8 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <context:annotation-config/>
     <context:component-scan base-package="com.yanld.module.common.dal.dao.impl"/>
@@ -15,6 +15,8 @@
             </list>
         </property>
     </bean>
+
+    <!-- ********************DB******************** -->
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
@@ -36,6 +38,8 @@
         <constructor-arg index="0" ref="sqlSessionFactory"/>
     </bean>
 
+    <!-- ********************Redis******************** -->
+
     <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxIdle" value="${redis.maxIdle}"/>
         <property name="maxTotal" value="${redis.maxActive}"/>
@@ -54,12 +58,28 @@
         <property name="connectionFactory" ref="connectionFactory"/>
     </bean>
 
-    <bean id="proxyFactory" class="com.yanld.module.common.dal.dao.proxy.DaoProxyFactory"/>
+    <!-- ********************Transaction******************** -->
 
-    <!--<aop:config>-->
-        <!--<aop:pointcut id="select" expression="execution(* com.yanld.module.common.dal.dao.YanldArticleDao.selectArticle(..)) and args(ids)"/>-->
-        <!--<aop:aspect ref="daoAspect">-->
-            <!--<aop:around method="doSelect" pointcut-ref="select" arg-names="ids"/>-->
-        <!--</aop:aspect>-->
-    <!--</aop:config>-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="transactionManager"/>
+    </bean>
+
+    <tx:advice id="requiredAdvice">
+        <tx:attributes>
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <aop:config>
+        <aop:pointcut id="insert" expression="execution(* com.yanld.module.service.*Service.insert*(..))"/>
+        <aop:advisor advice-ref="requiredAdvice" pointcut-ref="insert"/>
+    </aop:config>
+
+    <!-- ********************Proxy******************** -->
+
+    <bean id="proxyFactory" class="com.yanld.module.common.dal.dao.proxy.DaoProxyFactory"/>
 </beans>

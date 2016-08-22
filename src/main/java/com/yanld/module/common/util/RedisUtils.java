@@ -37,6 +37,65 @@ public class RedisUtils {
         }
     }
 
+    public static String shutDown(RedisTemplate<Serializable, Serializable> redisTemplate) {
+        try {
+            return redisTemplate.execute(new RedisCallback<String>() {
+                @Override
+                public String doInRedis(RedisConnection connection) throws DataAccessException {
+                    connection.shutdown();
+                    return "shutdown";
+                }
+            });
+        } catch (Exception e) {
+            logger.error(StackTraceUtils.getStackTrance(e));
+            return "error";
+        }
+    }
+
+    public static String flushAll(RedisTemplate<Serializable, Serializable> redisTemplate) {
+        try {
+            return redisTemplate.execute(new RedisCallback<String>() {
+                @Override
+                public String doInRedis(RedisConnection connection) throws DataAccessException {
+                    connection.flushAll();
+                    return "flushAll";
+                }
+            });
+        } catch (Exception e) {
+            logger.error(StackTraceUtils.getStackTrance(e));
+            return "error";
+        }
+    }
+
+    public static String flushDb(RedisTemplate<Serializable, Serializable> redisTemplate) {
+        try {
+            return redisTemplate.execute(new RedisCallback<String>() {
+                @Override
+                public String doInRedis(RedisConnection connection) throws DataAccessException {
+                    connection.flushDb();
+                    return "flushDb";
+                }
+            });
+        } catch (Exception e) {
+            logger.error(StackTraceUtils.getStackTrance(e));
+            return "error";
+        }
+    }
+
+    public static boolean isEmpty(RedisTemplate<Serializable, Serializable> redisTemplate) {
+        try {
+            return redisTemplate.execute(new RedisCallback<Boolean>() {
+                @Override
+                public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+                    return connection.dbSize() == 0;
+                }
+            });
+        } catch (Exception e) {
+            logger.error(StackTraceUtils.getStackTrance(e));
+            return true;
+        }
+    }
+
     public static String getString(RedisTemplate<Serializable, Serializable> redisTemplate,
                                    String key) {
         try {

@@ -20,8 +20,8 @@ public abstract class AbstractService {
     @Resource
     protected DaoProxyFactory proxyFactory;
 
-    protected <T extends BaseDO> T fillDOBaseInfo(T baseDO) throws TableNotExistException {
-        long id = sequenceService.getId(YanldSequenceService.TABLE_YANLD_ARTICLE);
+    protected <T extends BaseDO> T fillDOBaseInfo(T baseDO, String tableName) throws TableNotExistException {
+        long id = sequenceService.getId(tableName);
         Date now = new Date();
         baseDO.setId(id);
         baseDO.setCreateTime(now);

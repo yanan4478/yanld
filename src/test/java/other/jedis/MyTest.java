@@ -1,10 +1,15 @@
 package other.jedis;
 
+import com.yanld.module.common.util.RedisUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.Test;
+import org.springframework.data.redis.core.RedisTemplate;
+import other.BaseTest;
 import redis.clients.jedis.Jedis;
 
+import javax.annotation.Resource;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -12,11 +17,12 @@ import java.util.Set;
 /**
  * Created by yanan on 16/6/15.
  */
-public class MyTest {
+public class MyTest extends BaseTest {
     @Test
     public void test1() {
         Jedis jedis = new Jedis("127.0.0.1");
-        System.out.println(jedis.get("yanan"));
+        jedis.shutdown();
+        //System.out.println(jedis.get("yanan"));
         System.out.println(jedis.ping());
     }
 
@@ -47,5 +53,17 @@ public class MyTest {
         List<Object> objects = Arrays.asList(objs);
         String[] strs = objects.toArray(new String[objects.size()]);
         System.out.println(strs.length);
+    }
+
+    @Resource
+    private RedisTemplate<Serializable, Serializable> redisTemplate;
+    @Test
+    public void test5() {
+        System.out.println(RedisUtils.shutDown(redisTemplate));
+    }
+
+    @Test
+    public void test6() {
+        System.out.println(RedisUtils.flushAll(redisTemplate));
     }
 }

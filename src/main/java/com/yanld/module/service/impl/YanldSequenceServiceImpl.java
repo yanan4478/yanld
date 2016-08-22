@@ -22,13 +22,13 @@ public class YanldSequenceServiceImpl implements YanldSequenceService {
     private static final int STEP_SIZE = 100;
     private ConcurrentHashMap<String, Long> seqMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, AtomicLong> idMap = new ConcurrentHashMap<>();
-    private final Object lock = new Object();
+    private final Object LOCK = new Object();
 
     @Override
     public long getId(String tableName) throws TableNotExistException {
         Long seq = seqMap.get(tableName);
         if (seq == null) {
-            synchronized (lock) {
+            synchronized (LOCK) {
                 if (seqMap.get(tableName) == null) {
                     YanldSequenceDO yanldSequenceDO = yanldSequenceDao.selectSequence(tableName);
                     if (yanldSequenceDO == null) {
@@ -45,7 +45,7 @@ public class YanldSequenceServiceImpl implements YanldSequenceService {
         long id = lastId.incrementAndGet();
         seq = seqMap.get(tableName);
         if (id > (seq + 1) * STEP_SIZE) {
-            synchronized (lock) {
+            synchronized (LOCK) {
                 if (seq.longValue() == seqMap.get(tableName)) {
                     yanldSequenceDao.updateSequence(new YanldSequenceDO(tableName, ++seq + 1));
                     seqMap.put(tableName, seq);
