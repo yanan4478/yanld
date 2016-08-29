@@ -319,7 +319,9 @@ public class RedisUtils {
     private static <T extends BaseDO> T getDTO(List<Object> hashKeys, List<Object> valueList, T dto) throws Exception {
         Map<Object, Object> map = new HashMap<>();
         for (int i = 0; i < hashKeys.size(); i++) {
-            map.put(hashKeys.get(i), valueList.get(i));
+            if (valueList.get(i) != null) {
+                map.put(hashKeys.get(i), valueList.get(i));
+            }
         }
         BeanUtils.populate(dto, map);
         return dto;

@@ -1,5 +1,6 @@
 package com.yanld.module.common.util;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -7,8 +8,8 @@ import java.util.List;
  */
 public class DataUtils {
 
-    public static boolean isBlank(List<?> list) {
-        return list == null || list.size() == 0;
+    public static boolean isBlank(Collection<?> collection) {
+        return collection == null || collection.size() == 0;
     }
 
     public static boolean isValueAllNull(List<?> list) {

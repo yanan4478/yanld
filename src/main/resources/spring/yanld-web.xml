@@ -4,27 +4,29 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="handlerInterceptor1" class="com.yanld.module.interceptor.HandlerInterceptor1"/>
-    <bean id="handlerInterceptor2" class="com.yanld.module.interceptor.HandlerInterceptor2"/>
-    <bean id="stopWatchHandlerInceptor" class="com.yanld.module.interceptor.StopWatchHandlerInterceptor"/>
-    <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
-        <property name="interceptors">
-            <list>
-                <ref bean="stopWatchHandlerInceptor"/>
-                <ref bean="handlerInterceptor1"/>
-                <ref bean="handlerInterceptor2"/>
-            </list>
-        </property>
-    </bean>
-    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
-
-    <!--<mvc:resources mapping="*/resources/**" location="*/resources/*"/>-->
     <mvc:annotation-driven/>
     <context:component-scan base-package="com.yanld.module.controller"/>
 
     <!--静态资源的访问，如js，css，image-->
-    <!--<mvc:default-servlet-handler/>-->
+    <!--<mvc:resources mapping="*/resources/**" location="css/**"/>-->
     <mvc:default-servlet-handler/>
+
+    <mvc:interceptors>
+        <bean class="com.yanld.module.interceptor.LoginHandlerInterceptor"/>
+        <!--<mvc:interceptor>-->
+        <!--<mvc:mapping path="/test/number.do"/>-->
+        <!--&lt;!&ndash; 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 &ndash;&gt;-->
+        <!--<bean class="com.host.app.web.interceptor.LoginInterceptor"/>-->
+        <!--</mvc:interceptor>-->
+    </mvc:interceptors>
+    <!--<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>-->
+    <!--<property name="interceptors">-->
+    <!--<list>-->
+    <!--<ref bean="loginHandlerInterceptor"/>-->
+    <!--</list>-->
+    <!--</property>-->
+    <!--</bean>-->
+    <!--<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>-->
 
     <bean id="freemarkerConfiguration" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="/WEB-INF/pages"/>
@@ -47,4 +49,8 @@
         <property name="contentType" value="text/html; charset=UTF-8"/>
     </bean>
 
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="defaultErrorView" value="error"/>
+        <property name="defaultStatusCode" value="500"/>
+    </bean>
 </beans>

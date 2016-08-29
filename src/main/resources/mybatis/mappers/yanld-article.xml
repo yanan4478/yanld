@@ -84,10 +84,10 @@
         from yanld_article
         <where>
             is_deleted=0
-            <if test="userId != null ">
+            <if test="userId != null">
                 AND user_id= #{userId}
             </if>
-            <if test="limit != 0 ">
+            <if test="limit != 0">
                 LIMIT #{limit} OFFSET #{offset}
             </if>
         </where>

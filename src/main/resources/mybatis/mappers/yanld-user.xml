@@ -8,6 +8,7 @@
         <result column="is_deleted" property="isDeleted"/>
         <result column="user_name" property="userName"/>
         <result column="user_password" property="userPassword"/>
+        <result column="last_login_time" property="lastLoginTime"/>
     </resultMap>
     <sql id="fields">
         `id`,
@@ -15,7 +16,8 @@
         modify_time,
         is_deleted,
         user_name,
-        user_password
+        user_password,
+        last_login_time
     </sql>
 
     <insert id="insertUser" parameterType="map">
@@ -28,7 +30,8 @@
         now(),
         0,
         #{userName},
-        #{userPassword}
+        #{userPassword},
+        #{lastLoginTime}
         )
     </insert>
 
@@ -50,7 +53,9 @@
         update yanld_user
         set
         modify_time=now(),
-        user_name=#{userName}
+        user_name=#{userName},
+        user_password=#{userPassword},
+        last_login_time=#{lastLoginTime}
         where
         `id`=#{id}
     </update>
@@ -69,7 +74,39 @@
         select
         <include refid="fields"/>
         from yanld_user
-        where
-        is_deleted=0
+        <where>
+            is_deleted=0
+            <if test="userName != null">
+                AND user_name= #{userName}
+            </if>
+            <if test="userPassword != null">
+                AND user_password= #{userPassword}
+            </if>
+            <if test="limit != 0">
+                LIMIT #{limit} OFFSET #{offset}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectUsersByIds" parameterType="map" resultMap="yanldUserResult">
+        select
+        <include refid="fields"/>
+        from yanld_user
+        <if test="ids != null">
+            <where>
+                id IN
+                <foreach item="userId" collection="ids"
+                         open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+            </where>
+        </if>
+    </select>
+
+    <select id="selectUserCount" parameterType="map" resultType="long">
+        select count(1) from yanld_user
+        <where>
+            is_deleted=0
+        </where>
     </select>
 </mapper>

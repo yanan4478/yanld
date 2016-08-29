@@ -1,64 +1,73 @@
 package com.yanld.module.common.dal.dao.impl;
 
+import com.yanld.module.common.annotation.OperateInRedis;
 import com.yanld.module.common.dal.dao.AbstractDao;
 import com.yanld.module.common.dal.dao.YanldUserDao;
 import com.yanld.module.common.dal.dataobject.YanldUserDO;
+import com.yanld.module.common.dal.dataobject.YanldUserDO;
 import com.yanld.module.common.dal.mapper.YanldUserMapper;
+import com.yanld.module.common.dal.mapper.YanldUserMapper;
+import com.yanld.module.common.dal.query.YanldUserQuery;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yanan on 16/6/27.
  */
 @Repository
-public class YanldUserDaoImpl extends AbstractDao implements YanldUserDao
-{
+public class YanldUserDaoImpl extends AbstractDao implements YanldUserDao {
     @Override
-    public long insertUser() {
-        YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
-        return mapper.insertUser();
+    @OperateInRedis
+    public Long insertUser(YanldUserDO yanldUserDO) {
+        sqlSession.getMapper(YanldUserMapper.class).insertUser(yanldUserDO);
+        return yanldUserDO.getId();
     }
 
     @Override
-    public int deleteUser() {
-        YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
-        return mapper.deleteUser();
+    @OperateInRedis
+    public Long deleteUser(Long id) {
+        return sqlSession.getMapper(YanldUserMapper.class).deleteUser(id);
     }
 
     @Override
-    public int logicDeleteUser() {
-        YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
-        return mapper.logicDeleteUser();
+    @OperateInRedis
+    public Long logicDeleteUser(Long id) {
+        return sqlSession.getMapper(YanldUserMapper.class).logicDeleteUser(id);
     }
 
     @Override
-    public int updateUser() {
-        YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
-        return mapper.updateUser();
+    @OperateInRedis
+    public Long updateUser(YanldUserDO yanldUserDO) {
+        return sqlSession.getMapper(YanldUserMapper.class).updateUser(yanldUserDO);
     }
 
     @Override
-    public YanldUserDO selectUser(long id) {
-        YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
-        return mapper.selectUser(id);
+    @OperateInRedis
+    public YanldUserDO selectUser(Long id) {
+        return sqlSession.getMapper(YanldUserMapper.class).selectUser(id);
     }
 
     @Override
-    public List<YanldUserDO> selectUsers() {
+    @OperateInRedis
+    public List<YanldUserDO> selectUsersByIds(List<Long> ids) {
         YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
-        return mapper.selectUsers();
+        Map<String, List<Long>> idsMap = new HashMap<>();
+        idsMap.put("ids", ids);
+        return mapper.selectUsersByIds(idsMap);
     }
-//    @Override
-//    public List<YanldUserDO> queryAllYanldUser() {
-////        String s = redisTemplate.execute(new RedisCallback<String>() {
-////            @Override
-////            public String doInRedis(RedisConnection redisConnection) throws DataAccessException {
-////                return redisConnection.ping();
-////            }
-////        });
-//
-//        YanldUserMapper mapper = sqlSession.getMapper(YanldUserMapper.class);
-//        return mapper.queryAllYanldUser();
-//    }
+
+    @Override
+    @OperateInRedis
+    public List<YanldUserDO> selectUserQuery(YanldUserQuery query) {
+        return sqlSession.getMapper(YanldUserMapper.class).selectUsers(query);
+    }
+
+    @Override
+    @OperateInRedis
+    public Long selectUserCount(YanldUserQuery query) {
+        return sqlSession.getMapper(YanldUserMapper.class).selectUserCount(query);
+    }
 }

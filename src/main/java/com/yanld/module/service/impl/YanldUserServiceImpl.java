@@ -2,7 +2,15 @@ package com.yanld.module.service.impl;
 
 import com.yanld.module.common.dal.dao.YanldUserDao;
 import com.yanld.module.common.dal.dataobject.YanldUserDO;
+import com.yanld.module.common.dal.query.YanldUserQuery;
+import com.yanld.module.common.util.DataUtils;
+import com.yanld.module.common.util.StackTraceUtils;
+import com.yanld.module.service.AbstractService;
+import com.yanld.module.service.YanldCacheService;
+import com.yanld.module.service.YanldSequenceService;
 import com.yanld.module.service.YanldUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -12,38 +20,68 @@ import java.util.List;
  * Created by yanan on 16/6/28.
  */
 @Service
-public class YanldUserServiceImpl implements YanldUserService {
-
+public class YanldUserServiceImpl extends AbstractService implements YanldUserService {
+    private static final Logger logger = LoggerFactory.getLogger(YanldUserServiceImpl.class);
     @Resource
     private YanldUserDao yanldUserDao;
 
     @Override
-    public long insertUser() {
-        return yanldUserDao.insertUser();
+    public Long insertUser(YanldUserDO yanldUserDO) throws Exception {
+        fillDOBaseInfo(yanldUserDO, YanldSequenceService.TABLE_YANLD_USER);
+        return getProxyDao(yanldUserDao).insertUser(yanldUserDO);
     }
 
     @Override
-    public int deleteUser() {
-        return yanldUserDao.deleteUser();
+    public Long deleteUser(Long id) throws Exception {
+        return getProxyDao(yanldUserDao).deleteUser(id);
     }
 
     @Override
-    public int logicDeleteUser() {
-        return yanldUserDao.logicDeleteUser();
+    public Long logicDeleteUser(Long id) throws Exception {
+        return getProxyDao(yanldUserDao).logicDeleteUser(id);
     }
 
     @Override
-    public int updateUser() {
-        return yanldUserDao.updateUser();
+    public Long updateUser(YanldUserDO yanldUserDO) throws Exception {
+        return getProxyDao(yanldUserDao).updateUser(yanldUserDO);
     }
 
     @Override
-    public YanldUserDO selectUser(long id) {
-        return yanldUserDao.selectUser(id);
+    public YanldUserDO selectUser(Long id) throws Exception {
+        return getProxyDao(yanldUserDao).selectUser(id);
     }
 
     @Override
-    public List<YanldUserDO> selectUsers() {
-        return yanldUserDao.selectUsers();
+    @SuppressWarnings("unchecked")
+    public List<YanldUserDO> selectUserQuery(YanldUserQuery query) throws Exception {
+        return getProxyDao(yanldUserDao).selectUserQuery(query);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<YanldUserDO> selectUsersByIds(List<Long> ids) throws Exception {
+        return getProxyDao(yanldUserDao).selectUsersByIds(ids);
+    }
+
+    @Override
+    public Long selectUserCount(YanldUserQuery query) throws Exception {
+        return getProxyDao(yanldUserDao).selectUserCount(query);
+    }
+
+    @Override
+    public Long getUserId(String userName, String userPassword) {
+        try {
+            YanldUserQuery userQuery = new YanldUserQuery();
+            userQuery.setUserName(userName);
+            userQuery.setUserPassword(userPassword);
+            List<YanldUserDO> userDOs = selectUserQuery(userQuery);
+            if(DataUtils.isBlank(userDOs)) {
+                return 0l;
+            }
+            return userDOs.get(0).getId();
+        } catch (Exception e) {
+            logger.error(StackTraceUtils.getStackTrance(e));
+            return 0l;
+        }
     }
 }

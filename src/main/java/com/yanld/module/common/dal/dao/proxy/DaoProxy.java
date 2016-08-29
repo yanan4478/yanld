@@ -2,6 +2,7 @@ package com.yanld.module.common.dal.dao.proxy;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.yanld.module.common.annotation.RedisQuery;
 import com.yanld.module.common.annotation.OperateInRedis;
 import com.yanld.module.common.constant.BaseConstant;
 import com.yanld.module.common.constant.DaoOptEnum;
@@ -247,9 +248,12 @@ public class DaoProxy implements InvocationHandler {
 
     public static <T extends BaseDO, Q extends BaseQuery> List<String> getListKeys(T dto, Q query) throws Exception {
         Field[] qryFields = query.getClass().getDeclaredFields();
-        String[] qryFieldNames = new String[qryFields.length];
-        for (int i = 0; i < qryFields.length; i++) {
-            qryFieldNames[i] = qryFields[i].getName();
+        List<String> qryFieldNames = new ArrayList<>();
+        for (Field qryField : qryFields) {
+            qryFieldNames.add(qryField.getName());
+            if (!qryField.isAnnotationPresent(RedisQuery.class)) {
+
+            }
         }
         Field[] fields = dto.getClass().getDeclaredFields();
         List<Pair<String, Object>> queryPairs = new ArrayList<>();
@@ -257,15 +261,15 @@ public class DaoProxy implements InvocationHandler {
             for (Field field : fields) {
                 field.setAccessible(true);
                 if ((Number.class.isInstance(field.get(dto))
-                        || field.getType().isInstance(String.class))
+                        || field.getType().isInstance(field.get(dto)))
                         && qryFieldName.equals(field.getName())) {
                     queryPairs.add(new Pair<>(qryFieldName, field.get(dto)));
                 }
             }
         }
-        String listKey = getBaseListName(dto);
         List<String> listKeys = new ArrayList<>();
         for (int i = 0; i < Math.pow(2, queryPairs.size()); i++) {
+            String listKey = getBaseListName(dto);
             for (int j = i, k = 0; j > 0; j = j >> 1, k++) {
                 if (j % 2 == 1) {
                     Pair<String, Object> pair = queryPairs.get(k);
@@ -338,7 +342,8 @@ public class DaoProxy implements InvocationHandler {
     }
 
     private <T extends BaseDO> String getQueryName(T dto) {
-        return dto.getClass().getName().replace("dataobject.YanldArticleDO", "query.YanldArticleQuery");
+        String simpleName = dto.getClass().getSimpleName().replaceAll("Yanld|DO", "");
+        return MessageFormat.format(BaseConstant.YANLD_QUERY_TEMPLATE, simpleName);
     }
 
     private <T extends BaseDao> String getObjectKeyInRedis(T dao, long id) {

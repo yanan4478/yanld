@@ -4,7 +4,7 @@ package com.yanld.module.service;
  * Created by yanan on 16/8/9.
  */
 public interface YanldCacheService {
-    String YANLD_CACHE_ARRAY = "Article,";
+    String YANLD_CACHE_ARRAY = "Article,User,";
 
     String YANLD_SELECTLIST_METHOD = "select{0}Query";
 

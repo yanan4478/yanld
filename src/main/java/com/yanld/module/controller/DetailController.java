@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -22,8 +26,13 @@ public class DetailController {
 
     @RequestMapping({"/detail/article/{articleId:\\d+}"})
     public String showIndex(Map<String, Object> model,
-                            @PathVariable("articleId") long articleId) {
+                            @PathVariable("articleId") long articleId, HttpSession session,
+                            HttpServletRequest request, HttpServletResponse response) {
         try {
+            request.getCookies();
+            Cookie cookie = new Cookie("wocao", "sqk");
+            response.addCookie(cookie);
+            Object o = session.getAttribute("user");
             YanldDetailArticleBO detailArticleBO = detailService.getDetailArticleBO(articleId);
             model.put("detailArticleBO", detailArticleBO);
             return "detailArticle";

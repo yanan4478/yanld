@@ -55,19 +55,19 @@ public class YanldCacheServiceImpl implements YanldCacheService, ApplicationList
                 String selectCountMethodName = getInvokeName(item, YANLD_SELECTCOUNT_METHOD);
                 String selectListMethodName = getInvokeName(item, YANLD_SELECTLIST_METHOD);
                 try {
-                    AbstractDao service = BeanFactoryUtils.getBean(daoName);
+                    AbstractDao dao = BeanFactoryUtils.getBean(daoName);
                     Class<?> queryClass = Class.forName(queryName);
                     BaseQuery query = (BaseQuery) queryClass.newInstance();
-                    Method selectCountMethod = service.getClass().getDeclaredMethod(selectCountMethodName, queryClass);
-                    long count = (long) selectCountMethod.invoke(service, query);
+                    Method selectCountMethod = dao.getClass().getDeclaredMethod(selectCountMethodName, queryClass);
+                    long count = (long) selectCountMethod.invoke(dao, query);
                     if (count == 0) {
                         return;
                     }
-                    Method selectListMethod = service.getClass().getDeclaredMethod(selectListMethodName, queryClass);
+                    Method selectListMethod = dao.getClass().getDeclaredMethod(selectListMethodName, queryClass);
                     for (int i = 0; i <= count / 100; i++) {
                         query.setLimit(100);
                         query.setOffset(i * 100);
-                        List<BaseDO> dtoList = (List<BaseDO>) selectListMethod.invoke(service, query);
+                        List<BaseDO> dtoList = (List<BaseDO>) selectListMethod.invoke(dao, query);
                         Map<String, List<String>> listKeyMap = new HashMap<>();
                         for (BaseDO dto : dtoList) {
                             List<String> listKeys = DaoProxy.getListKeys(dto, query);

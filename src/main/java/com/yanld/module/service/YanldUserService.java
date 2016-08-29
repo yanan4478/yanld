@@ -1,6 +1,7 @@
 package com.yanld.module.service;
 
 import com.yanld.module.common.dal.dataobject.YanldUserDO;
+import com.yanld.module.common.dal.query.YanldUserQuery;
 
 import java.util.List;
 
@@ -8,15 +9,21 @@ import java.util.List;
  * Created by yanan on 16/6/28.
  */
 public interface YanldUserService {
-    long insertUser();
+    Long insertUser(YanldUserDO yanldUserDO) throws Exception;
 
-    int deleteUser();
+    Long deleteUser(Long id) throws Exception;
 
-    int logicDeleteUser();
+    Long logicDeleteUser(Long id) throws Exception;
 
-    int updateUser();
+    Long updateUser(YanldUserDO yanldUserDO) throws Exception;
 
-    YanldUserDO selectUser(long id);
+    YanldUserDO selectUser(Long id) throws Exception;
 
-    List<YanldUserDO> selectUsers();
+    List<YanldUserDO> selectUserQuery(YanldUserQuery query) throws Exception;
+
+    List<YanldUserDO> selectUsersByIds(List<Long> ids) throws Exception;
+
+    Long selectUserCount(YanldUserQuery query) throws Exception;
+
+    Long getUserId(String userName, String userPassword);
 }

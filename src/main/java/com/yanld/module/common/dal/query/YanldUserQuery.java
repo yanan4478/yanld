@@ -1,14 +1,15 @@
-package com.yanld.module.common.dal.dataobject;
+package com.yanld.module.common.dal.query;
 
-import java.util.Date;
+import com.yanld.module.common.annotation.RedisQuery;
+import com.yanld.module.common.constant.RedisQueryLevel;
 
 /**
- * Created by yanan on 16/6/28.
+ * Created by yanan on 16/8/29.
  */
-public class YanldUserDO extends BaseDO {
+public class YanldUserQuery extends BaseQuery {
     private String userName;
+    @RedisQuery(RedisQueryLevel.COMBO)
     private String userPassword;
-    private Date lastLoginTime;
 
     public String getUserName() {
         return userName;
@@ -24,13 +25,5 @@ public class YanldUserDO extends BaseDO {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
-    }
-
-    public Date getLastLoginTime() {
-        return lastLoginTime;
-    }
-
-    public void setLastLoginTime(Date lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
     }
 }
