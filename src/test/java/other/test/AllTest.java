@@ -9,9 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -66,5 +64,15 @@ public class AllTest {
         String md5 = DigestUtils.md5DigestAsHex("123456".getBytes());
         System.out.println(md5);
 
+    }
+
+    @Test
+    public void test6() {
+        List<Integer> list = new ArrayList<>();
+        int a = 1;
+        int b = 1234;
+        list.add(a);
+        list.add(b);
+        System.out.println(list.contains(1234));
     }
 }

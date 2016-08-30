@@ -12,8 +12,10 @@ import com.yanld.module.service.YanldUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -69,19 +71,22 @@ public class YanldUserServiceImpl extends AbstractService implements YanldUserSe
     }
 
     @Override
-    public Long getUserId(String userName, String userPassword) {
+    public YanldUserDO userLogin(String userName, String userPassword) {
         try {
             YanldUserQuery userQuery = new YanldUserQuery();
             userQuery.setUserName(userName);
-            userQuery.setUserPassword(userPassword);
+            userQuery.setUserPassword(DigestUtils.md5DigestAsHex(userPassword.getBytes()));
             List<YanldUserDO> userDOs = selectUserQuery(userQuery);
             if(DataUtils.isBlank(userDOs)) {
-                return 0l;
+                return null;
             }
-            return userDOs.get(0).getId();
+            YanldUserDO user = userDOs.get(0);
+            user.setLastLoginTime(new Date());
+            updateUser(user);
+            return user;
         } catch (Exception e) {
             logger.error(StackTraceUtils.getStackTrance(e));
-            return 0l;
+            return null;
         }
     }
 }

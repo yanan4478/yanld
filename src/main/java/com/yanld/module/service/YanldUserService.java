@@ -25,5 +25,5 @@ public interface YanldUserService {
 
     Long selectUserCount(YanldUserQuery query) throws Exception;
 
-    Long getUserId(String userName, String userPassword);
+    YanldUserDO userLogin(String userName, String userPassword);
 }

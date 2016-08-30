@@ -6,6 +6,7 @@ import com.yanld.module.common.annotation.RedisQuery;
 import com.yanld.module.common.annotation.OperateInRedis;
 import com.yanld.module.common.constant.BaseConstant;
 import com.yanld.module.common.constant.DaoOptEnum;
+import com.yanld.module.common.constant.RedisQueryLevel;
 import com.yanld.module.common.dal.dao.BaseDao;
 import com.yanld.module.common.dal.dataobject.BaseDO;
 import com.yanld.module.common.dal.query.BaseQuery;
@@ -135,7 +136,7 @@ public class DaoProxy implements InvocationHandler {
                 return dto;
             }
         }
-        Object result =  method.invoke(dao, (long) args[0]);
+        Object result = method.invoke(dao, (long) args[0]);
         if (operateInRedis) {
             if (result != null) {
                 setObjectToRedis((BaseDO) result);
@@ -216,7 +217,7 @@ public class DaoProxy implements InvocationHandler {
     }
 
     private int deleteObjectInRedis(BaseDO dto) {
-        if(dto == null) {
+        if (dto == null) {
             return 0;
         }
         return deleteObjectFromList(dto) &
@@ -251,9 +252,6 @@ public class DaoProxy implements InvocationHandler {
         List<String> qryFieldNames = new ArrayList<>();
         for (Field qryField : qryFields) {
             qryFieldNames.add(qryField.getName());
-            if (!qryField.isAnnotationPresent(RedisQuery.class)) {
-
-            }
         }
         Field[] fields = dto.getClass().getDeclaredFields();
         List<Pair<String, Object>> queryPairs = new ArrayList<>();
@@ -267,16 +265,40 @@ public class DaoProxy implements InvocationHandler {
                 }
             }
         }
-        List<String> listKeys = new ArrayList<>();
-        for (int i = 0; i < Math.pow(2, queryPairs.size()); i++) {
-            String listKey = getBaseListName(dto);
-            for (int j = i, k = 0; j > 0; j = j >> 1, k++) {
-                if (j % 2 == 1) {
-                    Pair<String, Object> pair = queryPairs.get(k);
-                    listKey += ("_" + pair.getKey() + ":" + pair.getValue());
+        List<Integer> notQueryIndexes = new ArrayList<>();
+        int index = 0;
+        for (Pair<String, Object> pair : queryPairs) {
+            for (Field qryField : qryFields) {
+                if (qryField.isAnnotationPresent(RedisQuery.class) &&
+                        qryField.getName().equals(pair.getKey())) {
+                    int queryIndex = (int) Math.pow(2, queryPairs.size() - index - 1);
+                    if (qryField.getAnnotation(RedisQuery.class).value() == RedisQueryLevel.COMBO) {
+                        notQueryIndexes.add(queryIndex);
+                    }
+                    if (qryField.getAnnotation(RedisQuery.class).value() == RedisQueryLevel.NON) {
+                        for (int i = 0; i < Math.pow(2, queryPairs.size()); i++) {
+                            if ((i & queryIndex) == queryIndex) {
+                                notQueryIndexes.add(i);
+                            }
+                        }
+                    }
                 }
             }
-            listKeys.add(listKey);
+            index++;
+        }
+        List<String> listKeys = new ArrayList<>();
+        for (int i = 0; i < Math.pow(2, queryPairs.size()); i++) {
+            if (!notQueryIndexes.contains(i)) {
+                String listKey = getBaseListName(dto);
+                for (int j = queryPairs.size() - 1, k = 0; j >= 0; j--, k++) {
+                    int temp = (int) Math.pow(2, j);
+                    if ((temp & i) == temp) {
+                        Pair<String, Object> pair = queryPairs.get(k);
+                        listKey += ("_" + pair.getKey() + ":" + pair.getValue());
+                    }
+                }
+                listKeys.add(listKey);
+            }
         }
         return listKeys;
     }

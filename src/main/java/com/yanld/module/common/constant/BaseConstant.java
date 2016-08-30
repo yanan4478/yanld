@@ -16,4 +16,5 @@ public class BaseConstant {
 
     public static final String YANLD_QUERY_TEMPLATE = "com.yanld.module.common.dal.query.Yanld{0}Query";
 
+    public static final int COOKIE_LAST_SECONDS = 120;
 }
