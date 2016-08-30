@@ -50,7 +50,7 @@
     </bean>
 
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="defaultErrorView" value="error"/>
+        <property name="defaultErrorView" value="error500"/>
         <property name="defaultStatusCode" value="500"/>
     </bean>
 </beans>
