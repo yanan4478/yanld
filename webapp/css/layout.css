@@ -1,37 +1,32 @@
-.aside{
-    position:fixed;
-    width:10%;
-    height:100%;
-    background-color:#2a2a2a;
 
-}
 .content{
-    position:relative;
-    //left:10%;
+    /*left:10%;*/
     width:100%;
-    //height:100%;
-    //overflow:hidden;
+    /*//height:100%;*/
+    /*//overflow:hidden;*/
 }
 .leftSide{
     width:20%;
     height:100%;
     background-image: url(./../image/bg.jpg);
-    backgroud-size:100% 100%;
+    background-size:cover;
     position:fixed;
 
 }
 .middleSide{
-   position:absolute;
-    left:23%;
+    position:relative;
+    left:20%;
+    top:102px;
+    bottom:52px;
     width:70%;
     height:100%;
-    //overflow:hidden;
-
 }
 .rightSide{
-   position:absolute;
+    position:absolute;
     left:90%;
-    width:17%;
+    top:0;
+    right:0;
+    width:10%;
     height:100%;
 }
 /*left side*/
@@ -54,19 +49,21 @@
     color: white;
     text-shadow: 0 1px 0 #de533a;
 }
+/*middle side*/
 .topSide{
     position:fixed;
-    width:52%;
-    height:50px;
-    border-bottom: 2px solid #d9d9d9;
-    padding-left:20px;
+    width:69%;
+    height:100px;
+    padding-left:1%;
+    z-index:1000;
+    left:20%;
 }
 .tabPane{
-    width:80%;
+    width:100%;
+    height:50px;
+    border-bottom: 2px solid #d9d9d9;
 
 }
-
-
 .tab{
     width:10%;
     line-height:50px;
@@ -83,17 +80,19 @@
 }
 .mainContent{
     position:relative;
-    top:50px;
+    top:0px;
+    bottom:52px;
 }
 .tabs{
-    position:absolute;
-    top:0px;
-    padding-left:20px;
-
+    width:70%;
+    height:50px;
+    line-height:50px;
 }
 .tabs>.tabsStyle{
-    margin: 10px 15px 5px 0;
-    line-height:48px;
+    margin:0 5px;
+    line-height:50px;
+    height:50px;
+    width:120px;
     text-align:center;
 }
 .tabs>.tabsStyle>a{
@@ -111,9 +110,8 @@
     border-color: #e78170;
     background: #e78170;}
 .articleList {
-    position: absolute;
     width: 100%;
-    top: 60px;
+    padding:10px 5px;
 }
 .articleList>.article{
     padding:20px 20px;
@@ -140,7 +138,104 @@
     position:fixed;
     width:70%;
     bottom:0;
+    left:20%;
     text-align:center;
     line-height:30px;
     border-bottom:10px;
+}
+.mask{
+    position:fixed;
+    background-color: #000;
+    opacity:0.8;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    z-index: 9999;
+}
+.modal_open{
+    position: fixed;
+    z-index: 50000;
+    width: 20%;
+    top: 50%;
+    left: 50%;
+    background-color:lightgoldenrodyellow;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    text-align: center;
+    border-radius: 3px;
+    padding:2% 0;
+}
+.input_css{
+    border:1px solid lightblue;
+    margin:5px 10px;
+    line-height:30px;
+    height:25px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    width:70%;
+    font-size:13px;
+    color:#000;
+    text-indent:2em;
+}
+.loginBtn{
+    width:70%;
+    height:30px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border:1px solid lightblue;
+    background: lightblue;
+    color:#fff;
+    margin-top:10px;
+}
+.loginBtn:active{
+    outline:none;
+    background: lightskyblue;
+}
+.loginBtn:focus{
+    outline:none;
+    background: lightskyblue;
+}
+.mask_hidden,.modal_close{
+    display: none;
+}
+/*right side*/
+.btnGroup{
+    text-align:center;
+    line-heihgt:1;
+    padding-top:5px;
+}
+.btnGroup>.btnGroup_btn{
+    width:40%;
+    heihgt:100px;
+    border:1px dotted #000;
+    outline:none;
+    color:#000;
+    background:#fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.btnGroup>.btnGroup_btn:focus{
+    color:#fff;
+    background:lightsalmon;
+    outline:none;
+    border:1px dotted #fafcf0;
+    
+}
+.btnGroup>.btnGroup_btn:active{
+    color:#fff;
+    background:lightsalmon;
+    outline:none;
+    border:1px dotted #fafcf0;
+
+}
+.btnGroup>.btnGroup_btn:hover{
+    color:#fff;
+    background:lightsalmon;
+    outline:none;
+    border:1px dotted #fafcf0;
+
 }

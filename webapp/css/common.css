@@ -37,3 +37,6 @@ div,p,h1,h2,h3,h4,h5,h6,b,s,u,button,input,ul,li,a{
 .border{
     border:1px solid black;
 }
+.center{
+    text-align:center;
+}
