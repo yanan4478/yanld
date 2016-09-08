@@ -75,4 +75,30 @@ public class AllTest {
         list.add(b);
         System.out.println(list.contains(1234));
     }
+
+    @Test
+    public void test7() {
+        Set<String> set = new HashSet<>();
+        String a = "fef";
+        String b = "fgrsgr";
+        String c = "54";
+        String d = "r45";
+        String e = "65g5g";
+        set.add(a);
+        set.add(b);
+        set.add(c);
+        set.add(d);
+        set.add(e);
+        for (int i = 0; i <= 90; i++) {
+            set.add(c + i);
+        }
+        System.out.println(set.size());
+        List list = Arrays.asList(set.toArray());
+        for (int i = 0; i <= (list.size() - 1) / 10; i++) {
+            int from = i * 10;
+            int to = from + 10 > list.size() ? list.size() : from + 10;
+            List listTmp = list.subList(from, to);
+            System.out.println(listTmp);
+        }
+    }
 }

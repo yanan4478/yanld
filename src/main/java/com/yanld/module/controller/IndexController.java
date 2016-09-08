@@ -9,6 +9,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -27,11 +28,12 @@ public class IndexController {
     private YanldArticleService articleService;
 
     @RequestMapping({"/"})
-    public String showIndex(Map<String, Object> model) throws Exception{
-            YanldIndexBO indexBO = indexService.getIndexBO(1, 1);
-            articleService.selectArticleCount(new YanldArticleQuery());
-            model.put("indexBO", indexBO);
-            return "index";
+    public String showIndex(Map<String, Object> model, @RequestParam(value = "l", defaultValue = "0") String doLogin) throws Exception {
+        YanldIndexBO indexBO = indexService.getIndexBO(1, 1);
+        articleService.selectArticleCount(new YanldArticleQuery());
+        model.put("indexBO", indexBO);
+        model.put("doLogin", doLogin);
+        return "index";
     }
 
     @RequestMapping({"/{category:\\d+}-{page:\\d+}"})

@@ -46,7 +46,7 @@
     <div class="rightSide">
         <p class="btnGroup">
             <button id="btn_register" class="btnGroup_btn rt">注册</button>
-            <button id="btn_login" class="btnGroup_btn rt" onclick="handleLoginClick(event)">登录</button>
+            <button id="btn_login" class="btnGroup_btn rt" onclick="handleLoginClick(event.target.id)">登录</button>
         </p>
 
     </div>
@@ -55,10 +55,13 @@
         <p class="center"><input class="input_css" type="text" placeholder="请输入用户名"/></p>
         <p class="center"><input class="input_css" type="password" placeholder="请输入密码"/></p>
         <p class="center"><button class="loginBtn" >登录</button></p>
-        <button id="modal_close" onclick="handleLoginClick(event)" style="position:absolute;top:-4px;right:-4px;width:15px;height:15px;border-radius:50%;outline:none;">&times;</button>
+        <button id="modal_close" onclick="handleLoginClick(event.target.id)" style="position:absolute;top:-4px;right:-4px;width:15px;height:15px;border-radius:50%;outline:none;">&times;</button>
     </div>
 </div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/loginModal.js"></script>
+<#if doLogin==1>
+    <script>handleLoginClick(document.getElementById("btn_login").id)</script>
+</#if>
 </body>
 </html>
