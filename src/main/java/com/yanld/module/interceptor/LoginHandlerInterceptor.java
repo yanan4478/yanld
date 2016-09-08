@@ -33,10 +33,7 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
         if (isUserInSession(request)) {
             return true;
         }
-        //response.setContentType("application/x-javascript");
-        response.getWriter().write("efrgrthh666666666");
         response.sendRedirect(request.getContextPath() + "?l=1");
-        //response.getWriter().write("<script>alert(2324)</script>");
         return false;
     }
 
