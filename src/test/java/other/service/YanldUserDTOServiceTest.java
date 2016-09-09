@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by yanan on 16/8/29.
  */
-public class UserServiceTest extends BaseTest {
+public class YanldUserDTOServiceTest extends BaseTest {
     @Resource
     private YanldUserService userService;
 
