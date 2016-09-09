@@ -142,6 +142,7 @@
     text-align:center;
     line-height:30px;
     border-bottom:10px;
+    font-size: 13px;
 }
 .mask{
     position:fixed;

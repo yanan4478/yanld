@@ -45,13 +45,16 @@
         </div>
 
     </div>
-    <div class="bottom_policy">浙ICP备16026181号-1</div>
+    <div class="bottom_policy">
+        <div>浙ICP备16026181号-1</div>
+        <img src="/image/beian.png"/>
+        <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602005702" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">浙公网安备 33010602005702号</p></a>
+    </div>
     <div class="rightSide">
         <p class="btnGroup">
             <button id="btn_register" class="btnGroup_btn rt">注册</button>
             <button id="btn_login" class="btnGroup_btn rt" onclick="handleLoginClick(event.target.id)">登录</button>
         </p>
-
     </div>
     <div class="mask_hidden" id="mask"></div>
     <form method="post" action="/login" class="modal_close" id="loginModal">
@@ -68,9 +71,9 @@
             </#if>
         </p>
         <p class="center">
-            <button class="loginBtn">登录</button>
+            <button type="submit" class="loginBtn">登录</button>
         </p>
-        <button id="modal_close" onclick="handleLoginClick(event.target.id)"
+        <button type="button" id="modal_close" onclick="handleLoginClick(event.target.id)"
                 style="position:absolute;top:-4px;right:-4px;width:15px;height:15px;border-radius:50%;outline:none;">&times;</button>
     </form>
 </div>
