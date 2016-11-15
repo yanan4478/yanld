@@ -40,7 +40,10 @@ public class LoginController {
         }
         YanldUserDO userDO = userService.userLogin(user.getUname(), user.getPwd());
         if (userDO != null) {
+
             request.getSession().setAttribute("userId", userDO.getId());
+            request.getSession().setAttribute("userName", userDO.getUserName());
+
             String tokenContent = user.getUname() + userDO.getLastLoginTime().getTime() / 1000;
 
             Cookie token = new Cookie("token", DigestUtils.md5DigestAsHex(tokenContent.getBytes()));
