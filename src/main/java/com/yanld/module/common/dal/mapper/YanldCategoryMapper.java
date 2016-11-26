@@ -19,4 +19,7 @@ public interface YanldCategoryMapper {
     YanldCategoryDO selectCategory();
 
     List<YanldCategoryDO> selectCategories();
+
+    YanldCategoryDO test1();
+
 }

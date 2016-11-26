@@ -9,6 +9,30 @@
         <result column="category_name" property="categoryName"/>
     </resultMap>
 
+    <!-- 一对多的关系 -->
+    <resultMap id="yanldCategoryResults" type="com.yanld.module.common.dal.dataobject.YanldCategoryDO">
+        <result column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="category_name" property="categoryName"/>
+
+        <!-- 一对多的关系 -->
+        <!-- property: 指的是集合属性的值, ofType：指的是集合中元素的类型 -->
+        <collection property="yanldCategoryMediaRelDOs"   column="category_id"  ofType="com.yanld.module.common.dal.dataobject.YanldCategoryMediaRelDO">
+
+            <result column="id" property="id"/>
+            <result column="create_time" property="createTime"/>
+            <result column="modify_time" property="modifyTime"/>
+            <result column="is_deleted" property="isDeleted"/>
+            <result column="category_id" property="categoryId"/>
+            <result column="media_id" property="mediaId"/>
+            <result column="media_type" property="mediaType"/>
+
+        </collection>
+
+    </resultMap>
+
     <sql id="fields">
         `id`,
         create_time,
@@ -71,4 +95,11 @@
         is_deleted=0
     </select>
 
+    <!-- 根据id查询YanldCategoryDO, 关联将YanldCategoryMediaRelDO查询出来 -->
+    <select id="test1" parameterType="string" resultMap="yanldCategoryResults">
+        select yc.*,ycmr.*
+        from yanld_category yc
+        left join yanld_category_media_rel ycmr on yc.id = ycmr.category_id
+        where yc.id = 1
+    </select>
 </mapper>

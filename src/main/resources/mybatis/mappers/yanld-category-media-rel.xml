@@ -10,6 +10,30 @@
         <result column="media_id" property="mediaId"/>
         <result column="media_type" property="mediaType"/>
     </resultMap>
+
+    <!--  多对一的关系 -->
+    <resultMap id="joinSelectYanldCategoryMediaRelDO" type="com.yanld.module.common.dal.dataobject.YanldCategoryMediaRelDO" >
+        <result property="id" column="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="media_id" property="mediaId"/>
+        <result column="media_type" property="mediaType"/>
+
+        <!-- 多对一的关系 -->
+        <!-- property: 指的是属性的值, javaType：指的是属性的类型-->
+        <association property="yanldCategoryDO" column="id" javaType="com.yanld.module.common.dal.dataobject.YanldCategoryDO">
+
+            <result column="id" property="id"/>
+            <result column="create_time" property="createTime"/>
+            <result column="modify_time" property="modifyTime"/>
+            <result column="is_deleted" property="isDeleted"/>
+            <result column="category_name" property="categoryName"/>
+
+        </association>
+    </resultMap>
+
     <sql id="fields">
         `id`,
         create_time,
@@ -87,4 +111,28 @@
             </if>
         </where>
     </select>
+
+    <select id="querySystemMenu" resultMap="joinSelectYanldCategoryMediaRelDO" resultType="list" parameterType="map">
+        select
+        s.id as id,
+        s.math as math,
+        s.chinese as chinese,
+        s.english as english,
+        s.computer as computer,
+        u.id as userid,
+        u.username as username,
+        u.password as password,
+        u.address as address
+        from pg_score s left outer join pg_userinfo u on s.userid = u.id where u.id=#{userid}
+    </select>
+
+
+    <!-- 根据id查询YanldCategoryMediaRelDO, 关联将YanldCategoryDO查询出来 -->
+    <select id="test2" parameterType="string" resultMap="joinSelectYanldCategoryMediaRelDO">
+        select yc.*,ycmr.*
+        from yanld_category_media_rel ycmr
+        left join yanld_category yc on yc.id = ycmr.category_id
+        where ycmr.id= 1
+    </select>
+
 </mapper>
