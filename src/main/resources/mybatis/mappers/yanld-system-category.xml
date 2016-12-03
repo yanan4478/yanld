@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yanld.module.common.dal.mapper.YanldSystemCategoryMapper">
+
+    <resultMap id="yanldSystemCategoryResult" type="com.yanld.module.common.dal.dataobject.YanldSystemCategoryDO" >
+        <result property="id" column="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="media_id" property="mediaId"/>
+        <result column="media_type" property="mediaType"/>
+        <result column="category_name" property="categoryName"/>
+    </resultMap>
+
+    <resultMap id="sysMenu" type="com.yanld.module.common.dal.dataobject.model.ShortCut" >
+        <result property="id" column="id"/>
+        <result column="category_id" property="pid"/>
+        <result column="media_id" property="code"/>
+        <result column="category_name" property="name"/>
+    </resultMap>
+
+    <sql id="fields">
+        `id`,
+        create_time,
+        modify_time,
+        is_deleted,
+        category_id,
+        media_id,
+        media_type,
+        category_name
+    </sql>
+
+    <!--无限级分类，获取节点信息-->
+    <select id="selectSystemCategorys" parameterType="map" resultMap="sysMenu">
+        select
+        <include refid="fields"/>
+        from yanld_system_category
+        where
+        is_deleted=0
+    </select>
+
+
+</mapper>

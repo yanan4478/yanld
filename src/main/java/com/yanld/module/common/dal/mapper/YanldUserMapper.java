@@ -25,4 +25,6 @@ public interface YanldUserMapper {
     List<YanldUserDO> selectUsersByIds(Map<String, List<Long>> idsMap);
 
     Long selectUserCount(YanldUserQuery query);
+
+
 }

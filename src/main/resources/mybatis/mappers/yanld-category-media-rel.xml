@@ -112,21 +112,6 @@
         </where>
     </select>
 
-    <select id="querySystemMenu" resultMap="joinSelectYanldCategoryMediaRelDO" resultType="list" parameterType="map">
-        select
-        s.id as id,
-        s.math as math,
-        s.chinese as chinese,
-        s.english as english,
-        s.computer as computer,
-        u.id as userid,
-        u.username as username,
-        u.password as password,
-        u.address as address
-        from pg_score s left outer join pg_userinfo u on s.userid = u.id where u.id=#{userid}
-    </select>
-
-
     <!-- 根据id查询YanldCategoryMediaRelDO, 关联将YanldCategoryDO查询出来 -->
     <select id="test2" parameterType="string" resultMap="joinSelectYanldCategoryMediaRelDO">
         select yc.*,ycmr.*
