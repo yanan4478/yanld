@@ -68,7 +68,7 @@
         <property name="transactionManager" ref="transactionManager"/>
     </bean>
 
-    <tx:advice id="requiredAdvice">
+    <tx:advice id="requiredAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="*" propagation="REQUIRED"/>
         </tx:attributes>

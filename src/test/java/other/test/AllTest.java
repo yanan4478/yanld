@@ -1,6 +1,9 @@
 package other.test;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
+import net.sf.json.JSONArray;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.springframework.util.DigestUtils;
@@ -11,8 +14,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by yanan on 16/7/25.
@@ -101,4 +102,15 @@ public class AllTest {
             System.out.println(listTmp);
         }
     }
+
+    @Test
+    public void test8() {
+        List<String> s = Splitter.on(",").trimResults(new CharMatcher() {
+            @Override
+            public boolean matches(char c) {
+                return '[' == c || ']' == c || ' ' == c;
+            }
+        }).splitToList("[3,02, 1]");
+    }
+
 }

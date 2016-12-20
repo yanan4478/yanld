@@ -31,7 +31,7 @@ import java.util.List;
  * Created by yanan on 16/8/17.
  */
 public class DaoProxy implements InvocationHandler {
-    private static final Logger logger = LoggerFactory.getLogger(InvocationHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(DaoProxy.class);
 
     private BaseDao dao;
 
