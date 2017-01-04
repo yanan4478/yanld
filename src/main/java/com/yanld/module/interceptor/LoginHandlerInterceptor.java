@@ -74,5 +74,7 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
             return;
         }
         request.getSession().setAttribute("userId", user.getId());
+        request.getSession().setAttribute("userName", user.getUserName());
+
     }
 }

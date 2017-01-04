@@ -50,11 +50,20 @@
         <img src="/image/beian.png"/>
         <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602005702" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">浙公网安备 33010602005702号</p></a>
     </div>
-    <div class="rightSide">
+    <div class="rightSide ">
+        <div  id="logininfo">
+
         <p class="btnGroup">
             <button id="btn_register" class="btnGroup_btn rt">注册</button>
             <button id="btn_login" class="btnGroup_btn rt" onclick="handleLoginClick(event.target.id)">登录</button>
         </p>
+        </div>
+
+        <div  id="userflg">
+               欢迎${userName}登录
+
+        </div>
+
     </div>
     <div class="mask_hidden" id="mask"></div>
     <form method="post" action="/login" class="modal_close" id="loginModal">
@@ -82,5 +91,19 @@
 <#if doLogin==1>
     <script>handleLoginClick(document.getElementById("btn_login").id)</script>
 </#if>
+<script type="text/javascript">
+    $(function(){
+       var username = "${userName}";
+        if(""!=username){
+
+            $("#userflg").show();
+            $("#logininfo").hide();
+        }else{
+
+            $("#logininfo").show();
+            $("#userflg").hide();
+        }
+    });
+</script>
 </body>
 </html>

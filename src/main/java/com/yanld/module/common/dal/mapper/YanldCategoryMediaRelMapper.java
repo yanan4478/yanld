@@ -20,4 +20,6 @@ public interface YanldCategoryMediaRelMapper {
     YanldCategoryMediaRelDO selectCategoryMediaRel();
 
     List<YanldCategoryMediaRelDO> selectCategoryMediaRels(YanldCategoryMediaRelQuery query);
+
+    YanldCategoryMediaRelDO test2();
 }

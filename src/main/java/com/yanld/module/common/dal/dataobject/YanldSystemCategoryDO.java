@@ -3,9 +3,12 @@ package com.yanld.module.common.dal.dataobject;
 import java.util.Date;
 
 /**
- * Created by yanan on 16/6/28.
+ * 描述：无限级分类dto
+ * 作者：袁伟倩
+ * 创建日期：2016-11-16/11/27.
  */
-public class YanldCategoryMediaRelDO extends BaseDO {
+public class YanldSystemCategoryDO extends BaseDO {
+
     private long categoryId;
     private long mediaId;
     private int mediaType;
@@ -13,9 +16,15 @@ public class YanldCategoryMediaRelDO extends BaseDO {
     private short isDeleted;
     private Date createTime;
     private Date modifyTime;
+    private String categoryName;
 
-    private YanldCategoryDO yanldCategoryDO; // 添加子目录表
+    public String getCategoryName() {
+        return categoryName;
+    }
 
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public long getId() {
         return id;
@@ -55,15 +64,6 @@ public class YanldCategoryMediaRelDO extends BaseDO {
         this.modifyTime = modifyTime;
     }
 
-
-    public YanldCategoryDO getYanldCategoryDO() {
-        return yanldCategoryDO;
-    }
-
-    public void setYanldCategoryDO(YanldCategoryDO yanldCategoryDO) {
-        this.yanldCategoryDO = yanldCategoryDO;
-    }
-
     public long getCategoryId() {
         return categoryId;
     }
@@ -88,8 +88,9 @@ public class YanldCategoryMediaRelDO extends BaseDO {
         this.mediaType = mediaType;
     }
 
+    @Override
     public String toString() {
-        return "YanldCategoryMediaRelDO{" +
+        return "YanldSystemCategoryDO{" +
                 "categoryId=" + categoryId +
                 ", mediaId=" + mediaId +
                 ", mediaType=" + mediaType +
@@ -97,8 +98,7 @@ public class YanldCategoryMediaRelDO extends BaseDO {
                 ", isDeleted=" + isDeleted +
                 ", createTime=" + createTime +
                 ", modifyTime=" + modifyTime +
-                ", yanldCategoryDO=" + yanldCategoryDO +
+                ", categoryName='" + categoryName + '\'' +
                 '}';
     }
-
 }

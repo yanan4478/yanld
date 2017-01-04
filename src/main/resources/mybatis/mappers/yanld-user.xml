@@ -109,4 +109,21 @@
             is_deleted=0
         </where>
     </select>
+
+    <!--添加用户登录验证信息-->
+    <select id="selectUserQuery" parameterType="map" resultMap="yanldUserResult">
+        select
+        <include refid="fields"/>
+        from yanld_user
+        <where>
+            is_deleted=0
+            <if test="userName != null">
+                AND user_name= #{userName}
+            </if>
+            <if test="userPassword != null">
+                AND user_password= #{userPassword}
+            </if>
+        </where>
+    </select>
+
 </mapper>
