@@ -31,6 +31,7 @@ public class IndexController {
     public String showIndex(Map<String, Object> model, @RequestParam(value = "l", defaultValue = "0") String doLogin) throws Exception {
         YanldIndexBO indexBO = indexService.getIndexBO(1, 1);
         articleService.selectArticleCount(new YanldArticleQuery());
+        model.put("lgd", new LongToDate());
         model.put("indexBO", indexBO);
         model.put("doLogin", doLogin);
         return "index";
