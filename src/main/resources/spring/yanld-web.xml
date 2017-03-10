@@ -45,7 +45,7 @@
     </bean>
 
     <util:map id="pageAttrs">
-        <entry key="hehe" value="xixi"/>
+        <entry key="csdnPath" value="http://oj3c4rkvm.bkt.clouddn.com/"/>
     </util:map>
 
     <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
