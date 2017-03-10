@@ -32,7 +32,6 @@ import java.util.List;
  */
 public class DaoProxy implements InvocationHandler {
     private static final Logger logger = LoggerFactory.getLogger(DaoProxy.class);
-
     private BaseDao dao;
 
     private RedisTemplate<Serializable, Serializable> redisTemplate;
