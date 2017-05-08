@@ -49,4 +49,21 @@ public class IndexController {
             return "redirect:error";
         }
     }
+
+    /**
+     * 首页展示区
+     * @param model
+     * @param doLogin
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping({"/index"})
+    public String showMainIndex(Map<String, Object> model, @RequestParam(value = "l", defaultValue = "0") String doLogin) throws Exception {
+        YanldIndexBO indexBO = indexService.getIndexBO(1, 1);
+        articleService.selectArticleCount(new YanldArticleQuery());
+        model.put("lgd", new LongToDate());
+        model.put("indexBO", indexBO);
+        model.put("doLogin", doLogin);
+        return "/index/index";
+    }
 }
